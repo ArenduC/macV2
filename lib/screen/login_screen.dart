@@ -241,7 +241,7 @@ Widget loginSegment(
           controller: usernameController,
           decoration: AppInputStyles.textFieldDecoration(
             hintText: 'Enter your username',
-            prefixIcon: Icons.person,
+            prefixIcon: Icons.account_circle_outlined,
           ),
           style: const TextStyle(color: AppColors.header1), // Text style
         ),
@@ -493,7 +493,7 @@ Widget registrationSegment(
           controller: userNameController,
           decoration: AppInputStyles.textFieldDecoration(
             hintText: 'Enter your username',
-            prefixIcon: Icons.person,
+            prefixIcon: Icons.account_circle_outlined,
           ),
           style: const TextStyle(color: AppColors.header1), // Text style
         ),
@@ -504,7 +504,7 @@ Widget registrationSegment(
           controller: emailController,
           decoration: AppInputStyles.textFieldDecoration(
             hintText: 'Enter email',
-            prefixIcon: Icons.email,
+            prefixIcon: Icons.alternate_email,
           ),
           style: const TextStyle(color: AppColors.header1), // Text style
         ),
@@ -542,7 +542,7 @@ Widget registrationSegment(
                   ],
                 ),
                 const Icon(
-                  Icons.arrow_downward,
+                  Icons.arrow_drop_down_circle_rounded,
                   color: AppColors.themeLite,
                 ),
               ],
@@ -600,7 +600,7 @@ Widget registrationSegment(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "Have an account ?",
+              "Have an account? ",
               style: AppTextStyles.linkText,
             ),
             GestureDetector(
