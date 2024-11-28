@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:maca/connection/api_connection.dart';
@@ -331,8 +329,8 @@ Widget registrationSegment(
           margin: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
               color: indicatorColor,
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              boxShadow: [AppBoxShadow.defaultBoxShadow]),
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+              boxShadow: const [AppBoxShadow.defaultBoxShadow]),
         ),
         const SizedBox(
           width: 10,

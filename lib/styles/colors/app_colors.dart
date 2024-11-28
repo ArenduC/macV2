@@ -6,6 +6,7 @@ class AppColors {
   static const Color header1 = Color.fromRGBO(255, 255, 255, 1);
   static const Color textHint = Color.fromRGBO(129, 133, 188, 1);
   static const Color themeWhite = Color.fromRGBO(255, 255, 255, 1);
+  static const Color themeGray = Color.fromRGBO(211, 211, 211, 1);
 
   AppColors(da);
 }

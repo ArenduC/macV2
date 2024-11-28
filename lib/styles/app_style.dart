@@ -87,6 +87,54 @@ class AppInputStyles {
   }
 }
 
+class AppDateStyles {
+  static InputDecoration textFieldDecoration({
+    required String hintText,
+    IconData? prefixIcon,
+    IconData? suffixIcon,
+  }) {
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: const TextStyle(
+        color: AppColors.themeLite,
+        fontSize: 13.0,
+      ),
+      filled: true,
+      fillColor: AppColors.themeGray,
+
+      prefixIcon: prefixIcon != null
+          ? Icon(prefixIcon, color: AppColors.theme)
+          : null, // Optional prefix icon
+      suffixIcon: suffixIcon != null
+          ? Icon(suffixIcon, color: AppColors.theme)
+          : null, // Optional suffix icon
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0), // Rounded corners
+        borderSide: const BorderSide(
+          color: AppColors.themeGray,
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: const BorderSide(
+          color: AppColors.themeGray,
+          width: 2.0,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: const BorderSide(
+          color: AppColors.themeWhite,
+          width: 1.0,
+        ),
+      ),
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 7.0, horizontal: 12.0),
+    );
+  }
+}
+
 class AppButtonStyles {
   // Custom ElevatedButton style
   static ButtonStyle elevatedButtonStyle({
