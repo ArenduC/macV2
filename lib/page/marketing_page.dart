@@ -107,8 +107,7 @@ Widget slotSegment(type, TextEditingController dateControler,
             SlotSwitch(
               initialStatus: false,
               onStatusChanged: (status) {
-                print(
-                    "Switch status: $status"); // Callback receives updated status
+                macaPrint(status); // Callback receives updated status
               },
             )
           ],
@@ -163,7 +162,7 @@ class _SlotSwitchState extends State<SlotSwitch> {
               color: const Color.fromARGB(129, 0, 0, 0).withOpacity(0.2),
               blurRadius: 2,
               spreadRadius: 0,
-              offset: Offset(0, 1),
+              offset: const Offset(0, 1),
             ),
           ], // Replace with AppColors.themeGray if available
         ),
@@ -213,10 +212,11 @@ class _SlotSwitchState extends State<SlotSwitch> {
                           : AppColors.themeLite,
                       boxShadow: [
                         BoxShadow(
-                          color: Color.fromARGB(129, 0, 0, 0).withOpacity(0.2),
+                          color: const Color.fromARGB(129, 0, 0, 0)
+                              .withOpacity(0.2),
                           blurRadius: 2,
                           spreadRadius: 0,
-                          offset: Offset(0, 1),
+                          offset: const Offset(0, 1),
                         ),
                       ]),
                   child: Icon(
