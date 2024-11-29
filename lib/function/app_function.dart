@@ -2,6 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+macaPrint(dynamic data, [dynamic message]) {
+  if (kDebugMode) {
+    print("  ${message ?? "macaPrint:"}  $data");
+  }
+}
+
 class AppFunction {
   macaPrint(dynamic data, [dynamic message]) {
     if (kDebugMode) {
