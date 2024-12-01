@@ -1,11 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:maca/store/local_store.dart';
 
 macaPrint(dynamic data, [dynamic message]) {
   if (kDebugMode) {
     print("  ${message ?? "macaPrint:"}  $data");
   }
+}
+
+Future getLocalStorageData(dynamic key) async {
+  dynamic data = await LocalStore().getStore(key);
+  macaPrint(data, "Local store data $key :");
+  return data[0];
 }
 
 class AppFunction {

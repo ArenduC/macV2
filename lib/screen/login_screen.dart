@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? bedNo = "";
 
   //For dynamic variable
-  dynamic occupiedBedlist = [];
+  dynamic occupiedBedList = [];
   dynamic availableBet = [];
   dynamic bedActive = {
     "user_bed": null,
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void handleRgistration(dynamic data) {
+  void handleRegistration(dynamic data) {
     AppFunction().macaPrint(data);
   }
 
@@ -103,10 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<dynamic> getBedAvailable() async {
     dynamic response = await ApiService()
         .apiCallService(endpoint: GetUrl().bedList, method: "GET");
-    occupiedBedlist =
+    occupiedBedList =
         AppFunction().macaApiResponsePrintAndGet(response, "data");
     availableBet =
-        AppFunction().createBedStatusList(occupiedBedlist, Appdata().allBeds);
+        AppFunction().createBedStatusList(occupiedBedList, Appdata().allBeds);
   }
 
   @override
@@ -199,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           bedNoController,
                           phoneNoController,
                           bedSelectHandle,
-                          handleRgistration)),
+                          handleRegistration)),
             ),
           )
           // Add other widgets here as needed
@@ -305,7 +305,7 @@ Widget registrationSegment(
     BuildContext context,
     VoidCallback pageSwitch,
     dynamic bedNo,
-    dynamic bednumbers,
+    dynamic bedNumbers,
     TextEditingController emailController,
     TextEditingController passwordController,
     TextEditingController userNameController,
@@ -314,9 +314,7 @@ Widget registrationSegment(
     Function(
       dynamic selectedBedNo,
     ) bedSelectHandle,
-    Function(dynamic data) handleRgistration) {
-  dynamic bedNumbers = bednumbers;
-
+    Function(dynamic data) handleRegistration) {
   Widget circularIndicator(
     dynamic title,
     Color indicatorColor,
@@ -583,7 +581,7 @@ Widget registrationSegment(
               "password": passwordController.text
             };
             // Add your button's functionality here
-            handleRgistration(regJson);
+            handleRegistration(regJson);
           },
           style: AppButtonStyles.elevatedButtonStyle(),
           child: const Text(

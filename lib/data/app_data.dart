@@ -14,3 +14,9 @@ class Appdata {
     {"user_bed": "BED12", "id": 12},
   ];
 }
+
+class ApiType {
+  String post = "POST";
+  String get = "GET";
+  String put = "PUT";
+}

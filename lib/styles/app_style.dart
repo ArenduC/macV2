@@ -15,7 +15,7 @@ class AppTextStyles {
     color: AppColors.theme,
   );
 
-  static const TextStyle inputLable = TextStyle(
+  static const TextStyle inputLabel = TextStyle(
     fontSize: 20.0,
     fontWeight: FontWeight.w600,
     color: AppColors.theme,

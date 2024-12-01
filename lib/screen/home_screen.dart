@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:maca/page/landing_page.dart';
 import 'package:maca/page/marketing_page.dart';
+import 'package:maca/provider/notification_provider.dart';
+import 'package:maca/styles/colors/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,29 +39,43 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.theme,
         onPressed: () {
-          setState(() {});
+          context.read<Counter>().increment();
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: AppColors.themeWhite,
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: const BoxDecoration(
+            color: AppColors.theme,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: BottomNavigationBar(
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(0, 40, 46, 137),
+          unselectedItemColor: AppColors.themeLite,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Activity',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'School',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: AppColors.themeWhite,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

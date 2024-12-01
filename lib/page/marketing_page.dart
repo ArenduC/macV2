@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:maca/connection/api_connection.dart';
+import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/provider/notification_provider.dart';
+import 'package:maca/service/api_service.dart';
+import 'package:maca/service/app_messaging_service.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class MarketingPage extends StatefulWidget {
   const MarketingPage({super.key});
@@ -11,10 +17,36 @@ class MarketingPage extends StatefulWidget {
 }
 
 class _MarketingPageState extends State<MarketingPage> {
-  final TextEditingController startDateControler = TextEditingController();
-  final TextEditingController endDateControler = TextEditingController();
+  //for text controller
+  final TextEditingController startDateController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
 
-  Future<void> datePickerHandle(dynamic type) async {
+  // for dynamic variable
+  dynamic shift;
+  dynamic startShift = false;
+  dynamic endShift = false;
+  dynamic loginData;
+
+  @override
+  void initState() {
+    super.initState();
+    getDataFromLocalStorage();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<Counter>(context, listen: false).notifyListeners();
+      }
+    });
+  }
+
+  //for fetching local stor data
+  Future getDataFromLocalStorage() async {
+    loginData = await getLocalStorageData("loginDetails");
+    macaPrint(loginData);
+  }
+
+  // this method for getting date from user input
+  Future<void> datePickerHandle(dynamic type, dynamic selectedShift) async {
     AppFunction().macaPrint(type);
     DateTime? datePicker = await showDatePicker(
         context: context,
@@ -24,49 +56,110 @@ class _MarketingPageState extends State<MarketingPage> {
     if (datePicker != null) {
       switch (type) {
         case "Start Date":
-          startDateControler.text = datePicker.toString().split(" ")[0];
+          startDateController.text = datePicker.toString().split(" ")[0];
           break;
         case "End Date":
-          endDateControler.text = datePicker.toString().split(" ")[0];
+          endDateController.text = datePicker.toString().split(" ")[0];
           break;
       }
     }
   }
 
+  Future<void> selectedShift(dynamic type, dynamic selectedShift) async {
+    macaPrint(selectedShift, "selectedShift");
+    setState(() {
+      shift = selectedShift;
+      if (type != null) {
+        switch (type) {
+          case "Start Date":
+            startShift = selectedShift;
+            break;
+          case "End Date":
+            endShift = selectedShift;
+            break;
+        }
+      }
+    });
+  }
+
+  Future<dynamic> marketingStatusUpdate() async {
+    dynamic jsonBody = {
+      "borderId": loginData["id"],
+      "startDate": startDateController.text,
+      "endDate": endDateController.text,
+      "startShift": startShift,
+      "endShift": endShift
+    };
+    macaPrint(jsonBody);
+    dynamic response = await ApiService().apiCallService(
+        endpoint: PostUrl().marketingStatusUpdate,
+        method: ApiType().post,
+        body: jsonBody);
+    AppFunction().macaApiResponsePrintAndGet(response);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        title: const Text('Marketing'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            slotSegment("Start Date", startDateControler, datePickerHandle),
-            const SizedBox(height: 20),
-            slotSegment("End Date", endDateControler, datePickerHandle)
+    return Consumer<Counter>(builder: (context, countProvider, _) {
+      print("notificationCount ${countProvider.count}");
+      return Scaffold(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        appBar: AppBar(
+          title: const Text('Marketing'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.add_alert),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
           ],
         ),
-      ),
-    );
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              slotSegment("Start Date", startDateController, shift,
+                  datePickerHandle, selectedShift),
+              const SizedBox(height: 20),
+              slotSegment("End Date", endDateController, shift,
+                  datePickerHandle, selectedShift),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () {
+                  marketingStatusUpdate();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 40,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.themeLite,
+                  ),
+                  child: const Text(
+                    "Add shift",
+                    style: TextStyle(color: AppColors.themeWhite),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
 
 @override
-Widget slotSegment(type, TextEditingController dateControler,
-    Function(dynamic data) datePickerHandle) {
+Widget slotSegment(
+    type,
+    TextEditingController dateController,
+    dynamic shift,
+    Function(dynamic data, dynamic selectedShift) datePickerHandle,
+    Function(dynamic data, dynamic selectedShift) selectedShift) {
   return (Container(
     padding: const EdgeInsets.all(8),
     decoration: const BoxDecoration(
@@ -78,7 +171,7 @@ Widget slotSegment(type, TextEditingController dateControler,
       children: [
         Text(
           type == "Start Date" ? "From" : "To",
-          style: AppTextStyles.inputLable,
+          style: AppTextStyles.inputLabel,
         ),
         const SizedBox(
           height: 8,
@@ -90,14 +183,14 @@ Widget slotSegment(type, TextEditingController dateControler,
             Expanded(
               child: TextField(
                 readOnly: true,
-                controller: dateControler,
+                controller: dateController,
                 decoration: AppDateStyles.textFieldDecoration(
                   hintText: 'Enter $type',
                   prefixIcon: Icons.calendar_month_rounded,
                 ),
                 style: const TextStyle(color: AppColors.themeLite),
                 onTap: () {
-                  datePickerHandle(type);
+                  datePickerHandle(type, "");
                 }, // Text style
               ),
             ),
@@ -107,7 +200,9 @@ Widget slotSegment(type, TextEditingController dateControler,
             SlotSwitch(
               initialStatus: false,
               onStatusChanged: (status) {
-                macaPrint(status); // Callback receives updated status
+                macaPrint(status);
+                selectedShift(type, status);
+                // Callback receives updated status
               },
             )
           ],
@@ -121,10 +216,10 @@ class SlotSwitch extends StatefulWidget {
   final bool initialStatus; // Initial data
   final ValueChanged<bool> onStatusChanged;
   const SlotSwitch({
-    Key? key,
+    super.key,
     required this.initialStatus,
     required this.onStatusChanged,
-  }) : super(key: key);
+  });
 
   @override
   _SlotSwitchState createState() => _SlotSwitchState();

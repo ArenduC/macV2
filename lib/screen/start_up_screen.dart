@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:maca/auth/maca_auth.dart';
 import 'package:maca/screen/home_screen.dart';
 import 'package:maca/screen/login_screen.dart';
+import 'package:maca/service/app_messaging_service.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
 class StartUpScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _StartUpScreenState extends State<StartUpScreen> {
   @override
   void initState() {
     super.initState();
+    appMessagingService(context);
 
     Timer(const Duration(seconds: 4), () async {
       bool isLoggedIn = await MacaAuth().loginCheking();
