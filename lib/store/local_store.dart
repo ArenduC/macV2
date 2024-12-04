@@ -6,10 +6,12 @@ class ListOfStoreKey {
   static const String loginDetails = "loginDetails";
   static const String borderDetails = "borderDetails";
   static const String loginStatus = "loginStatus";
+  static const String fcmToken = "fcmToken";
   static const Map<String, String> allKeys = {
     "loginDetails": loginDetails,
     "borderDetails": borderDetails,
     "loginStatus": loginStatus,
+    "fcmToken": fcmToken,
   };
 }
 

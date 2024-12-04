@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //For dynamic variable
   dynamic occupiedBedList = [];
   dynamic availableBet = [];
+  dynamic fcmToken;
   dynamic bedActive = {
     "user_bed": null,
     "id": null,
@@ -48,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     // Add a listener to the focus node
+    getFcmToken();
     getBedAvailable();
     focusNode.addListener(() {
       setState(() {
@@ -56,8 +58,22 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  getFcmToken() async {
+    String getFcmTokenFromLocal =
+        await getLocalStorageData(ListOfStoreKey.fcmToken);
+    setState(() {
+      fcmToken = getFcmTokenFromLocal.toString();
+    });
+    macaPrint(fcmToken, "loginFcm");
+  }
+
   Future<dynamic> handleLogin(String username, String password) async {
-    dynamic jsonObject = {"email": username, "password": password};
+    dynamic jsonObject = {
+      "email": username,
+      "password": password,
+      "accessToken": fcmToken
+    };
+    macaPrint(jsonObject);
     dynamic loginData;
     dynamic response = await ApiService().apiCallService(
         endpoint: PostUrl().userLogin, method: "POST", body: jsonObject);

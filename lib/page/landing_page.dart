@@ -3,8 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/screen/login_screen.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
+import 'package:maca/styles/colors/app_colors.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -49,7 +51,7 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('maca'),
+          title: const Text('Maca'),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.add_alert),
@@ -84,7 +86,7 @@ class _LandingPageState extends State<LandingPage> {
                     alignment: Alignment.centerLeft, // Align text to the left
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      user["email"],
+                      user["name"],
                       style: const TextStyle(fontSize: 16),
                     ),
                   );
@@ -92,6 +94,20 @@ class _LandingPageState extends State<LandingPage> {
                 separatorBuilder: (context, index) => const Divider(),
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              },
+              child: Container(
+                width: 100,
+                height: 40,
+                color: AppColors.themeGray,
+                child: const Text("Logout"),
+              ),
+            )
           ],
         )));
   }

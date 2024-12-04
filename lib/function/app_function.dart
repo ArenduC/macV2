@@ -1,38 +1,34 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:maca/store/local_store.dart';
 
 macaPrint(dynamic data, [dynamic message]) {
-  if (kDebugMode) {
-    print("  ${message ?? "macaPrint:"}  $data");
-  }
+  print("  ${message ?? "macaPrint:"}  $data");
 }
 
 Future getLocalStorageData(dynamic key) async {
   dynamic data = await LocalStore().getStore(key);
   macaPrint(data, "Local store data $key :");
-  return data[0];
+  return data;
 }
 
 class AppFunction {
   macaPrint(dynamic data, [dynamic message]) {
-    if (kDebugMode) {
-      print("  ${message ?? "macaPrint:"}  $data");
-    }
+    print("  ${message ?? "macaPrint:"}  $data");
   }
 
   macaApiResponsePrintAndGet(dynamic data, [dynamic extractData]) {
-    if (kDebugMode) {
-      if (data.statusCode == 200) {
-        dynamic response = jsonDecode(data.body);
-        if (extractData == "data") {
-          print("Api  response: ${response["data"]}");
-          return response["data"];
-        } else {
-          print("Api response: $response");
-          return response;
-        }
+    if (data.statusCode == 200) {
+      dynamic response = jsonDecode(data.body);
+      if (extractData == "data") {
+        print("Api  response: ${response["data"]}");
+        return response["data"];
+      } else {
+        print("Api response: $response");
+        return response;
       }
     }
   }
