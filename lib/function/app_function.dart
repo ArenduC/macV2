@@ -15,6 +15,66 @@ Future getLocalStorageData(dynamic key) async {
   return data;
 }
 
+getMarketStatus(dynamic data) {
+  switch (data) {
+    case 0:
+      return "Idle";
+    case 1:
+      return "Ongoing";
+    case 2:
+      return "Expired";
+    case 3:
+      return "Upcoming";
+    default:
+  }
+}
+
+formatCustomDate(dynamic dateTime) {
+  DateTime parsedDate = DateTime.parse(dateTime);
+  final day = parsedDate.day;
+  final daySuffix = getDaySuffix(day);
+  final month = getMonthName(parsedDate.month);
+
+  return {
+    'Day': '$day$daySuffix',
+    'Month': month,
+  };
+}
+
+String getDaySuffix(int day) {
+  if (day >= 11 && day <= 13) {
+    return 'th';
+  }
+  switch (day % 10) {
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
+  }
+}
+
+String getMonthName(int month) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  return monthNames[month - 1];
+}
+
 class AppFunction {
   macaPrint(dynamic data, [dynamic message]) {
     print("  ${message ?? "macaPrint:"}  $data");

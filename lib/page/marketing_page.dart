@@ -1,13 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
-import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
-import 'package:maca/service/app_messaging_service.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
-import 'package:provider/provider.dart';
 
 class MarketingPage extends StatefulWidget {
   const MarketingPage({super.key});
@@ -18,25 +18,14 @@ class MarketingPage extends StatefulWidget {
 
 class _MarketingPageState extends State<MarketingPage> {
   //for text controller
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
-
-  // for dynamic variable
-  dynamic shift;
-  dynamic startShift = false;
-  dynamic endShift = false;
+  dynamic marketingList = [];
   dynamic loginData;
 
   @override
   void initState() {
     super.initState();
     getDataFromLocalStorage();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        Provider.of<Counter>(context, listen: false).notifyListeners();
-      }
-    });
+    getMarketingDetails();
   }
 
   //for fetching local stor data
@@ -46,289 +35,224 @@ class _MarketingPageState extends State<MarketingPage> {
   }
 
   // this method for getting date from user input
-  Future<void> datePickerHandle(dynamic type, dynamic selectedShift) async {
-    AppFunction().macaPrint(type);
-    DateTime? datePicker = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime(2025));
-    if (datePicker != null) {
-      switch (type) {
-        case "Start Date":
-          startDateController.text = datePicker.toString().split(" ")[0];
-          break;
-        case "End Date":
-          endDateController.text = datePicker.toString().split(" ")[0];
-          break;
-      }
-    }
-  }
 
-  Future<void> selectedShift(dynamic type, dynamic selectedShift) async {
-    macaPrint(selectedShift, "selectedShift");
+  Future<dynamic> getMarketingDetails() async {
+    dynamic response = await ApiService()
+        .apiCallService(endpoint: GetUrl().marketList, method: ApiType().get);
+
     setState(() {
-      shift = selectedShift;
-      if (type != null) {
-        switch (type) {
-          case "Start Date":
-            startShift = selectedShift;
-            break;
-          case "End Date":
-            endShift = selectedShift;
-            break;
-        }
-      }
+      marketingList =
+          AppFunction().macaApiResponsePrintAndGet(response)["data"];
     });
-  }
-
-  Future<dynamic> marketingStatusUpdate() async {
-    dynamic jsonBody = {
-      "borderId": loginData["id"],
-      "startDate": startDateController.text,
-      "endDate": endDateController.text,
-      "startShift": startShift,
-      "endShift": endShift
-    };
-    macaPrint(jsonBody);
-    dynamic response = await ApiService().apiCallService(
-        endpoint: PostUrl().marketingStatusUpdate,
-        method: ApiType().post,
-        body: jsonBody);
-    AppFunction().macaApiResponsePrintAndGet(response);
+    macaPrint(marketingList, "marketingList");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Counter>(builder: (context, countProvider, _) {
-      print("notificationCount ${countProvider.count}");
-      return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        appBar: AppBar(
-          title: const Text('Marketing'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.add_alert),
-              tooltip: 'Show Snackbar',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
-              },
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              slotSegment("Start Date", startDateController, shift,
-                  datePickerHandle, selectedShift),
-              const SizedBox(height: 20),
-              slotSegment("End Date", endDateController, shift,
-                  datePickerHandle, selectedShift),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  marketingStatusUpdate();
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 40,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppColors.themeLite,
-                  ),
-                  child: const Text(
-                    "Add shift",
-                    style: TextStyle(color: AppColors.themeWhite),
-                  ),
-                ),
-              )
-            ],
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      appBar: AppBar(
+        title: const Text('Marketing'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add_alert),
+            tooltip: 'Show Snackbar',
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('This is a snackbar')));
+            },
           ),
-        ),
-      );
-    });
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: Column(children: [
+          Expanded(
+            child: ListView.separated(
+              itemCount: marketingList.length,
+              itemBuilder: (context, index) {
+                final user = marketingList[index];
+                return Container(
+                    width: double.infinity, // Make it take full width
+                    alignment: Alignment.centerLeft, // Align text to the left
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: marketingStatusView(user));
+              },
+              separatorBuilder: (context, index) => const Divider(
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
   }
 }
 
 @override
-Widget slotSegment(
-    type,
-    TextEditingController dateController,
-    dynamic shift,
-    Function(dynamic data, dynamic selectedShift) datePickerHandle,
-    Function(dynamic data, dynamic selectedShift) selectedShift) {
-  return (Container(
-    padding: const EdgeInsets.all(8),
-    decoration: const BoxDecoration(
-        boxShadow: [AppBoxShadow.defaultBoxShadow],
-        color: AppColors.themeWhite,
-        borderRadius: BorderRadius.all(Radius.circular(12))),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          type == "Start Date" ? "From" : "To",
-          style: AppTextStyles.inputLabel,
+Widget marketingStatusView(dynamic data) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      padding: const EdgeInsets.all(0),
+      decoration: const BoxDecoration(
+          boxShadow: [AppBoxShadow.defaultBoxShadow],
+          color: AppColors.themeWhite,
+          borderRadius: BorderRadius.all(Radius.circular(12))),
+      child: Stack(children: [
+        Container(
+          margin: const EdgeInsets.only(left: 20),
+          height: 10,
+          width: 35,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
+            color: AppColors.themeLite,
+          ),
         ),
-        const SizedBox(
-          height: 8,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: TextField(
-                readOnly: true,
-                controller: dateController,
-                decoration: AppDateStyles.textFieldDecoration(
-                  hintText: 'Enter $type',
-                  prefixIcon: Icons.calendar_month_rounded,
-                ),
-                style: const TextStyle(color: AppColors.themeLite),
-                onTap: () {
-                  datePickerHandle(type, "");
-                }, // Text style
-              ),
+            Container(
+                padding: const EdgeInsets.only(
+                    left: 18, top: 8, right: 8, bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/APPSVGICON/profileIcon.svg',
+                          width: 40,
+                          height: 40,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data["marketing_user"],
+                              style: AppTextStyles.header10,
+                            ),
+                            Text(
+                              getMarketStatus(data["status"]),
+                              style:
+                                  const TextStyle(color: AppColors.themeLite),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    shiftView({
+                      "startDate": data["startDate"],
+                      "endDate": data["endDate"]
+                    })
+                  ],
+                ))
+          ],
+        ),
+      ]),
+    ),
+  );
+}
+
+@override
+Widget shiftView(dynamic data) {
+  return Row(
+    children: [
+      if (data["startDate"] == null)
+        Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 80,
+            decoration: const BoxDecoration(
+              color: AppColors.themeWhite,
+              borderRadius: BorderRadius.all(Radius.circular(6)),
             ),
+            padding: const EdgeInsets.all(2),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.edit_calendar,
+                  size: 15,
+                ),
+                Text("Not selected",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w300,
+                    ))
+              ],
+            )),
+      if (data["startDate"] != null)
+        Row(
+          children: [
+            shiftCard(data["startDate"], true),
             const SizedBox(
               width: 8,
             ),
-            SlotSwitch(
-              initialStatus: false,
-              onStatusChanged: (status) {
-                macaPrint(status);
-                selectedShift(type, status);
-                // Callback receives updated status
-              },
-            )
+            shiftCard(data["endDate"], false)
           ],
         )
-      ],
-    ),
-  ));
+    ],
+  );
 }
 
-class SlotSwitch extends StatefulWidget {
-  final bool initialStatus; // Initial data
-  final ValueChanged<bool> onStatusChanged;
-  const SlotSwitch({
-    super.key,
-    required this.initialStatus,
-    required this.onStatusChanged,
-  });
-
-  @override
-  _SlotSwitchState createState() => _SlotSwitchState();
-}
-
-class _SlotSwitchState extends State<SlotSwitch> {
-  late bool switchStatus;
-
-  @override
-  void initState() {
-    super.initState();
-    switchStatus = widget.initialStatus; // Initialize with the received data
-  }
-
-  void switchState() {
-    setState(() {
-      switchStatus = !switchStatus;
-    });
-    widget.onStatusChanged(switchStatus);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.all(5),
-        height: 45,
-        width: 90,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: switchStatus ? AppColors.themeLite : AppColors.themeWhite,
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(129, 0, 0, 0).withOpacity(0.2),
-              blurRadius: 2,
-              spreadRadius: 0,
-              offset: const Offset(0, 1),
-            ),
-          ], // Replace with AppColors.themeGray if available
-        ),
-        child: Stack(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(5),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Night",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: AppColors.themeWhite),
-                  ),
-                  Text(
-                    "Day",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: AppColors.themeLite),
-                  )
-                ],
-              ),
-            ),
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              top: 0,
-              bottom: 0,
-              left: switchStatus ? 45 : 0,
-              right: switchStatus ? 0 : 45,
-              child: GestureDetector(
-                onTap: switchState,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: 45,
-                  width: 45,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: switchStatus
+@override
+Widget shiftCard(dynamic data, dynamic shiftOpen) {
+  return Container(
+    height: 50,
+    width: 80,
+    decoration: BoxDecoration(
+        color: shiftOpen ? AppColors.themeLite : AppColors.themeWhite,
+        borderRadius: const BorderRadius.all(Radius.circular(6)),
+        border: Border.all(
+            color: shiftOpen ? AppColors.themeWhite : AppColors.themeLite,
+            width: shiftOpen ? 0 : 2)),
+    padding: const EdgeInsets.all(2),
+    child: Stack(children: [
+      Positioned(
+          top: 2,
+          right: 2,
+          child: Icon(
+            shiftOpen ? Icons.nights_stay : Icons.sunny,
+            size: 15,
+            color: shiftOpen ? AppColors.themeWhite : AppColors.themeLite,
+          )),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text((formatCustomDate(data)["Day"]),
+                  style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: shiftOpen
                           ? AppColors.themeWhite
-                          : AppColors.themeLite,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(129, 0, 0, 0)
-                              .withOpacity(0.2),
-                          blurRadius: 2,
-                          spreadRadius: 0,
-                          offset: const Offset(0, 1),
-                        ),
-                      ]),
-                  child: Icon(
-                    switchStatus ? Icons.nightlight : Icons.sunny,
-                    color: switchStatus
-                        ? AppColors.themeLite
-                        : AppColors.themeWhite,
-                  ),
-                ),
+                          : AppColors.themeLite)),
+              const SizedBox(
+                width: 5,
               ),
-            ),
-          ],
-        ),
+              Text(
+                (formatCustomDate(data)["Month"]),
+                style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w300,
+                    color:
+                        shiftOpen ? AppColors.themeWhite : AppColors.themeLite),
+              )
+            ],
+          ),
+        ],
       ),
-      onTap: () {
-        switchState();
-      },
-    );
-  }
+    ]),
+  );
 }

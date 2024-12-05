@@ -1,4 +1,4 @@
-const basUrl = "http://192.168.2.2:3000/maca/";
+const basUrl = "http://192.168.2.6:3000/maca/";
 
 class PostUrl {
   String borderList = "${basUrl}v1/borderlist";
@@ -8,4 +8,5 @@ class PostUrl {
 
 class GetUrl {
   String bedList = "${basUrl}v1/bed_available";
+  String marketList = "${basUrl}v1/get_marketing_status";
 }
