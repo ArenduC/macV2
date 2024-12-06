@@ -74,11 +74,12 @@ class _MarketingPageState extends State<MarketingPage> {
                 return Container(
                     width: double.infinity, // Make it take full width
                     alignment: Alignment.centerLeft, // Align text to the left
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 0),
                     child: marketingStatusView(user));
               },
-              separatorBuilder: (context, index) => const Divider(
-                color: Colors.transparent,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 4,
               ),
             ),
           ),
@@ -90,6 +91,7 @@ class _MarketingPageState extends State<MarketingPage> {
 
 @override
 Widget marketingStatusView(dynamic data) {
+  bool status = data["status"] == 3 ? false : true;
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
@@ -103,11 +105,11 @@ Widget marketingStatusView(dynamic data) {
           margin: const EdgeInsets.only(left: 20),
           height: 10,
           width: 35,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20)),
-            color: AppColors.themeLite,
+            color: getMarketStatusColor(data["status"]),
           ),
         ),
         Column(
@@ -125,6 +127,12 @@ Widget marketingStatusView(dynamic data) {
                           'assets/APPSVGICON/profileIcon.svg',
                           width: 40,
                           height: 40,
+                          colorFilter: status
+                              ? const ColorFilter.mode(
+                                  AppColors.themeLite, BlendMode.dst)
+                              : const ColorFilter.mode(
+                                  Color.fromARGB(108, 217, 217, 217),
+                                  BlendMode.dstIn),
                         ),
                         const SizedBox(
                           width: 5,
@@ -134,12 +142,21 @@ Widget marketingStatusView(dynamic data) {
                           children: [
                             Text(
                               data["marketing_user"],
-                              style: AppTextStyles.header10,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600,
+                                color: status
+                                    ? AppColors.theme
+                                    : AppColors.completed,
+                              ),
                             ),
                             Text(
                               getMarketStatus(data["status"]),
-                              style:
-                                  const TextStyle(color: AppColors.themeLite),
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: status
+                                      ? AppColors.themeLite
+                                      : AppColors.completed),
                             )
                           ],
                         ),
@@ -147,7 +164,10 @@ Widget marketingStatusView(dynamic data) {
                     ),
                     shiftView({
                       "startDate": data["startDate"],
-                      "endDate": data["endDate"]
+                      "endDate": data["endDate"],
+                      "startShift": data["startShift"],
+                      "endShift": data["endShift"],
+                      "active": status,
                     })
                   ],
                 ))
@@ -160,6 +180,7 @@ Widget marketingStatusView(dynamic data) {
 
 @override
 Widget shiftView(dynamic data) {
+  bool status = data["active"];
   return Row(
     children: [
       if (data["startDate"] == null)
@@ -179,22 +200,28 @@ Widget shiftView(dynamic data) {
                 Icon(
                   Icons.edit_calendar,
                   size: 15,
+                  color: AppColors.themeLite,
                 ),
                 Text("Not selected",
                     style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w300,
-                    ))
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.themeLite))
               ],
             )),
       if (data["startDate"] != null)
         Row(
           children: [
-            shiftCard(data["startDate"], true),
+            shiftCard(
+                data["startDate"],
+                data["startShift"] == "1" ? true : false,
+                status,
+                data["startShift"]),
             const SizedBox(
               width: 8,
             ),
-            shiftCard(data["endDate"], false)
+            shiftCard(data["endDate"], data["endShift"] == "1" ? true : false,
+                status, data["endShift"])
           ],
         )
     ],
@@ -202,16 +229,25 @@ Widget shiftView(dynamic data) {
 }
 
 @override
-Widget shiftCard(dynamic data, dynamic shiftOpen) {
+Widget shiftCard(dynamic data, dynamic shiftOpen, status, dynamic value) {
+  macaPrint(value, "shiftOpen");
   return Container(
     height: 50,
     width: 80,
     decoration: BoxDecoration(
-        color: shiftOpen ? AppColors.themeLite : AppColors.themeWhite,
+        color: shiftOpen
+            ? status
+                ? AppColors.themeLite
+                : AppColors.completed
+            : AppColors.themeWhite,
         borderRadius: const BorderRadius.all(Radius.circular(6)),
         border: Border.all(
-            color: shiftOpen ? AppColors.themeWhite : AppColors.themeLite,
-            width: shiftOpen ? 0 : 2)),
+            color: shiftOpen
+                ? AppColors.themeWhite
+                : status
+                    ? AppColors.themeLite
+                    : AppColors.completed,
+            width: shiftOpen ? 0 : 1)),
     padding: const EdgeInsets.all(2),
     child: Stack(children: [
       Positioned(
@@ -220,7 +256,11 @@ Widget shiftCard(dynamic data, dynamic shiftOpen) {
           child: Icon(
             shiftOpen ? Icons.nights_stay : Icons.sunny,
             size: 15,
-            color: shiftOpen ? AppColors.themeWhite : AppColors.themeLite,
+            color: shiftOpen
+                ? AppColors.themeWhite
+                : status
+                    ? AppColors.themeLite
+                    : AppColors.completed,
           )),
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -236,7 +276,9 @@ Widget shiftCard(dynamic data, dynamic shiftOpen) {
                       fontWeight: FontWeight.w700,
                       color: shiftOpen
                           ? AppColors.themeWhite
-                          : AppColors.themeLite)),
+                          : status
+                              ? AppColors.themeLite
+                              : AppColors.completed)),
               const SizedBox(
                 width: 5,
               ),
@@ -245,8 +287,11 @@ Widget shiftCard(dynamic data, dynamic shiftOpen) {
                 style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w300,
-                    color:
-                        shiftOpen ? AppColors.themeWhite : AppColors.themeLite),
+                    color: shiftOpen
+                        ? AppColors.themeWhite
+                        : status
+                            ? AppColors.themeLite
+                            : AppColors.completed),
               )
             ],
           ),

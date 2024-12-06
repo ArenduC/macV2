@@ -100,51 +100,37 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   Widget build(BuildContext context) {
     return Consumer<Counter>(builder: (context, countProvider, _) {
       print("notificationCount ${countProvider.count}");
-      return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        appBar: AppBar(
-          title: const Text('Marketing'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.add_alert),
-              tooltip: 'Show Snackbar',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            slotSegment("Start Date", startDateController, shift,
+                datePickerHandle, selectedShift),
+            const SizedBox(height: 20),
+            slotSegment("End Date", endDateController, shift, datePickerHandle,
+                selectedShift),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                marketingStatusUpdate();
               },
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              slotSegment("Start Date", startDateController, shift,
-                  datePickerHandle, selectedShift),
-              const SizedBox(height: 20),
-              slotSegment("End Date", endDateController, shift,
-                  datePickerHandle, selectedShift),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  marketingStatusUpdate();
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 40,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppColors.themeLite,
-                  ),
-                  child: const Text(
-                    "Add shift",
-                    style: TextStyle(color: AppColors.themeWhite),
-                  ),
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.themeLite,
                 ),
-              )
-            ],
-          ),
+                child: const Text(
+                  "Add shift",
+                  style: TextStyle(color: AppColors.themeWhite),
+                ),
+              ),
+            )
+          ],
         ),
       );
     });

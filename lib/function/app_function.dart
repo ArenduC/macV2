@@ -1,9 +1,13 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
+import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:maca/page/expend_add_page.dart';
+import 'package:maca/page/marketing_add_page.dart';
 import 'package:maca/store/local_store.dart';
+import 'package:maca/styles/colors/app_colors.dart';
 
 macaPrint(dynamic data, [dynamic message]) {
   print("  ${message ?? "macaPrint:"}  $data");
@@ -22,10 +26,47 @@ getMarketStatus(dynamic data) {
     case 1:
       return "Ongoing";
     case 2:
-      return "Expired";
-    case 3:
       return "Upcoming";
+    case 3:
+      return "Completed";
     default:
+  }
+}
+
+getModalItem(dynamic data) {
+  switch (data) {
+    case 0:
+      return const ExpendAddPage();
+    case 1:
+      return const MarketingAddPage();
+    default:
+      return const MarketingAddPage();
+  }
+}
+
+Color getMarketStatusColor(dynamic data) {
+  switch (data) {
+    case 0:
+      return AppColors.idle;
+    case 1:
+      return AppColors.ongoing;
+    case 2:
+      return AppColors.upcoming;
+    case 3:
+      return AppColors.completed;
+    default:
+      return AppColors.themeGray;
+  }
+}
+
+IconData getCurrentPageIcon(dynamic data) {
+  switch (data) {
+    case 0:
+      return Icons.note_alt_rounded;
+    case 1:
+      return Icons.edit_calendar;
+    default:
+      return Icons.wine_bar_outlined;
   }
 }
 

@@ -182,8 +182,8 @@ class AppButtonStyles {
 
 class AppBoxShadow {
   static const BoxShadow defaultBoxShadow = BoxShadow(
-      color: Color.fromRGBO(0, 0, 0, 0.25),
+      color: Color.fromRGBO(0, 0, 0, 0.13),
       offset: Offset(0, 4),
-      blurRadius: 4,
+      blurRadius: 5,
       spreadRadius: 0);
 }

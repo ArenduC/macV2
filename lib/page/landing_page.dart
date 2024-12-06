@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/function/app_function.dart';
@@ -29,15 +27,10 @@ class _LandingPageState extends State<LandingPage> {
     dynamic response = await ApiService()
         .apiCallService(endpoint: PostUrl().borderList, method: "GET");
 
-    if (kDebugMode) {
-      if (response.statusCode == 200) {
-        dynamic data = jsonDecode(response.body);
-        setState(() {
-          borderListData = data["data"];
-        });
-        print("object: $borderListData");
-      }
-    }
+    setState(() {
+      borderListData =
+          AppFunction().macaApiResponsePrintAndGet(response)["data"];
+    });
   }
 
   getLoginDetails() async {

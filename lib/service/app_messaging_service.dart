@@ -34,30 +34,11 @@ appMessagingService(BuildContext context) async {
   });
 }
 
-void _handleMessage(RemoteMessage message, BuildContext context) {
-  if (!context.mounted) {
-    macaPrint("Context is no longer mounted, skipping...");
-    return;
-  }
-
-  // Access the provider
-  final counter = Provider.of<Counter>(context, listen: false);
-
-  if (message.notification != null) {
-    macaPrint(message);
-
-    // Increment the counter (this automatically notifies listeners)
-    counter.increment();
-  }
-}
-
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
 }
 
 class NotificationHandler {

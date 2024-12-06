@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:maca/function/app_function.dart';
 import 'package:maca/page/landing_page.dart';
 import 'package:maca/page/marketing_page.dart';
-import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/styles/colors/app_colors.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,22 +30,60 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedIndex = index;
     });
+
+    macaPrint(_selectedIndex, "currentIndex");
+  }
+
+  void showBedSelectionModal(dynamic value) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        isScrollControlled: true, // Allows the modal to take more space
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20)), // Optional rounded corners
+        ),
+        builder: (context) {
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(), // Dismiss keyboard
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height,
+                ),
+                child: getModalItem(value),
+              ),
+            ),
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.theme,
         onPressed: () {
-          context.read<Counter>().increment();
+          showBedSelectionModal(_selectedIndex);
         },
-        child: const Icon(
-          Icons.add,
-          color: AppColors.themeWhite,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300), // Animation duration
+          transitionBuilder: (child, animation) {
+            return ScaleTransition(scale: animation, child: child);
+          },
+          child: Icon(
+            getCurrentPageIcon(_selectedIndex),
+            key: ValueKey<int>(
+                _selectedIndex), // Unique key for AnimatedSwitcher
+            color: AppColors.themeWhite,
+          ),
         ),
       ),
       bottomNavigationBar: Container(
