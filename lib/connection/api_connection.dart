@@ -5,6 +5,7 @@ class PostUrl {
   String userLogin = "${basUrl}v1/user_login";
   String marketingStatusUpdate = "${basUrl}v1/set_marketing_shift";
   String addExpense = "${basUrl}v1/add_expense";
+  String individualMarketStatus = "${basUrl}v1/get_individual_marketing_status";
 }
 
 class GetUrl {

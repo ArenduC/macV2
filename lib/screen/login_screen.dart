@@ -92,16 +92,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void handleRegistration(dynamic data) {
-    AppFunction().macaPrint(data);
+    macaPrint(data);
   }
 
   void bedSelectHandle(dynamic selectedBedNo) {
-    AppFunction().macaPrint(selectedBedNo);
+    macaPrint(selectedBedNo);
     setState(() {
       bedNo = selectedBedNo["user_bed"];
       bedActive = selectedBedNo;
     });
-    AppFunction().macaPrint(bedActive["user_bed"]);
+    macaPrint(bedActive["user_bed"]);
   }
 
   void pageSwitch() {

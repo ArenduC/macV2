@@ -7,11 +7,14 @@ class ListOfStoreKey {
   static const String borderDetails = "borderDetails";
   static const String loginStatus = "loginStatus";
   static const String fcmToken = "fcmToken";
+  static const String inUsMrDetails =
+      "inUsMrDetails"; //individualMarketingDetails
   static const Map<String, String> allKeys = {
     "loginDetails": loginDetails,
     "borderDetails": borderDetails,
     "loginStatus": loginStatus,
     "fcmToken": fcmToken,
+    "inUsMrDetails": inUsMrDetails,
   };
 }
 

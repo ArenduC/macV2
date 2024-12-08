@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
@@ -7,6 +6,7 @@ import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:maca/widget/app_common_widget.dart';
 import 'package:provider/provider.dart';
 
 class ExpendAddPage extends StatefulWidget {
@@ -81,12 +81,11 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
               );
             },
             child: isSuccess
-                ? Column(
-                    key: const ValueKey(
-                        'successView'), // Unique key for this child
+                ? const Column(
+                    key: ValueKey('successView'), // Unique key for this child
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
-                    children: [successView()],
+                    children: [SuccessView()],
                   )
                 : Column(
                     key: const ValueKey(

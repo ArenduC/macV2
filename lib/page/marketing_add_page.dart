@@ -6,6 +6,7 @@ import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:maca/widget/app_common_widget.dart';
 import 'package:provider/provider.dart';
 
 class MarketingAddPage extends StatefulWidget {
@@ -23,29 +24,34 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   dynamic shift;
   dynamic startShift = false;
   dynamic endShift = false;
+  dynamic viewState = 2;
   dynamic loginData;
+  dynamic marketingStatus;
 
   @override
   void initState() {
     super.initState();
     getDataFromLocalStorage();
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        Provider.of<Counter>(context, listen: false).notifyListeners();
+  //For fetching local stor data
+  Future getDataFromLocalStorage() async {
+    loginData = await getLocalStorageData("loginDetails");
+    marketingStatus = await getLocalStorageData("inUsMrDetails");
+    macaPrint(loginData);
+    macaPrint(marketingStatus);
+    setState(() {
+      if (marketingStatus["status"] != 0) {
+        viewState = 1;
+      } else {
+        viewState = 2;
       }
     });
   }
 
-  //for fetching local stor data
-  Future getDataFromLocalStorage() async {
-    loginData = await getLocalStorageData("loginDetails");
-    macaPrint(loginData);
-  }
-
-  // this method for getting date from user input
+  // This method for getting date from user input
   Future<void> datePickerHandle(dynamic type, dynamic selectedShift) async {
-    AppFunction().macaPrint(type);
+    macaPrint(type);
     DateTime? datePicker = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -63,6 +69,9 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
     }
   }
 
+  /* This for marketing shift selection 
+   1. It contains two option like "Start Date" and "End Date"
+*/
   Future<void> selectedShift(dynamic type, dynamic selectedShift) async {
     macaPrint(selectedShift, "selectedShift");
     setState(() {
@@ -80,6 +89,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
     });
   }
 
+  // This is for updating marketing status individually
   Future<dynamic> marketingStatusUpdate() async {
     dynamic jsonBody = {
       "borderId": loginData[0]["id"],
@@ -93,48 +103,99 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
         endpoint: PostUrl().marketingStatusUpdate,
         method: ApiType().post,
         body: jsonBody);
+    dynamic data = AppFunction().macaApiResponsePrintAndGet(response);
+    setState(() {
+      if (data["isSuccess"] == true) {
+        viewState = 0;
+      }
+    });
+    individualMarketStatusUpdate(loginData[0]["id"]);
+  }
+
+  Future<dynamic> individualMarketStatusUpdate(dynamic data) async {
+    dynamic jsonBody = {"user_id": data};
+    dynamic response = await ApiService().apiCallService(
+        endpoint: PostUrl().individualMarketStatus,
+        method: ApiType().post,
+        body: jsonBody);
     AppFunction().macaApiResponsePrintAndGet(response);
+  }
+
+  /* This is for control the view on the basis of condition 
+   1. Case 0 for after successfully submit the updated data in individual segment
+   2. Case 1 if the user have already booked its slot then it will show the selected data
+   3. Case default it will show the input field for the booking slot
+*/
+  getViewController(dynamic data) {
+    macaPrint(data);
+    switch (data) {
+      case 0:
+        return const SuccessView();
+      case 1:
+        return marketDetailsView(marketingStatus);
+      default:
+        return inputSegment(startDateController, endDateController, shift,
+            datePickerHandle, selectedShift, marketingStatusUpdate);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<Counter>(builder: (context, countProvider, _) {
-      print("notificationCount ${countProvider.count}");
+      macaPrint("notificationCount ${countProvider.count}");
       return Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            slotSegment("Start Date", startDateController, shift,
-                datePickerHandle, selectedShift),
-            const SizedBox(height: 20),
-            slotSegment("End Date", endDateController, shift, datePickerHandle,
-                selectedShift),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                marketingStatusUpdate();
-              },
-              child: Container(
-                alignment: Alignment.center,
-                height: 40,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColors.themeLite,
-                ),
-                child: const Text(
-                  "Add shift",
-                  style: TextStyle(color: AppColors.themeWhite),
-                ),
-              ),
-            )
-          ],
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300), // Animation duration
+          transitionBuilder: (child, animation) {
+            return ScaleTransition(scale: animation, child: child);
+          },
+          child: getViewController(viewState),
+          key: ValueKey<int>(viewState), // Unique key for AnimatedSwitcher
         ),
       );
     });
   }
+}
+
+@override
+Widget inputSegment(
+    TextEditingController startDateController,
+    TextEditingController endDateController,
+    dynamic shift,
+    Function(dynamic data, dynamic selectedShift) datePickerHandle,
+    Function(dynamic data, dynamic selectedShift) selectedShift,
+    Function marketingStatusUpdate) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      slotSegment("Start Date", startDateController, shift, datePickerHandle,
+          selectedShift),
+      const SizedBox(height: 20),
+      slotSegment("End Date", endDateController, shift, datePickerHandle,
+          selectedShift),
+      const SizedBox(height: 20),
+      GestureDetector(
+        onTap: () {
+          marketingStatusUpdate();
+        },
+        child: Container(
+          alignment: Alignment.center,
+          height: 40,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: AppColors.themeLite,
+          ),
+          child: const Text(
+            "Add shift",
+            style: TextStyle(color: AppColors.themeWhite),
+          ),
+        ),
+      )
+    ],
+  );
 }
 
 @override
@@ -315,4 +376,15 @@ class _SlotSwitchState extends State<SlotSwitch> {
       },
     );
   }
+}
+
+@override
+Widget marketDetailsView(dynamic data) {
+  return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [Text(getMarketStatus(data["status"]))],
+      ));
 }

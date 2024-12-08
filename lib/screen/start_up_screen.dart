@@ -24,7 +24,7 @@ class _StartUpScreenState extends State<StartUpScreen> {
     appMessagingService(context);
 
     Timer(const Duration(seconds: 4), () async {
-      bool isLoggedIn = await MacaAuth().loginCheking();
+      bool isLoggedIn = await MacaAuth().loginChecking();
 
       Navigator.pushReplacement(
         context,

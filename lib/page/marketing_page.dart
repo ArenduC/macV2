@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/svg.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/service/api_service.dart';
+import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
@@ -19,6 +19,7 @@ class _MarketingPageState extends State<MarketingPage> {
   //for text controller
   dynamic marketingList = [];
   dynamic loginData;
+  dynamic userMarketingDetails;
 
   @override
   void initState() {
@@ -43,6 +44,16 @@ class _MarketingPageState extends State<MarketingPage> {
       marketingList =
           AppFunction().macaApiResponsePrintAndGet(response)["data"];
     });
+    for (var data in marketingList) {
+      if (data["user_id"] == loginData[0]["id"]) {
+        setState(() {
+          userMarketingDetails = data;
+        });
+        break; // Stop the loop after finding the match
+      }
+    }
+    LocalStore().setStore(ListOfStoreKey.inUsMrDetails, userMarketingDetails);
+    macaPrint(userMarketingDetails, "userMarketingDetails");
     macaPrint(marketingList, "marketingList");
   }
 

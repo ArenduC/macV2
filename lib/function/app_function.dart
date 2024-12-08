@@ -9,16 +9,19 @@ import 'package:maca/page/marketing_add_page.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
+// This function is to print data for the whole project
 macaPrint(dynamic data, [dynamic message]) {
   print("  ${message ?? "macaPrint:"}  $data");
 }
 
+// For fetching data from local storage using key
 Future getLocalStorageData(dynamic key) async {
   dynamic data = await LocalStore().getStore(key);
   macaPrint(data, "Local store data $key :");
   return data;
 }
 
+// To get the booking status
 getMarketStatus(dynamic data) {
   switch (data) {
     case 0:
@@ -33,6 +36,7 @@ getMarketStatus(dynamic data) {
   }
 }
 
+// This is for showing modal based on screen
 getModalItem(dynamic data) {
   switch (data) {
     case 0:
@@ -44,6 +48,7 @@ getModalItem(dynamic data) {
   }
 }
 
+// It is used for fetching booking status color
 Color getMarketStatusColor(dynamic data) {
   switch (data) {
     case 0:
@@ -117,10 +122,6 @@ String getMonthName(int month) {
 }
 
 class AppFunction {
-  macaPrint(dynamic data, [dynamic message]) {
-    print("  ${message ?? "macaPrint:"}  $data");
-  }
-
   macaApiResponsePrintAndGet(dynamic data, [dynamic extractData]) {
     if (data.statusCode == 200) {
       dynamic response = jsonDecode(data.body);
