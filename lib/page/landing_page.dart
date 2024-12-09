@@ -66,6 +66,10 @@ class _LandingPageState extends State<LandingPage> {
                 CurrentManagerView(
                   data: "data",
                 ),
+                SizedBox(
+                  height: 16,
+                ),
+                ExpenditureTiles()
               ],
             )));
   }

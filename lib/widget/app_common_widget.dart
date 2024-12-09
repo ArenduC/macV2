@@ -123,3 +123,67 @@ class _CurrentManagerViewState extends State<CurrentManagerView> {
         ]));
   }
 }
+
+class ExpenditureTiles extends StatefulWidget {
+  const ExpenditureTiles({super.key});
+
+  @override
+  State<ExpenditureTiles> createState() => _ExpenditureTilesState();
+}
+
+class _ExpenditureTilesState extends State<ExpenditureTiles> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(
+                    right: 8), // Add some spacing around containers
+                decoration: const BoxDecoration(
+                  boxShadow: [AppBoxShadow.defaultBoxShadow],
+                  color: AppColors.themeWhite,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.money),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text("Expenditure"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(
+                    left: 8.0), // Add some spacing around containers
+                decoration: const BoxDecoration(
+                  boxShadow: [AppBoxShadow.defaultBoxShadow],
+                  color: AppColors.themeWhite,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text("Revenue"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
