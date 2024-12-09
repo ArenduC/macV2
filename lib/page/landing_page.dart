@@ -5,6 +5,7 @@ import 'package:maca/screen/login_screen.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:maca/widget/app_common_widget.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -56,52 +57,16 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ],
         ),
-        body: Center(
+        body: const Padding(
+            padding: EdgeInsets.all(16),
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Border list"),
-            GestureDetector(
-              onTap: () {
-                borderList();
-              },
-              child: const Text("refresh"),
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemCount: borderListData.length,
-                itemBuilder: (context, index) {
-                  final user = borderListData[index];
-                  return Container(
-                    height: 50,
-                    width: double.infinity, // Make it take full width
-                    alignment: Alignment.centerLeft, // Align text to the left
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      user["name"],
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
-              },
-              child: Container(
-                width: 100,
-                height: 40,
-                color: AppColors.themeGray,
-                child: const Text("Logout"),
-              ),
-            )
-          ],
-        )));
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CurrentManagerView(
+                  data: "data",
+                ),
+              ],
+            )));
   }
 }

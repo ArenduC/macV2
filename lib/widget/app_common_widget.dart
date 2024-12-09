@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:maca/function/app_function.dart';
+import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
 //this is for API success screen view
@@ -12,9 +15,9 @@ class SuccessView extends StatefulWidget {
 class _SuccessViewState extends State<SuccessView> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
@@ -30,8 +33,7 @@ class _SuccessViewState extends State<SuccessView> {
           style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.theme),
         )
       ],
-    ));
-    ;
+    );
   }
 }
 
@@ -48,5 +50,76 @@ class _SwitchViewState extends State<SwitchView> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
+  }
+}
+
+class CurrentManagerView extends StatefulWidget {
+  final dynamic data;
+  const CurrentManagerView({super.key, required this.data});
+
+  @override
+  State<CurrentManagerView> createState() => _CurrentManagerViewState();
+}
+
+class _CurrentManagerViewState extends State<CurrentManagerView> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(0),
+        decoration: const BoxDecoration(
+            boxShadow: [AppBoxShadow.defaultBoxShadow],
+            color: AppColors.themeWhite,
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        child: Stack(children: [
+          Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12)),
+                  color: AppColors.themeGray,
+                ),
+                child: Text(
+                  formatCustomDate((DateTime.now()).toString())["Month"],
+                  style: AppTextStyles.cardPillTextStyle,
+                ),
+              )),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/APPSVGICON/profileIcon.svg',
+                      width: 40,
+                      height: 40,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Manager",
+                          style: AppTextStyles.cardHeaderLabelStyle,
+                        ),
+                        Text(
+                          widget.data,
+                          style: AppTextStyles.cardHeader2LabelStyle,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          )
+        ]));
   }
 }

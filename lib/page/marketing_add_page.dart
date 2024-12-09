@@ -34,19 +34,20 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
     getDataFromLocalStorage();
   }
 
+  getProviderController() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<Counter>(context, listen: false).notifyListeners();
+      }
+    });
+  }
+
   //For fetching local stor data
   Future getDataFromLocalStorage() async {
     loginData = await getLocalStorageData("loginDetails");
-    marketingStatus = await getLocalStorageData("inUsMrDetails");
+    individualMarketStatusUpdate(loginData[0]["id"]);
     macaPrint(loginData);
     macaPrint(marketingStatus);
-    setState(() {
-      if (marketingStatus["status"] != 0) {
-        viewState = 1;
-      } else {
-        viewState = 2;
-      }
-    });
   }
 
   // This method for getting date from user input
@@ -104,12 +105,17 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
         method: ApiType().post,
         body: jsonBody);
     dynamic data = AppFunction().macaApiResponsePrintAndGet(response);
+
     setState(() {
       if (data["isSuccess"] == true) {
         viewState = 0;
+        context.read<WidgetUpdate>().increment();
       }
     });
-    individualMarketStatusUpdate(loginData[0]["id"]);
+
+    Future.delayed(const Duration(seconds: 2), () {
+      individualMarketStatusUpdate(loginData[0]["id"]);
+    });
   }
 
   Future<dynamic> individualMarketStatusUpdate(dynamic data) async {
@@ -118,7 +124,17 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
         endpoint: PostUrl().individualMarketStatus,
         method: ApiType().post,
         body: jsonBody);
-    AppFunction().macaApiResponsePrintAndGet(response);
+    dynamic value = AppFunction().macaApiResponsePrintAndGet(response);
+    if (mounted) {
+      setState(() {
+        marketingStatus = value["data"][0];
+        if (marketingStatus["status"] != 0) {
+          viewState = 1;
+        } else {
+          viewState = 2;
+        }
+      });
+    }
   }
 
   /* This is for control the view on the basis of condition 
@@ -141,20 +157,17 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Counter>(builder: (context, countProvider, _) {
-      macaPrint("notificationCount ${countProvider.count}");
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300), // Animation duration
-          transitionBuilder: (child, animation) {
-            return ScaleTransition(scale: animation, child: child);
-          },
-          child: getViewController(viewState),
-          key: ValueKey<int>(viewState), // Unique key for AnimatedSwitcher
-        ),
-      );
-    });
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300), // Animation duration
+        transitionBuilder: (child, animation) {
+          return ScaleTransition(scale: animation, child: child);
+        },
+        child: getViewController(viewState),
+        key: ValueKey<int>(viewState), // Unique key for AnimatedSwitcher
+      ),
+    );
   }
 }
 

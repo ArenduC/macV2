@@ -28,6 +28,9 @@ void main() async {
         ChangeNotifierProvider<Counter>(
           create: (context) => Counter(),
         ),
+        ChangeNotifierProvider<WidgetUpdate>(
+          create: (context) => WidgetUpdate(),
+        ),
       ],
       child: const MyApp(),
     ),

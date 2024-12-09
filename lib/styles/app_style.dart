@@ -51,6 +51,13 @@ class AppTextStyles {
   );
   static const TextStyle indicatorTextStyle = TextStyle(
       fontSize: 10, fontWeight: FontWeight.w400, color: AppColors.theme);
+
+  static const TextStyle cardHeaderLabelStyle = TextStyle(
+      fontSize: 15, fontWeight: FontWeight.w300, color: AppColors.theme);
+  static const TextStyle cardPillTextStyle = TextStyle(
+      fontSize: 10, fontWeight: FontWeight.w300, color: AppColors.theme);
+  static const TextStyle cardHeader2LabelStyle = TextStyle(
+      fontSize: 25, fontWeight: FontWeight.w700, color: AppColors.theme);
 }
 
 class AppInputStyles {

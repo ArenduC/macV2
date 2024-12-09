@@ -3,10 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class MarketingPage extends StatefulWidget {
   const MarketingPage({super.key});
@@ -26,6 +28,17 @@ class _MarketingPageState extends State<MarketingPage> {
     super.initState();
     getDataFromLocalStorage();
     getMarketingDetails();
+    getProviderController();
+  }
+
+  //It's for provider controller
+  getProviderController() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<WidgetUpdate>(context, listen: false);
+      provider.addListener(() {
+        getMarketingDetails(); // Call your function when provider updates
+      });
+    });
   }
 
   //for fetching local stor data
@@ -59,44 +72,46 @@ class _MarketingPageState extends State<MarketingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        title: const Text('Marketing'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Column(children: [
-          Expanded(
-            child: ListView.separated(
-              itemCount: marketingList.length,
-              itemBuilder: (context, index) {
-                final user = marketingList[index];
-                return Container(
-                    width: double.infinity, // Make it take full width
-                    alignment: Alignment.centerLeft, // Align text to the left
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 0),
-                    child: marketingStatusView(user));
+    return Consumer<WidgetUpdate>(builder: (context, countProvider, _) {
+      return Scaffold(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        appBar: AppBar(
+          title: const Text('Marketing'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.add_alert),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
               },
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 4,
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Column(children: [
+            Expanded(
+              child: ListView.separated(
+                itemCount: marketingList.length,
+                itemBuilder: (context, index) {
+                  final user = marketingList[index];
+                  return Container(
+                      width: double.infinity, // Make it take full width
+                      alignment: Alignment.centerLeft, // Align text to the left
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 0),
+                      child: marketingStatusView(user));
+                },
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 4,
+                ),
               ),
             ),
-          ),
-        ]),
-      ),
-    );
+          ]),
+        ),
+      );
+    });
   }
 }
 
