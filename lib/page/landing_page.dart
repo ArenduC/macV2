@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/package/m_column_graph.dart';
 import 'package:maca/screen/login_screen.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
@@ -43,6 +44,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: AppColors.themeWhite,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text('Maca'),
@@ -64,12 +66,16 @@ class _LandingPageState extends State<LandingPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CurrentManagerView(
-                  data: "data",
+                  data: "Sugata Samanta",
                 ),
                 SizedBox(
                   height: 16,
                 ),
-                ExpenditureTiles()
+                ExpenditureTiles(),
+                SizedBox(
+                  height: 16,
+                ),
+                MColumnGraph(data: "data"),
               ],
             )));
   }

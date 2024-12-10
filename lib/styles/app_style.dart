@@ -21,9 +21,20 @@ class AppTextStyles {
     color: AppColors.theme,
   );
 
+  static const TextStyle cardLabel1 = TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w800,
+    color: AppColors.theme,
+  );
+
   static const TextStyle header10 = TextStyle(
     fontSize: 12.0,
     fontWeight: FontWeight.w600,
+    color: AppColors.theme,
+  );
+  static const TextStyle header11 = TextStyle(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w300,
     color: AppColors.theme,
   );
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/app_style.dart';
@@ -104,10 +105,12 @@ class _CurrentManagerViewState extends State<CurrentManagerView> {
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
+                        Text(
                           "Manager",
-                          style: AppTextStyles.cardHeaderLabelStyle,
+                          style: AppTextStyles.cardHeaderLabelStyle
+                              .copyWith(height: 0),
                         ),
                         Text(
                           widget.data,
@@ -142,20 +145,50 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
           children: [
             Expanded(
               child: Container(
-                margin: const EdgeInsets.only(
-                    right: 8), // Add some spacing around containers
+                margin: const EdgeInsets.only(right: 8),
+                // Add some spacing around containers
+                padding: const EdgeInsets.all(8),
                 decoration: const BoxDecoration(
                   boxShadow: [AppBoxShadow.defaultBoxShadow],
                   color: AppColors.themeWhite,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.money),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text("Expenditure"),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            border:
+                                Border.all(width: 1, color: AppColors.theme),
+                          ),
+                          child: const Icon(
+                            Icons.supervisor_account_rounded,
+                            color: AppColors.theme,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "₹ 2540",
+                              style:
+                                  AppTextStyles.cardLabel1.copyWith(height: 0),
+                            ),
+                            const Text(
+                              "Expenditure",
+                              style: AppTextStyles.header11,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -163,19 +196,47 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
             ),
             Expanded(
               child: Container(
-                margin: const EdgeInsets.only(
-                    left: 8.0), // Add some spacing around containers
+                margin: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.all(
+                    8), // Add some spacing around containers
                 decoration: const BoxDecoration(
                   boxShadow: [AppBoxShadow.defaultBoxShadow],
                   color: AppColors.themeWhite,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text("Revenue"),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              border:
+                                  Border.all(width: 1, color: AppColors.theme)),
+                          child:
+                              const Icon(Icons.person, color: AppColors.theme),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "₹ 2540",
+                              style:
+                                  AppTextStyles.cardLabel1.copyWith(height: 0),
+                            ),
+                            const Text(
+                              "Pratick Samanta",
+                              style: AppTextStyles.header11,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
