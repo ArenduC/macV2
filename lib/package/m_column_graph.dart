@@ -68,7 +68,6 @@ class _MColumnGraphState extends State<MColumnGraph> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: columnData.map<Widget>((data) {
-                  macaPrint(data);
                   double height = ((data["value"] / maxValue) * maxHeight);
                   return AnimatedContainer(
                     duration: const Duration(microseconds: 800),

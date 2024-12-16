@@ -3,6 +3,7 @@ import 'package:maca/function/app_function.dart';
 import 'package:maca/page/landing_page.dart';
 import 'package:maca/page/marketing_page.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:maca/tabs/more.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,10 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     LandingPage(),
     MarketingPage(),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    More(),
   ];
 
   void _onItemTapped(int index) {
@@ -105,8 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Activity',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              label: 'School',
+              icon: Icon(Icons.widgets_rounded),
+              label: 'More',
             ),
           ],
           currentIndex: _selectedIndex,

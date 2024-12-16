@@ -82,8 +82,9 @@ class _MarketingPageState extends State<MarketingPage> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Show Snackbar',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    backgroundColor: Color.fromARGB(0, 40, 46, 137),
+                    content: Text('This is a snackbar')));
               },
             ),
           ],
