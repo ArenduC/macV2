@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/app_style.dart';
@@ -128,13 +127,28 @@ class _CurrentManagerViewState extends State<CurrentManagerView> {
 }
 
 class ExpenditureTiles extends StatefulWidget {
-  const ExpenditureTiles({super.key});
+  final dynamic data;
+  const ExpenditureTiles({super.key, this.data});
 
   @override
   State<ExpenditureTiles> createState() => _ExpenditureTilesState();
 }
 
 class _ExpenditureTilesState extends State<ExpenditureTiles> {
+  dynamic expenditure = [];
+  @override
+  void initState() {
+    initialization();
+    super.initState();
+  }
+
+  void initialization() {
+    setState(() {
+      expenditure = widget.data[0];
+      macaPrint(widget.data, "expenditure");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -178,7 +192,7 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "₹ 2540",
+                              "₹${expenditure["overall_current_month_total"]}",
                               style:
                                   AppTextStyles.cardLabel1.copyWith(height: 0),
                             ),
@@ -226,12 +240,12 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "₹ 2540",
+                              "₹${expenditure['total_sum']}",
                               style:
                                   AppTextStyles.cardLabel1.copyWith(height: 0),
                             ),
-                            const Text(
-                              "Pratick Samanta",
+                            Text(
+                              expenditure["marketing_user"],
                               style: AppTextStyles.header11,
                             ),
                           ],

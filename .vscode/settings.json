@@ -2,6 +2,7 @@
   "cSpell.words": [
     "allprojects",
     "APPSVGICON",
+    "AUTOINCREMENT",
     "borderlist",
     "cupertino",
     "cygpath",
@@ -22,5 +23,6 @@
     "Xdock",
     "Xjeu"
   ],
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "dart.flutterSdkPath": ".fvm/versions/3.22.1"
 }

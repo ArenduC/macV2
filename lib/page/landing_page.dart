@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:maca/common/loading_component.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/package/m_column_graph.dart';
-import 'package:maca/screen/login_screen.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
@@ -16,22 +16,31 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  dynamic borderListData = [];
+  dynamic expenditureDetails = [];
+  bool isLoading = true;
 
   @override
   void initState() {
-    super.initState();
+    initialization();
     borderList();
     getLoginDetails();
+    super.initState();
+  }
+
+  void initialization() {
+    setState(() {
+      isLoading = true;
+    });
   }
 
   Future<void> borderList() async {
-    dynamic response = await ApiService()
-        .apiCallService(endpoint: PostUrl().borderList, method: "GET");
+    dynamic response = await ApiService().apiCallService(
+        endpoint: GetUrl().currentExpenditureDetails, method: "GET");
 
     setState(() {
-      borderListData =
+      expenditureDetails =
           AppFunction().macaApiResponsePrintAndGet(response)["data"];
+      isLoading = false;
     });
   }
 
@@ -59,24 +68,26 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ],
         ),
-        body: const Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CurrentManagerView(
-                  data: "Sugata Samanta",
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                ExpenditureTiles(),
-                SizedBox(
-                  height: 16,
-                ),
-                MColumnGraph(data: "data"),
-              ],
-            )));
+        body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: isLoading
+                ? const LoadingComponent()
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CurrentManagerView(
+                        data: expenditureDetails[0]["user_type_name"],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ExpenditureTiles(data: expenditureDetails),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      MColumnGraph(data: expenditureDetails),
+                    ],
+                  )));
   }
 }

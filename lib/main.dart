@@ -20,7 +20,7 @@ void main() async {
   await Firebase.initializeApp();
   dynamic fcmToken = await FirebaseMessaging.instance.getToken();
   LocalStore().setStore(ListOfStoreKey.fcmToken, fcmToken.toString());
-  macaPrint(fcmToken, "fcmToken");
+
   runApp(
     MultiProvider(
       providers: [
