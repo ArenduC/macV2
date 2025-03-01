@@ -43,13 +43,12 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
 
   Future<dynamic> marketingStatusUpdate() async {
     dynamic jsonBody = {
-      "user_id": loginData[0]["id"],
+      "user_id": loginData[0]["user_id"],
       "item": itemController.text,
       "marketing_amount": amountController.text,
     };
     macaPrint(jsonBody);
-    dynamic response = await ApiService().apiCallService(
-        endpoint: PostUrl().addExpense, method: ApiType().post, body: jsonBody);
+    dynamic response = await ApiService().apiCallService(endpoint: PostUrl().addExpense, method: ApiType().post, body: jsonBody);
     dynamic data = AppFunction().macaApiResponsePrintAndGet(response);
     setState(() {
       isSuccess = data["isSuccess"];
@@ -70,8 +69,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
       return Padding(
           padding: const EdgeInsets.all(16.0),
           child: AnimatedSwitcher(
-            duration:
-                const Duration(milliseconds: 300), // Duration of animation
+            duration: const Duration(milliseconds: 300), // Duration of animation
             switchInCurve: Curves.easeIn, // Curve for entering widget
             switchOutCurve: Curves.easeOut, // Curve for exiting widget
             transitionBuilder: (Widget child, Animation<double> animation) {
@@ -88,13 +86,11 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
                     children: [SuccessView()],
                   )
                 : Column(
-                    key: const ValueKey(
-                        'inputFieldsView'), // Unique key for this child
+                    key: const ValueKey('inputFieldsView'), // Unique key for this child
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      slotSegment(
-                          "expense", itemController, amountController, shift),
+                      slotSegment("expense", itemController, amountController, shift),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
@@ -130,10 +126,7 @@ Widget slotSegment(
 ) {
   return (Container(
     padding: const EdgeInsets.all(8),
-    decoration: const BoxDecoration(
-        boxShadow: [AppBoxShadow.defaultBoxShadow],
-        color: AppColors.themeWhite,
-        borderRadius: BorderRadius.all(Radius.circular(12))),
+    decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

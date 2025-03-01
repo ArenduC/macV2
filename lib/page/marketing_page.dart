@@ -50,15 +50,13 @@ class _MarketingPageState extends State<MarketingPage> {
   // this method for getting date from user input
 
   Future<dynamic> getMarketingDetails() async {
-    dynamic response = await ApiService()
-        .apiCallService(endpoint: GetUrl().marketList, method: ApiType().get);
+    dynamic response = await ApiService().apiCallService(endpoint: GetUrl().marketList, method: ApiType().get);
 
     setState(() {
-      marketingList =
-          AppFunction().macaApiResponsePrintAndGet(response)["data"];
+      marketingList = AppFunction().macaApiResponsePrintAndGet(response)["data"];
     });
     for (var data in marketingList) {
-      if (data["user_id"] == loginData[0]["id"]) {
+      if (data["user_id"] == loginData[0]["user_id"]) {
         setState(() {
           userMarketingDetails = data;
         });
@@ -82,9 +80,7 @@ class _MarketingPageState extends State<MarketingPage> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Show Snackbar',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    backgroundColor: Color.fromARGB(0, 40, 46, 137),
-                    content: Text('This is a snackbar')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Color.fromARGB(0, 40, 46, 137), content: Text('This is a snackbar')));
               },
             ),
           ],
@@ -100,8 +96,7 @@ class _MarketingPageState extends State<MarketingPage> {
                   return Container(
                       width: double.infinity, // Make it take full width
                       alignment: Alignment.centerLeft, // Align text to the left
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
                       child: marketingStatusView(user));
                 },
                 separatorBuilder: (context, index) => const SizedBox(
@@ -123,19 +118,14 @@ Widget marketingStatusView(dynamic data) {
     padding: const EdgeInsets.all(8.0),
     child: Container(
       padding: const EdgeInsets.all(0),
-      decoration: const BoxDecoration(
-          boxShadow: [AppBoxShadow.defaultBoxShadow],
-          color: AppColors.themeWhite,
-          borderRadius: BorderRadius.all(Radius.circular(12))),
+      decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
       child: Stack(children: [
         Container(
           margin: const EdgeInsets.only(left: 20),
           height: 10,
           width: 35,
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
+            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
             color: getMarketStatusColor(data["status"]),
           ),
         ),
@@ -143,8 +133,7 @@ Widget marketingStatusView(dynamic data) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                padding: const EdgeInsets.only(
-                    left: 18, top: 8, right: 8, bottom: 8),
+                padding: const EdgeInsets.only(left: 18, top: 8, right: 8, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -154,12 +143,7 @@ Widget marketingStatusView(dynamic data) {
                           'assets/APPSVGICON/profileIcon.svg',
                           width: 40,
                           height: 40,
-                          colorFilter: status
-                              ? const ColorFilter.mode(
-                                  AppColors.themeLite, BlendMode.dst)
-                              : const ColorFilter.mode(
-                                  Color.fromARGB(108, 217, 217, 217),
-                                  BlendMode.dstIn),
+                          colorFilter: status ? const ColorFilter.mode(AppColors.themeLite, BlendMode.dst) : const ColorFilter.mode(Color.fromARGB(108, 217, 217, 217), BlendMode.dstIn),
                         ),
                         const SizedBox(
                           width: 5,
@@ -172,18 +156,12 @@ Widget marketingStatusView(dynamic data) {
                               style: TextStyle(
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600,
-                                color: status
-                                    ? AppColors.theme
-                                    : AppColors.completed,
+                                color: status ? AppColors.theme : AppColors.completed,
                               ),
                             ),
                             Text(
                               getMarketStatus(data["status"]),
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: status
-                                      ? AppColors.themeLite
-                                      : AppColors.completed),
+                              style: TextStyle(fontSize: 10, color: status ? AppColors.themeLite : AppColors.completed),
                             )
                           ],
                         ),
@@ -229,26 +207,17 @@ Widget shiftView(dynamic data) {
                   size: 15,
                   color: AppColors.themeLite,
                 ),
-                Text("Not selected",
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.themeLite))
+                Text("Not selected", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: AppColors.themeLite))
               ],
             )),
       if (data["startDate"] != null)
         Row(
           children: [
-            shiftCard(
-                data["startDate"],
-                data["startShift"] == "1" ? true : false,
-                status,
-                data["startShift"]),
+            shiftCard(data["startDate"], data["startShift"] == 1 ? true : false, status, data["startShift"]),
             const SizedBox(
               width: 8,
             ),
-            shiftCard(data["endDate"], data["endShift"] == "1" ? true : false,
-                status, data["endShift"])
+            shiftCard(data["endDate"], data["endShift"] == 1 ? true : false, status, data["endShift"])
           ],
         )
     ],

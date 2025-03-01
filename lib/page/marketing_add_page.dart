@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/helper/maca_global_helper.dart';
 import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/styles/app_style.dart';
@@ -45,7 +46,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   //For fetching local stor data
   Future getDataFromLocalStorage() async {
     loginData = await getLocalStorageData("loginDetails");
-    individualMarketStatusUpdate(loginData[0]["id"]);
+    individualMarketStatusUpdate(loginData[0]["user_id"]);
     macaPrint(loginData);
     macaPrint(marketingStatus);
   }
@@ -53,11 +54,8 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   // This method for getting date from user input
   Future<void> datePickerHandle(dynamic type, dynamic selectedShift) async {
     macaPrint(type);
-    DateTime? datePicker = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime(2025));
+    DateTime now = DateTime.now();
+    DateTime? datePicker = await showDatePicker(context: context, initialDate: now, firstDate: DateTime(2020), lastDate: DateTime(now.year + 1));
     if (datePicker != null) {
       switch (type) {
         case "Start Date":
@@ -93,17 +91,14 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   // This is for updating marketing status individually
   Future<dynamic> marketingStatusUpdate() async {
     dynamic jsonBody = {
-      "borderId": loginData[0]["id"],
+      "borderId": loginData[0]["user_id"],
       "startDate": startDateController.text,
       "endDate": endDateController.text,
-      "startShift": startShift,
-      "endShift": endShift
+      "startShift": booleanConverter(startShift),
+      "endShift": booleanConverter(endShift)
     };
-    macaPrint(jsonBody);
-    dynamic response = await ApiService().apiCallService(
-        endpoint: PostUrl().marketingStatusUpdate,
-        method: ApiType().post,
-        body: jsonBody);
+
+    dynamic response = await ApiService().apiCallService(endpoint: PostUrl().marketingStatusUpdate, method: ApiType().post, body: jsonBody);
     dynamic data = AppFunction().macaApiResponsePrintAndGet(response);
 
     setState(() {
@@ -114,16 +109,14 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
     });
 
     Future.delayed(const Duration(seconds: 2), () {
-      individualMarketStatusUpdate(loginData[0]["id"]);
+      individualMarketStatusUpdate(loginData[0]["user_id"]);
     });
   }
 
   Future<dynamic> individualMarketStatusUpdate(dynamic data) async {
+    macaPrint("userId: $data");
     dynamic jsonBody = {"user_id": data};
-    dynamic response = await ApiService().apiCallService(
-        endpoint: PostUrl().individualMarketStatus,
-        method: ApiType().post,
-        body: jsonBody);
+    dynamic response = await ApiService().apiCallService(endpoint: PostUrl().individualMarketStatus, method: ApiType().post, body: jsonBody);
     dynamic value = AppFunction().macaApiResponsePrintAndGet(response);
     if (mounted) {
       setState(() {
@@ -150,8 +143,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
       case 1:
         return marketDetailsView(marketingStatus);
       default:
-        return inputSegment(startDateController, endDateController, shift,
-            datePickerHandle, selectedShift, marketingStatusUpdate);
+        return inputSegment(startDateController, endDateController, shift, datePickerHandle, selectedShift, marketingStatusUpdate);
     }
   }
 
@@ -172,22 +164,15 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
 }
 
 @override
-Widget inputSegment(
-    TextEditingController startDateController,
-    TextEditingController endDateController,
-    dynamic shift,
-    Function(dynamic data, dynamic selectedShift) datePickerHandle,
-    Function(dynamic data, dynamic selectedShift) selectedShift,
-    Function marketingStatusUpdate) {
+Widget inputSegment(TextEditingController startDateController, TextEditingController endDateController, dynamic shift, Function(dynamic data, dynamic selectedShift) datePickerHandle,
+    Function(dynamic data, dynamic selectedShift) selectedShift, Function marketingStatusUpdate) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.end,
     mainAxisSize: MainAxisSize.min,
     children: [
-      slotSegment("Start Date", startDateController, shift, datePickerHandle,
-          selectedShift),
+      slotSegment("Start Date", startDateController, shift, datePickerHandle, selectedShift),
       const SizedBox(height: 20),
-      slotSegment("End Date", endDateController, shift, datePickerHandle,
-          selectedShift),
+      slotSegment("End Date", endDateController, shift, datePickerHandle, selectedShift),
       const SizedBox(height: 20),
       GestureDetector(
         onTap: () {
@@ -213,17 +198,10 @@ Widget inputSegment(
 
 @override
 Widget slotSegment(
-    type,
-    TextEditingController dateController,
-    dynamic shift,
-    Function(dynamic data, dynamic selectedShift) datePickerHandle,
-    Function(dynamic data, dynamic selectedShift) selectedShift) {
+    type, TextEditingController dateController, dynamic shift, Function(dynamic data, dynamic selectedShift) datePickerHandle, Function(dynamic data, dynamic selectedShift) selectedShift) {
   return (Container(
     padding: const EdgeInsets.all(8),
-    decoration: const BoxDecoration(
-        boxShadow: [AppBoxShadow.defaultBoxShadow],
-        color: AppColors.themeWhite,
-        borderRadius: BorderRadius.all(Radius.circular(12))),
+    decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -330,17 +308,11 @@ class _SlotSwitchState extends State<SlotSwitch> {
                 children: [
                   Text(
                     "Night",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: AppColors.themeWhite),
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.themeWhite),
                   ),
                   Text(
                     "Day",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: AppColors.themeLite),
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.themeLite),
                   )
                 ],
               ),
@@ -358,25 +330,17 @@ class _SlotSwitchState extends State<SlotSwitch> {
                   height: 45,
                   width: 45,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: switchStatus
-                          ? AppColors.themeWhite
-                          : AppColors.themeLite,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(129, 0, 0, 0)
-                              .withOpacity(0.2),
-                          blurRadius: 2,
-                          spreadRadius: 0,
-                          offset: const Offset(0, 1),
-                        ),
-                      ]),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: switchStatus ? AppColors.themeWhite : AppColors.themeLite, boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(129, 0, 0, 0).withOpacity(0.2),
+                      blurRadius: 2,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 1),
+                    ),
+                  ]),
                   child: Icon(
                     switchStatus ? Icons.nightlight : Icons.sunny,
-                    color: switchStatus
-                        ? AppColors.themeLite
-                        : AppColors.themeWhite,
+                    color: switchStatus ? AppColors.themeLite : AppColors.themeWhite,
                   ),
                 ),
               ),

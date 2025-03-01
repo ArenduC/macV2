@@ -75,7 +75,18 @@ IconData getCurrentPageIcon(dynamic data) {
 }
 
 formatCustomDate(dynamic dateTime) {
-  DateTime parsedDate = DateTime.parse(dateTime);
+  // Ensure proper DateTime conversion
+  DateTime parsedDate;
+  if (dateTime is String) {
+    parsedDate = DateTime.parse(dateTime);
+  } else if (dateTime is int) {
+    parsedDate = DateTime.fromMillisecondsSinceEpoch(dateTime);
+  } else if (dateTime is DateTime) {
+    parsedDate = dateTime;
+  } else {
+    throw ArgumentError('Invalid date format');
+  }
+
   final day = parsedDate.day;
   final daySuffix = getDaySuffix(day);
   final month = getMonthName(parsedDate.month);
@@ -103,29 +114,17 @@ String getDaySuffix(int day) {
 }
 
 String getMonthName(int month) {
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ];
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   return monthNames[month - 1];
 }
 
 class AppFunction {
   macaApiResponsePrintAndGet(dynamic data, [dynamic extractData]) {
+    print("Api response: $data");
     if (data.statusCode == 200) {
       dynamic response = jsonDecode(data.body);
       if (extractData == "data") {
-        print("Api  response: ${response["data"]}");
+        print("Api  responsefff: ${response["data"]}");
         return response["data"];
       } else {
         print("Api response: $response");
@@ -142,8 +141,7 @@ class AppFunction {
     return allBeds.map((bed) {
       return {
         ...bed,
-        'is_active':
-            activeBeds.contains(bed['user_bed']), // True if present in userBeds
+        'is_active': activeBeds.contains(bed['user_bed']), // True if present in userBeds
       };
     }).toList();
   }
