@@ -119,7 +119,7 @@ String getMonthName(int month) {
 }
 
 class AppFunction {
-  macaApiResponsePrintAndGet(dynamic data, [dynamic extractData]) {
+  macaApiResponsePrintAndGet({dynamic data, bool? snackBarView, dynamic snackBarType, dynamic snackBarMessage, dynamic extractData}) {
     print("Api response: $data");
     if (data.statusCode == 200) {
       dynamic response = jsonDecode(data.body);
@@ -141,7 +141,7 @@ class AppFunction {
     return allBeds.map((bed) {
       return {
         ...bed,
-        'is_active': activeBeds.contains(bed['user_bed']), // True if present in userBeds
+        'is_active': !activeBeds.contains(bed['user_bed']), // True if present in userBeds
       };
     }).toList();
   }

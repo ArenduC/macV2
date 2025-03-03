@@ -99,7 +99,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
     };
 
     dynamic response = await ApiService().apiCallService(endpoint: PostUrl().marketingStatusUpdate, method: ApiType().post, body: jsonBody);
-    dynamic data = AppFunction().macaApiResponsePrintAndGet(response);
+    dynamic data = AppFunction().macaApiResponsePrintAndGet(data: response);
 
     setState(() {
       if (data["isSuccess"] == true) {
@@ -117,7 +117,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
     macaPrint("userId: $data");
     dynamic jsonBody = {"user_id": data};
     dynamic response = await ApiService().apiCallService(endpoint: PostUrl().individualMarketStatus, method: ApiType().post, body: jsonBody);
-    dynamic value = AppFunction().macaApiResponsePrintAndGet(response);
+    dynamic value = AppFunction().macaApiResponsePrintAndGet(data: response);
     if (mounted) {
       setState(() {
         marketingStatus = value["data"][0];

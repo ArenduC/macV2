@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/helper/registration_validation_helper.dart';
 import 'package:maca/screen/home_screen.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
@@ -59,8 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   getFcmToken() async {
-    String getFcmTokenFromLocal =
-        await getLocalStorageData(ListOfStoreKey.fcmToken);
+    String getFcmTokenFromLocal = await getLocalStorageData(ListOfStoreKey.fcmToken);
     setState(() {
       fcmToken = getFcmTokenFromLocal.toString();
     });
@@ -68,21 +68,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<dynamic> handleLogin(String username, String password) async {
-    dynamic jsonObject = {
-      "email": username,
-      "password": password,
-      "accessToken": fcmToken
-    };
+    dynamic jsonObject = {"email": username, "password": password, "accessToken": fcmToken};
     macaPrint(jsonObject);
     dynamic loginData;
-    dynamic response = await ApiService().apiCallService(
-        endpoint: PostUrl().userLogin, method: "POST", body: jsonObject);
-    loginData = AppFunction().macaApiResponsePrintAndGet(response);
+    dynamic response = await ApiService().apiCallService(endpoint: PostUrl().userLogin, method: "POST", body: jsonObject);
+    loginData = AppFunction().macaApiResponsePrintAndGet(data: response);
 
     if (loginData["isSuccess"] == true) {
-      AppFunction().macaApiResponsePrintAndGet(response, "data");
-      LocalStore().setStore(ListOfStoreKey.loginDetails,
-          AppFunction().macaApiResponsePrintAndGet(response, "data"));
+      AppFunction().macaApiResponsePrintAndGet(data: response, extractData: "data");
+      LocalStore().setStore(ListOfStoreKey.loginDetails, AppFunction().macaApiResponsePrintAndGet(data: response, extractData: "data"));
       LocalStore().setStore(ListOfStoreKey.loginStatus, loginData["isSuccess"]);
       Navigator.push(
         context,
@@ -91,8 +85,22 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void handleRegistration(dynamic data) {
-    macaPrint(data);
+  void handleRegistration(dynamic data) async {
+    if (!validateInput(context, data)) return;
+    dynamic jsonBody = {
+      "user_name": data["userName"],
+      "user_email": data["email"],
+      "user_bed": data["bedNo"],
+      "user_phone_no": data["phoneNo"],
+      "user_password": data["password"],
+    };
+    dynamic response = await ApiService().apiCallService(endpoint: PostUrl().userRegistration, method: ApiType().post, body: jsonBody);
+    occupiedBedList = AppFunction().macaApiResponsePrintAndGet(data: response);
+    if (occupiedBedList["isSuccess"] == true) {
+      setState(() {
+        isLoginPage = true;
+      });
+    }
   }
 
   void bedSelectHandle(dynamic selectedBedNo) {
@@ -105,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void pageSwitch() {
+    getBedAvailable();
     setState(() {
       print("button click");
       isLoginPage = !isLoginPage;
@@ -117,12 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<dynamic> getBedAvailable() async {
-    dynamic response = await ApiService()
-        .apiCallService(endpoint: GetUrl().bedList, method: "GET");
-    occupiedBedList =
-        AppFunction().macaApiResponsePrintAndGet(response, "data");
-    availableBet =
-        AppFunction().createBedStatusList(occupiedBedList, Appdata().allBeds);
+    dynamic response = await ApiService().apiCallService(endpoint: GetUrl().bedList, method: "GET");
+    occupiedBedList = AppFunction().macaApiResponsePrintAndGet(data: response, extractData: "data");
+    availableBet = AppFunction().createBedStatusList(occupiedBedList, Appdata().allBeds);
   }
 
   @override
@@ -141,20 +147,17 @@ class _LoginScreenState extends State<LoginScreen> {
               top: 40,
               left: 20,
               right: 0,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Welcome to",
-                      style: AppTextStyles.headline2,
-                    ),
-                    SvgPicture.asset(
-                      'assets/APPSVGICON/maca.svg',
-                      width: 50,
-                      height: 50,
-                    ),
-                  ])),
+              child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text(
+                  "Welcome to",
+                  style: AppTextStyles.headline2,
+                ),
+                SvgPicture.asset(
+                  'assets/APPSVGICON/maca.svg',
+                  width: 50,
+                  height: 50,
+                ),
+              ])),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 500), // Animation duration
             curve: Curves.easeInOut,
@@ -167,13 +170,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     : 300, // Adjust to position the circle as needed
             left: -150, // Adjust to position the circle as needed
             child: Container(
-              width: MediaQuery.of(context).size.width *
-                  2, // Make it large enough to overflow
+              width: MediaQuery.of(context).size.width * 2, // Make it large enough to overflow
               height: MediaQuery.of(context).size.height * 2, // Same for height
               decoration: BoxDecoration(
-                borderRadius: isKeyboardOpen
-                    ? BorderRadius.circular(0)
-                    : BorderRadius.circular(500),
+                borderRadius: isKeyboardOpen ? BorderRadius.circular(0) : BorderRadius.circular(500),
                 color: AppColors.theme,
               ),
             ),
@@ -198,24 +198,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               },
               child: isLoginPage
-                  ? KeyedSubtree(
-                      key: const ValueKey('login'),
-                      child: loginSegment(pageSwitch, userNameController,
-                          passwordController, focusNode, handleLogin))
+                  ? KeyedSubtree(key: const ValueKey('login'), child: loginSegment(pageSwitch, userNameController, passwordController, focusNode, handleLogin))
                   : KeyedSubtree(
                       key: const ValueKey('register'),
-                      child: registrationSegment(
-                          context,
-                          pageSwitch,
-                          bedActive,
-                          availableBet,
-                          emailController,
-                          passwordController,
-                          userNameController,
-                          bedNoController,
-                          phoneNoController,
-                          bedSelectHandle,
-                          handleRegistration)),
+                      child: registrationSegment(context, pageSwitch, bedActive, availableBet, emailController, passwordController, userNameController, bedNoController, phoneNoController,
+                          bedSelectHandle, handleRegistration)),
             ),
           )
           // Add other widgets here as needed
@@ -341,10 +328,7 @@ Widget registrationSegment(
           height: 15,
           width: 15,
           margin: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-              color: indicatorColor,
-              borderRadius: const BorderRadius.all(Radius.circular(30)),
-              boxShadow: const [AppBoxShadow.defaultBoxShadow]),
+          decoration: BoxDecoration(color: indicatorColor, borderRadius: const BorderRadius.all(Radius.circular(30)), boxShadow: const [AppBoxShadow.defaultBoxShadow]),
         ),
         const SizedBox(
           width: 10,
@@ -363,8 +347,7 @@ Widget registrationSegment(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       isScrollControlled: true, // Allows the modal to take more space
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20)), // Optional rounded corners
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)), // Optional rounded corners
       ),
       builder: (context) {
         return Container(
@@ -382,9 +365,7 @@ Widget registrationSegment(
                   height: 5,
                   width: MediaQuery.of(context).size.width * 0.2,
                   margin: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: const BoxDecoration(
-                      color: AppColors.textHint,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  decoration: const BoxDecoration(color: AppColors.textHint, borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
               ),
               Padding(
@@ -404,10 +385,7 @@ Widget registrationSegment(
                         ),
                         const Text(
                           "Bed available",
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.theme),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.theme),
                         )
                       ],
                     ),
@@ -435,8 +413,7 @@ Widget registrationSegment(
                       }
                     },
                     child: Container(
-                      width: (MediaQuery.of(context).size.width - 64) /
-                          5, // 3 items per row
+                      width: (MediaQuery.of(context).size.width - 64) / 5, // 3 items per row
                       padding: const EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
                         color: bed["is_active"]
@@ -449,8 +426,7 @@ Widget registrationSegment(
                           BoxShadow(
                             color: Color.fromARGB(83, 37, 37, 37),
                             blurRadius: 10, // Spread of the blur
-                            offset:
-                                Offset(0, 4), // Horizontal and vertical offset
+                            offset: Offset(0, 4), // Horizontal and vertical offset
                           ),
                         ],
                       ),
@@ -546,9 +522,7 @@ Widget registrationSegment(
                     Text(
                       bedNo["user_bed"] ?? 'Enter bed no',
                       style: TextStyle(
-                        color: bedNo["user_bed"] == null
-                            ? Colors.grey
-                            : AppColors.header1, // Replace with your color
+                        color: bedNo["user_bed"] == null ? Colors.grey : AppColors.header1, // Replace with your color
                       ),
                     ),
                   ],
@@ -589,13 +563,7 @@ Widget registrationSegment(
         ),
         ElevatedButton(
           onPressed: () {
-            dynamic regJson = {
-              "userName": userNameController.text,
-              "email": emailController.text,
-              "bedNo": bedNo["id"],
-              "phoneNo": phoneNoController.text,
-              "password": passwordController.text
-            };
+            dynamic regJson = {"userName": userNameController.text, "email": emailController.text, "bedNo": bedNo["id"], "phoneNo": phoneNoController.text, "password": passwordController.text};
             // Add your button's functionality here
             handleRegistration(regJson);
           },

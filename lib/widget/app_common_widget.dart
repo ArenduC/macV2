@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:maca/features/marketing_details/view/marketing_details_view.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
@@ -66,10 +67,7 @@ class _CurrentManagerViewState extends State<CurrentManagerView> {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(0),
-        decoration: const BoxDecoration(
-            boxShadow: [AppBoxShadow.defaultBoxShadow],
-            color: AppColors.themeWhite,
-            borderRadius: BorderRadius.all(Radius.circular(12))),
+        decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
         child: Stack(children: [
           Positioned(
               bottom: 0,
@@ -77,9 +75,7 @@ class _CurrentManagerViewState extends State<CurrentManagerView> {
               child: Container(
                 padding: const EdgeInsets.all(5),
                 decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
                   color: AppColors.themeGray,
                 ),
                 child: Text(
@@ -108,8 +104,7 @@ class _CurrentManagerViewState extends State<CurrentManagerView> {
                       children: [
                         Text(
                           "Manager",
-                          style: AppTextStyles.cardHeaderLabelStyle
-                              .copyWith(height: 0),
+                          style: AppTextStyles.cardHeaderLabelStyle.copyWith(height: 0),
                         ),
                         Text(
                           widget.data,
@@ -158,61 +153,68 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(right: 8),
-                // Add some spacing around containers
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  boxShadow: [AppBoxShadow.defaultBoxShadow],
-                  color: AppColors.themeWhite,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border:
-                                Border.all(width: 1, color: AppColors.theme),
-                          ),
-                          child: const Icon(
-                            Icons.supervisor_account_rounded,
-                            color: AppColors.theme,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "₹${expenditure["overall_current_month_total"]}",
-                              style:
-                                  AppTextStyles.cardLabel1.copyWith(height: 0),
-                            ),
-                            const Text(
-                              "Expenditure",
-                              style: AppTextStyles.header11,
-                            ),
-                          ],
-                        ),
-                      ],
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MarketingDetailsView(),
                     ),
-                  ],
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  // Add some spacing around containers
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    boxShadow: [AppBoxShadow.defaultBoxShadow],
+                    color: AppColors.themeWhite,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(width: 1, color: AppColors.theme),
+                            ),
+                            child: const Icon(
+                              Icons.supervisor_account_rounded,
+                              color: AppColors.theme,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "₹${expenditure["overall_current_month_total"]}",
+                                style: AppTextStyles.cardLabel1.copyWith(height: 0),
+                              ),
+                              const Text(
+                                "Expenditure",
+                                style: AppTextStyles.header11,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             Expanded(
               child: Container(
                 margin: const EdgeInsets.only(left: 8.0),
-                padding: const EdgeInsets.all(
-                    8), // Add some spacing around containers
+                padding: const EdgeInsets.all(8), // Add some spacing around containers
                 decoration: const BoxDecoration(
                   boxShadow: [AppBoxShadow.defaultBoxShadow],
                   color: AppColors.themeWhite,
@@ -225,12 +227,8 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                       children: [
                         Container(
                           padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              border:
-                                  Border.all(width: 1, color: AppColors.theme)),
-                          child:
-                              const Icon(Icons.person, color: AppColors.theme),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), border: Border.all(width: 1, color: AppColors.theme)),
+                          child: const Icon(Icons.person, color: AppColors.theme),
                         ),
                         const SizedBox(
                           width: 5,
@@ -241,8 +239,7 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                           children: [
                             Text(
                               "₹${expenditure['total_sum']}",
-                              style:
-                                  AppTextStyles.cardLabel1.copyWith(height: 0),
+                              style: AppTextStyles.cardLabel1.copyWith(height: 0),
                             ),
                             Text(
                               expenditure["marketing_user"],

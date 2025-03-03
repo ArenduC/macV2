@@ -49,7 +49,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
     };
     macaPrint(jsonBody);
     dynamic response = await ApiService().apiCallService(endpoint: PostUrl().addExpense, method: ApiType().post, body: jsonBody);
-    dynamic data = AppFunction().macaApiResponsePrintAndGet(response);
+    dynamic data = AppFunction().macaApiResponsePrintAndGet(data: response);
     setState(() {
       isSuccess = data["isSuccess"];
       itemController.text = '';

@@ -34,12 +34,10 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Future<void> borderList() async {
-    dynamic response = await ApiService().apiCallService(
-        endpoint: GetUrl().currentExpenditureDetails, method: "GET");
+    dynamic response = await ApiService().apiCallService(endpoint: GetUrl().currentExpenditureDetails, method: "GET");
 
     setState(() {
-      expenditureDetails =
-          AppFunction().macaApiResponsePrintAndGet(response)["data"];
+      expenditureDetails = AppFunction().macaApiResponsePrintAndGet(data: response)["data"];
       isLoading = false;
     });
   }
@@ -62,8 +60,7 @@ class _LandingPageState extends State<LandingPage> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Show Snackbar',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
               },
             ),
           ],

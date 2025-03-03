@@ -9,7 +9,7 @@ class GetApiConnectionModel {
 
 class PostApiConnectionModel {
   String borderList = "v1/borderlist";
-  String login = "${Connection().baseUrl}v1/user_login";
+  String login = "${Connection().prodUrl}v1/user_login";
   String marketingStatusUpdate = "v1/set_marketing_shift";
   String addExpense = "v1/add_expense";
   String individualMarketStatus = "v1/get_individual_marketing_status";

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:maca/common/buble_drop_loading.dart';
+import 'package:maca/common/loading_component.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
@@ -53,7 +55,7 @@ class _MarketingPageState extends State<MarketingPage> {
     dynamic response = await ApiService().apiCallService(endpoint: GetUrl().marketList, method: ApiType().get);
 
     setState(() {
-      marketingList = AppFunction().macaApiResponsePrintAndGet(response)["data"];
+      marketingList = AppFunction().macaApiResponsePrintAndGet(data: response)["data"];
     });
     for (var data in marketingList) {
       if (data["user_id"] == loginData[0]["user_id"]) {
@@ -87,24 +89,26 @@ class _MarketingPageState extends State<MarketingPage> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(0.0),
-          child: Column(children: [
-            Expanded(
-              child: ListView.separated(
-                itemCount: marketingList.length,
-                itemBuilder: (context, index) {
-                  final user = marketingList[index];
-                  return Container(
-                      width: double.infinity, // Make it take full width
-                      alignment: Alignment.centerLeft, // Align text to the left
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-                      child: marketingStatusView(user));
-                },
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 4,
-                ),
-              ),
-            ),
-          ]),
+          child: marketingList == null || marketingList.isEmpty
+              ? const LoadingComponent()
+              : Column(children: [
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: marketingList.length,
+                      itemBuilder: (context, index) {
+                        final user = marketingList[index];
+                        return Container(
+                            width: double.infinity, // Make it take full width
+                            alignment: Alignment.centerLeft, // Align text to the left
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
+                            child: marketingStatusView(user));
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 4,
+                      ),
+                    ),
+                  ),
+                ]),
         ),
       );
     });
