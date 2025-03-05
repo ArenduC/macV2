@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:maca/common/loading_component.dart';
 import 'package:maca/connection/api_connection.dart';
+import 'package:maca/features/profile_view/profile_view.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/package/m_column_graph.dart';
 import 'package:maca/service/api_service.dart';
@@ -53,17 +55,14 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
         backgroundColor: AppColors.themeWhite,
         appBar: AppBar(
+          backgroundColor: AppColors.theme,
+          surfaceTintColor: AppColors.theme,
           automaticallyImplyLeading: false,
-          title: const Text('Maca'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.add_alert),
-              tooltip: 'Show Snackbar',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
-              },
-            ),
-          ],
+          title: SvgPicture.asset(
+            "assets/APPSVGICON/maca.svg",
+            width: 50,
+          ),
+          actions: const <Widget>[ProfileView()],
         ),
         body: Padding(
             padding: const EdgeInsets.all(16),

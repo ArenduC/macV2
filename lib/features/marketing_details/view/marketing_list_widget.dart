@@ -23,6 +23,7 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
       child: ExpansionTile(
+        initiallyExpanded: true,
         dense: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(0)),

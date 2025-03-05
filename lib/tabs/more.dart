@@ -17,19 +17,11 @@ class _MoreState extends State<More> {
     return Scaffold(
         backgroundColor: AppColors.themeWhite,
         appBar: AppBar(
-          title: const Text('More'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.add_alert),
-              tooltip: 'Show Snackbar',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    backgroundColor: Color.fromARGB(0, 40, 46, 137),
-                    elevation: 0,
-                    content: CommonSnackBar()));
-              },
-            ),
-          ],
+          backgroundColor: AppColors.theme,
+          title: const Text(
+            'More',
+            style: TextStyle(color: AppColors.themeWhite),
+          ),
         ),
         body: Padding(
             padding: const EdgeInsets.all(8),
@@ -70,10 +62,7 @@ Widget profile(BuildContext context) {
               ),
               child: const Text('Yes'),
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
               },
             ),
           ],
@@ -83,10 +72,7 @@ Widget profile(BuildContext context) {
   }
 
   return Container(
-    decoration: BoxDecoration(
-        boxShadow: const [AppBoxShadow.defaultBoxShadow],
-        borderRadius: BorderRadius.circular(11),
-        color: AppColors.themeWhite),
+    decoration: BoxDecoration(boxShadow: const [AppBoxShadow.defaultBoxShadow], borderRadius: BorderRadius.circular(11), color: AppColors.themeWhite),
     padding: const EdgeInsets.all(8),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -11,6 +11,7 @@ class AppColors {
   static const Color idle = Color.fromRGBO(255, 195, 195, 1);
   static const Color ongoing = Color.fromRGBO(184, 247, 141, 1);
   static const Color completed = Color.fromRGBO(217, 217, 217, 1);
+  static const Color logoDep = Color.fromARGB(255, 92, 229, 0);
 
   AppColors(da);
 }

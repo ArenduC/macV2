@@ -76,16 +76,8 @@ class _MarketingPageState extends State<MarketingPage> {
       return Scaffold(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
-          title: const Text('Marketing'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.add_alert),
-              tooltip: 'Show Snackbar',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(backgroundColor: Color.fromARGB(0, 40, 46, 137), content: Text('This is a snackbar')));
-              },
-            ),
-          ],
+          backgroundColor: AppColors.theme,
+          title: const Text('Marketing', style: TextStyle(color: AppColors.themeWhite)),
         ),
         body: Padding(
           padding: const EdgeInsets.all(0.0),

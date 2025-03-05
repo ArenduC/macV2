@@ -5,3 +5,7 @@ booleanConverter(dynamic value) {
     return 0;
   }
 }
+
+firstAlphabetExtractAndCapitalize(String value) {
+  return value[0].toUpperCase();
+}

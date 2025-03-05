@@ -40,17 +40,9 @@ class _MarketingDetailsViewState extends State<MarketingDetailsView> {
     return Scaffold(
         backgroundColor: AppColors.themeWhite,
         appBar: AppBar(
+          backgroundColor: AppColors.theme,
           automaticallyImplyLeading: true,
-          title: const Text('Maca'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.add_alert),
-              tooltip: 'Show Snackbar',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('This is a snackbar')));
-              },
-            ),
-          ],
+          title: const Text('Maca', style: TextStyle(color: AppColors.themeWhite)),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8),

@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
@@ -139,74 +140,80 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        clipBehavior: Clip.none, // Allow the circle to overflow
-        children: [
-          Positioned(
-              top: 40,
-              left: 20,
-              right: 0,
-              child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const Text(
-                  "Welcome to",
-                  style: AppTextStyles.headline2,
+    return WillPopScope(
+      onWillPop: () async {
+        SystemNavigator.pop();
+        return true;
+      },
+      child: Scaffold(
+        body: Stack(
+          clipBehavior: Clip.none, // Allow the circle to overflow
+          children: [
+            Positioned(
+                top: 40,
+                left: 20,
+                right: 0,
+                child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text(
+                    "Welcome to",
+                    style: AppTextStyles.headline2,
+                  ),
+                  SvgPicture.asset(
+                    'assets/APPSVGICON/maca.svg',
+                    width: 50,
+                    height: 50,
+                  ),
+                ])),
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 500), // Animation duration
+              curve: Curves.easeInOut,
+              top: isLoginPage
+                  ? isKeyboardOpen
+                      ? 0
+                      : 500
+                  : isKeyboardOpen
+                      ? 0
+                      : 300, // Adjust to position the circle as needed
+              left: -150, // Adjust to position the circle as needed
+              child: Container(
+                width: MediaQuery.of(context).size.width * 2, // Make it large enough to overflow
+                height: MediaQuery.of(context).size.height * 2, // Same for height
+                decoration: BoxDecoration(
+                  borderRadius: isKeyboardOpen ? BorderRadius.circular(0) : BorderRadius.circular(500),
+                  color: AppColors.theme,
                 ),
-                SvgPicture.asset(
-                  'assets/APPSVGICON/maca.svg',
-                  width: 50,
-                  height: 50,
-                ),
-              ])),
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 500), // Animation duration
-            curve: Curves.easeInOut,
-            top: isLoginPage
-                ? isKeyboardOpen
-                    ? 0
-                    : 500
-                : isKeyboardOpen
-                    ? 0
-                    : 300, // Adjust to position the circle as needed
-            left: -150, // Adjust to position the circle as needed
-            child: Container(
-              width: MediaQuery.of(context).size.width * 2, // Make it large enough to overflow
-              height: MediaQuery.of(context).size.height * 2, // Same for height
-              decoration: BoxDecoration(
-                borderRadius: isKeyboardOpen ? BorderRadius.circular(0) : BorderRadius.circular(500),
-                color: AppColors.theme,
               ),
             ),
-          ),
 
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 500),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return FadeTransition(
-                  opacity: animation, // Fade effect
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(1.0, 0.0), // Slide in from the right
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: child,
-                  ),
-                );
-              },
-              child: isLoginPage
-                  ? KeyedSubtree(key: const ValueKey('login'), child: loginSegment(pageSwitch, userNameController, passwordController, focusNode, handleLogin))
-                  : KeyedSubtree(
-                      key: const ValueKey('register'),
-                      child: registrationSegment(context, pageSwitch, bedActive, availableBet, emailController, passwordController, userNameController, bedNoController, phoneNoController,
-                          bedSelectHandle, handleRegistration)),
-            ),
-          )
-          // Add other widgets here as needed
-        ],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(
+                    opacity: animation, // Fade effect
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(1.0, 0.0), // Slide in from the right
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    ),
+                  );
+                },
+                child: isLoginPage
+                    ? KeyedSubtree(key: const ValueKey('login'), child: loginSegment(pageSwitch, userNameController, passwordController, focusNode, handleLogin))
+                    : KeyedSubtree(
+                        key: const ValueKey('register'),
+                        child: registrationSegment(context, pageSwitch, bedActive, availableBet, emailController, passwordController, userNameController, bedNoController, phoneNoController,
+                            bedSelectHandle, handleRegistration)),
+              ),
+            )
+            // Add other widgets here as needed
+          ],
+        ),
       ),
     );
   }

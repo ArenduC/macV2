@@ -8,7 +8,8 @@ List<MonthData> convertAllMarketingDetailsToIndividualModels({required List<dyna
 
   for (var monthEntry in inputData) {
     String month = monthEntry["month"].trim();
-    List<dynamic> users = monthEntry["data"];
+    print("users: ${monthEntry["user_data"].runtimeType}");
+    List<dynamic> users = monthEntry["user_data"];
 
     monthData.putIfAbsent(month, () => {});
 
