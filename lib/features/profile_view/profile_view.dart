@@ -35,7 +35,7 @@ class _ProfileViewState extends State<ProfileView> {
     return loginDetails == null
         ? Container()
         : Container(
-            margin: const EdgeInsets.only(right: 12),
+            margin: const EdgeInsets.only(right: 16),
             alignment: Alignment.center,
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
@@ -49,7 +49,7 @@ class _ProfileViewState extends State<ProfileView> {
               mainAxisSize: MainAxisSize.min, // Shrinks column to fit content
               children: [
                 Container(
-                  padding: EdgeInsets.all(5), // Remove extra padding
+                  padding: EdgeInsets.all(8), // Remove extra padding
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.themeWhite,

@@ -60,7 +60,7 @@ class _LandingPageState extends State<LandingPage> {
           automaticallyImplyLeading: false,
           title: SvgPicture.asset(
             "assets/APPSVGICON/maca.svg",
-            width: 50,
+            width: 60,
           ),
           actions: const <Widget>[ProfileView()],
         ),

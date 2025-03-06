@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/model/data_model.dart';
 import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/styles/app_style.dart';
@@ -27,6 +28,8 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
   dynamic loginData;
   dynamic isSuccess = false;
 
+  List<ExpenseData> expenses = [const ExpenseData(item: "", amount: 0)];
+
   @override
   void initState() {
     super.initState();
@@ -39,15 +42,24 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
     macaPrint(loginData);
   }
 
+  void addExpense({required ExpenseData data}) {
+    setState(() {
+      expenses.add(data);
+      itemController.text = data.item;
+      amountController.text = data.amount.toString();
+    });
+  }
+
   // this method for getting date from user input
 
   Future<dynamic> marketingStatusUpdate() async {
+    List<Map<String, dynamic>> jsonList = expenses.map((e) => e.toJson()).toList();
     dynamic jsonBody = {
       "user_id": loginData[0]["user_id"],
-      "item": itemController.text,
-      "marketing_amount": amountController.text,
+      "items": jsonList,
     };
     macaPrint(jsonBody);
+    macaPrint(jsonList);
     dynamic response = await ApiService().apiCallService(endpoint: PostUrl().addExpense, method: ApiType().post, body: jsonBody);
     dynamic data = AppFunction().macaApiResponsePrintAndGet(data: response);
     setState(() {
@@ -90,7 +102,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      slotSegment("expense", itemController, amountController, shift),
+                      slotSegment("expense", shift, addExpense, expenses),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
@@ -120,57 +132,94 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
 @override
 Widget slotSegment(
   type,
-  TextEditingController itemController,
-  TextEditingController amountController,
+  // List of controllers for amounts
   dynamic shift,
+  Function({required ExpenseData data}) onAddItem,
+  List<ExpenseData> addItems,
 ) {
-  return (Container(
+  return Container(
     padding: const EdgeInsets.all(8),
-    decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
+    decoration: const BoxDecoration(
+      boxShadow: [AppBoxShadow.defaultBoxShadow],
+      color: AppColors.themeWhite,
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          type == "Start Date" ? "From" : "Expense",
-          style: AppTextStyles.inputLabel,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: TextField(
-                controller: itemController,
-                decoration: AppDateStyles.textFieldDecoration(
-                  hintText: 'Enter item',
-                  prefixIcon: Icons.local_grocery_store_rounded,
-                ),
-                style: const TextStyle(color: AppColors.themeLite),
-                // Text style
-              ),
+            Text(
+              type == "Start Date" ? "From" : "Expense",
+              style: AppTextStyles.inputLabel,
             ),
-            const SizedBox(
-              width: 8,
-            ),
-            Expanded(
-              child: TextField(
-                controller: amountController,
-                decoration: AppDateStyles.textFieldDecoration(
-                  hintText: 'Enter amount',
-                  prefixIcon: Icons.currency_rupee_sharp,
-                ),
-                style: const TextStyle(color: AppColors.themeLite),
-                // Text style
+            GestureDetector(
+              onTap: () {
+                // Ensure new item is added to both controllers and list
+
+                onAddItem(data: const ExpenseData(item: "", amount: 0)); // Add a new empty expense
+              },
+              child: const Icon(
+                Icons.add_circle_outlined,
+                color: AppColors.theme,
               ),
             ),
           ],
-        )
+        ),
+        const SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: addItems.length,
+          itemBuilder: (BuildContext context, index) {
+            TextEditingController itemController = TextEditingController(text: addItems[index].item);
+            TextEditingController amountController = TextEditingController(text: addItems[index].amount == 0.0 ? "" : addItems[index].amount.toString());
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: itemController, // No more index errors
+                    decoration: AppDateStyles.textFieldDecoration(
+                      hintText: 'Enter item',
+                      prefixIcon: Icons.local_grocery_store_rounded,
+                    ),
+                    style: const TextStyle(color: AppColors.themeLite),
+                    onChanged: (value) {
+                      addItems[index] = ExpenseData(
+                        item: value,
+                        amount: addItems[index].amount,
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    // ignore: unrelated_type_equality_checks
+                    controller: amountController, // No more index errors
+                    decoration: AppDateStyles.textFieldDecoration(
+                      hintText: 'Enter amount',
+                      prefixIcon: Icons.currency_rupee_sharp,
+                    ),
+                    style: const TextStyle(color: AppColors.themeLite),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      addItems[index] = ExpenseData(
+                        item: addItems[index].item,
+                        amount: double.tryParse(value) ?? 0.0,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ],
     ),
-  ));
+  );
 }
 
 @override
