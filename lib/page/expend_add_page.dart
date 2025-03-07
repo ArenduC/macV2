@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:maca/common/animated_button/animation_button.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
+import 'package:maca/helper/add_expense.dart';
+import 'package:maca/helper/registration_validation_helper.dart';
 import 'package:maca/model/data_model.dart';
+import 'package:maca/models/global_model.dart';
 import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/styles/app_style.dart';
@@ -27,6 +31,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
   dynamic endShift = false;
   dynamic loginData;
   dynamic isSuccess = false;
+  dynamic code;
 
   List<ExpenseData> expenses = [const ExpenseData(item: "", amount: 0)];
 
@@ -42,27 +47,46 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
     macaPrint(loginData);
   }
 
-  void addExpense({required ExpenseData data}) {
-    setState(() {
-      expenses.add(data);
-      itemController.text = data.item;
-      amountController.text = data.amount.toString();
-    });
+  void addExpense({ExpenseData? data, ActionType? action, int? index}) {
+    if (action == ActionType.add) {
+      setState(() {
+        expenses.add(data!);
+        itemController.text = data.item;
+        amountController.text = data.amount.toString();
+      });
+    } else if (action == ActionType.delete) {
+      setState(() {
+        expenses.removeAt(index!);
+        itemController.text = '';
+        amountController.text = '';
+      });
+    }
   }
 
   // this method for getting date from user input
 
   Future<dynamic> marketingStatusUpdate() async {
     List<Map<String, dynamic>> jsonList = expenses.map((e) => e.toJson()).toList();
+
+    setState(() {
+      code = emptyArrayCheck(context: context, data: expenses)["code"];
+    });
+    if (emptyArrayCheck(context: context, data: expenses)["status"]) {
+      return;
+    }
+
     dynamic jsonBody = {
       "user_id": loginData[0]["user_id"],
       "items": jsonList,
     };
+    print("emptyArrayChecking: ${emptyArrayCheck(data: expenses)}");
+
     macaPrint(jsonBody);
     macaPrint(jsonList);
     dynamic response = await ApiService().apiCallService(endpoint: PostUrl().addExpense, method: ApiType().post, body: jsonBody);
     dynamic data = AppFunction().macaApiResponsePrintAndGet(data: response);
     setState(() {
+      code = 200;
       isSuccess = data["isSuccess"];
       itemController.text = '';
       amountController.text = '';
@@ -90,40 +114,28 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
                 child: child,
               );
             },
-            child: isSuccess
-                ? const Column(
-                    key: ValueKey('successView'), // Unique key for this child
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [SuccessView()],
-                  )
-                : Column(
-                    key: const ValueKey('inputFieldsView'), // Unique key for this child
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      slotSegment("expense", shift, addExpense, expenses),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {
-                          marketingStatusUpdate();
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 40,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: AppColors.themeLite,
-                          ),
-                          child: const Text(
-                            "Add expense",
-                            style: TextStyle(color: AppColors.themeWhite),
-                          ),
-                        ),
-                      ),
-                    ],
+            child: Column(
+              key: const ValueKey('inputFieldsView'), // Unique key for this child
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                slotSegment("expense", shift, addExpense, expenses),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    marketingStatusUpdate();
+                  },
+                  child: AnimationButton(
+                    buttonText: "Add Expense",
+                    onPressed: () {
+                      marketingStatusUpdate();
+                    },
+                    data: expenses,
+                    statusCode: code,
                   ),
+                )
+              ],
+            ),
           ));
     });
   }
@@ -132,9 +144,8 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
 @override
 Widget slotSegment(
   type,
-  // List of controllers for amounts
   dynamic shift,
-  Function({required ExpenseData data}) onAddItem,
+  Function({ExpenseData data, ActionType action, int index}) onAddItem,
   List<ExpenseData> addItems,
 ) {
   return Container(
@@ -158,7 +169,7 @@ Widget slotSegment(
               onTap: () {
                 // Ensure new item is added to both controllers and list
 
-                onAddItem(data: const ExpenseData(item: "", amount: 0)); // Add a new empty expense
+                onAddItem(data: const ExpenseData(item: "", amount: 0), action: ActionType.add); // Add a new empty expense
               },
               child: const Icon(
                 Icons.add_circle_outlined,
@@ -175,8 +186,8 @@ Widget slotSegment(
             TextEditingController itemController = TextEditingController(text: addItems[index].item);
             TextEditingController amountController = TextEditingController(text: addItems[index].amount == 0.0 ? "" : addItems[index].amount.toString());
             return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: TextField(
@@ -211,6 +222,23 @@ Widget slotSegment(
                         amount: double.tryParse(value) ?? 0.0,
                       );
                     },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(11),
+                  decoration: BoxDecoration(
+                    color: AppColors.themeGray,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      onAddItem(action: ActionType.delete, index: index);
+                    },
+                    child: const Icon(
+                      Icons.delete,
+                      color: AppColors.theme,
+                    ),
                   ),
                 ),
               ],

@@ -25,3 +25,5 @@ class SetUserDetails {
     return userDetails;
   }
 }
+
+enum ActionType { add, edit, delete }

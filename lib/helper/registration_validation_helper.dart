@@ -46,6 +46,7 @@ void showSnackbar(BuildContext context, String message) {
       content: Text(message, style: TextStyle(color: Colors.white)),
       backgroundColor: Colors.red,
       duration: Duration(seconds: 3),
+      behavior: SnackBarBehavior.floating,
     ),
   );
 }
