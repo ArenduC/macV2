@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:maca/common/common_snack_bar.dart';
+import 'package:maca/function/app_function.dart';
+import 'package:open_filex/open_filex.dart';
+import 'dart:io';
+
+import 'package:pdf/widgets.dart' as pw;
 import 'package:maca/screen/login_screen.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:path_provider/path_provider.dart';
 
 class More extends StatefulWidget {
   const More({super.key});
@@ -12,6 +17,36 @@ class More extends StatefulWidget {
 }
 
 class _MoreState extends State<More> {
+  Future<void> pdfGenerator() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) => pw.Center(
+          child: pw.Column(
+            children: [
+              pw.Text('Hello World', style: pw.TextStyle(fontSize: 40)),
+              pw.Text('This is a PDF test.', style: pw.TextStyle(fontSize: 20)),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    // ✅ Get writable directory (Documents folder)
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/example.pdf';
+
+    // ✅ Save the file
+    final file = File(filePath);
+    await file.writeAsBytes(await pdf.save());
+
+    print('📄 PDF saved at: $filePath');
+
+    // ✅ Open the PDF file
+    await OpenFilex.open(filePath);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +63,14 @@ class _MoreState extends State<More> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [profile(context)],
+              children: [
+                profile(context),
+                GestureDetector(
+                    onTap: () {
+                      pdfGenerator();
+                    },
+                    child: const Text("Help"))
+              ],
             )));
   }
 }

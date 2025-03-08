@@ -23,7 +23,7 @@ class AnimationButtonColor {
 class AnimationButtonTextColor {
   static const Color defaultColor = AppColors.themeWhite;
   static const Color loadingColor = AppColors.theme;
-  static const Color successColor = AppColors.themeWhite;
+  static const Color successColor = Color.fromARGB(255, 47, 114, 2);
   static const Color failedColor = AppColors.themeWhite;
   static const Color warningColor = Color.fromARGB(255, 133, 82, 6);
   static const Color noneColor = AppColors.theme;

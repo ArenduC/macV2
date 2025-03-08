@@ -66,17 +66,35 @@ class _AnimationButtonState extends State<AnimationButton> {
     super.didUpdateWidget(oldWidget);
     if (widget.statusCode != oldWidget.statusCode) {
       colorPicker(widget.statusCode);
+      if (widget.statusCode == 100) {
+        setState(() {
+          selected = true;
+        });
+      }
     }
   }
 
   colorPicker(dynamic statusCode) {
     switch (statusCode) {
       case 200:
-        return {buttonColor = AnimationButtonColor.successColor, textColor = AnimationButtonTextColor.successColor, buttonText = "Successfully Added", icon = const Icon(Icons.check_circle)};
+        return {
+          buttonColor = AnimationButtonColor.successColor,
+          textColor = AnimationButtonTextColor.successColor,
+          buttonText = "Successfully Added",
+          icon = const Icon(Icons.check_circle, color: AnimationButtonTextColor.successColor)
+        };
       case 400:
         return {buttonColor = AnimationButtonColor.failedColor};
       case 500:
-        return {buttonColor = AnimationButtonColor.warningColor, textColor = AnimationButtonTextColor.warningColor, buttonText = "All fields are required", icon = const Icon(Icons.warning_rounded)};
+        return {
+          buttonColor = AnimationButtonColor.warningColor,
+          textColor = AnimationButtonTextColor.warningColor,
+          buttonText = "All fields are required",
+          icon = const Icon(
+            Icons.warning_rounded,
+            color: AnimationButtonTextColor.warningColor,
+          )
+        };
       case 100:
         return {buttonColor = AnimationButtonColor.defaultColor, textColor = AnimationButtonTextColor.defaultColor, buttonText = "Add Expense", icon = const Icon(Icons.add)};
       case 300:
@@ -138,7 +156,10 @@ class _AnimationButtonState extends State<AnimationButton> {
               curve: Curves.fastOutSlowIn,
               child: Center(
                 child: TweenAnimationBuilder<Color?>(
-                  tween: ColorTween(begin: textColor, end: textColor),
+                  tween: ColorTween(
+                    begin: textColor ?? Colors.blue, // ✅ Provide a default color
+                    end: textColor ?? Colors.blue, // ✅ Provide a default color
+                  ),
                   duration: const Duration(seconds: 1),
                   curve: Curves.fastOutSlowIn,
                   builder: (context, color, child) {
@@ -148,11 +169,11 @@ class _AnimationButtonState extends State<AnimationButton> {
                             height: 20,
                             width: 20,
                             child: CircularProgressIndicator(
-                              color: textColor,
+                              color: color ?? Colors.blue, // ✅ Use the animated color or fallback
                               strokeWidth: 2.0,
                             ),
                           )
-                        : icon!;
+                        : icon ?? SizedBox(); // ✅ Ensure `icon` is non-null
                   },
                 ),
               ),

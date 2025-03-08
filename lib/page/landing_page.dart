@@ -50,6 +50,27 @@ class _LandingPageState extends State<LandingPage> {
     macaPrint(loginDetails);
   }
 
+  void _gotoDetailsPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => Scaffold(
+          body: Center(
+            child: Hero(
+                transitionOnUserGestures: true,
+                flightShuttleBuilder: (flightContext, animation, flightDirection, fromHeroContext, toHeroContext) => Material(
+                      color: Colors.transparent,
+                      child: toHeroContext.widget,
+                    ),
+                tag: 'hero-rectangle',
+                child: ProfileView(
+                  fullView: true,
+                )),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +83,21 @@ class _LandingPageState extends State<LandingPage> {
             "assets/APPSVGICON/maca.svg",
             width: 60,
           ),
-          actions: const <Widget>[ProfileView()],
+          actions: <Widget>[
+            SizedBox(
+              width: 50,
+              height: 50, // Adjust the width as needed
+              child: GestureDetector(
+                onTap: () {
+                  _gotoDetailsPage(context);
+                },
+                child: Hero(
+                  tag: 'profile-view',
+                  child: ProfileView(),
+                ),
+              ),
+            ),
+          ],
         ),
         body: Padding(
             padding: const EdgeInsets.all(16),

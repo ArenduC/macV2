@@ -7,8 +7,10 @@ import 'package:maca/models/global_model.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
+// ignore: must_be_immutable
 class ProfileView extends StatefulWidget {
-  const ProfileView({super.key});
+  bool? fullView;
+  ProfileView({super.key, this.fullView = false});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -33,16 +35,22 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return loginDetails == null
-        ? Container()
+        ? Container(
+            height: 20,
+            width: 20,
+          )
         : Container(
-            margin: const EdgeInsets.only(right: 16),
+            height: widget.fullView! ? MediaQuery.of(context).size.height : 50,
+            width: widget.fullView! ? MediaQuery.of(context).size.height : 50,
+            margin: EdgeInsets.only(right: widget.fullView! ? 0 : 16),
             alignment: Alignment.center,
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              color: Colors.transparent,
+              shape: widget.fullView! ? BoxShape.rectangle : BoxShape.circle,
               border: Border.all(
                 color: AppColors.logoDep,
-                width: 1,
+                width: widget.fullView! ? 5 : 1,
               ),
             ),
             child: Column(

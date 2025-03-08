@@ -88,13 +88,13 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
     setState(() {
       code = 200;
       isSuccess = data["isSuccess"];
-      itemController.text = '';
-      amountController.text = '';
+      expenses = [const ExpenseData(item: "", amount: 0)];
     });
     Future.delayed(const Duration(seconds: 2), () {
       // Action after timeout
       setState(() {
         isSuccess = false;
+        code = 100;
       });
     });
   }
