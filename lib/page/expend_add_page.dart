@@ -4,14 +4,12 @@ import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/helper/add_expense.dart';
-import 'package:maca/helper/registration_validation_helper.dart';
 import 'package:maca/model/data_model.dart';
 import 'package:maca/models/global_model.dart';
 import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
-import 'package:maca/widget/app_common_widget.dart';
 import 'package:provider/provider.dart';
 
 class ExpendAddPage extends StatefulWidget {
@@ -79,7 +77,6 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
       "user_id": loginData[0]["user_id"],
       "items": jsonList,
     };
-    print("emptyArrayChecking: ${emptyArrayCheck(data: expenses)}");
 
     macaPrint(jsonBody);
     macaPrint(jsonList);
@@ -129,6 +126,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
                     buttonText: "Add Expense",
                     onPressed: () {
                       marketingStatusUpdate();
+                      return null;
                     },
                     data: expenses,
                     statusCode: code,

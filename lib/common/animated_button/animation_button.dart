@@ -43,8 +43,6 @@ class _AnimationButtonState extends State<AnimationButton> {
 
   statusController() {
     setState(() {
-      print("widget.data ${widget.data}");
-      print(" emptyArrayCheck ${emptyArrayCheck(context: context, data: widget.data ?? [])["code"]}");
       code = emptyArrayCheck(context: context, data: widget.data ?? [])["code"];
       widget.statusCode = code;
     });
@@ -163,7 +161,6 @@ class _AnimationButtonState extends State<AnimationButton> {
                   duration: const Duration(seconds: 1),
                   curve: Curves.fastOutSlowIn,
                   builder: (context, color, child) {
-                    print(widget.statusCode);
                     return widget.statusCode == 300
                         ? SizedBox(
                             height: 20,
@@ -173,7 +170,7 @@ class _AnimationButtonState extends State<AnimationButton> {
                               strokeWidth: 2.0,
                             ),
                           )
-                        : icon ?? SizedBox(); // ✅ Ensure `icon` is non-null
+                        : icon ?? const SizedBox(); // ✅ Ensure `icon` is non-null
                   },
                 ),
               ),
@@ -191,7 +188,7 @@ Widget buttonState({required AnimationModel model, required String buttonText}) 
     case AnimationModel.defaultAnimation:
       return Text(buttonText);
     case AnimationModel.loading:
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     case AnimationModel.success:
       return const Icon(
         Icons.check_circle,

@@ -38,6 +38,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   getProviderController() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
+        // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
         Provider.of<Counter>(context, listen: false).notifyListeners();
       }
     });
@@ -258,6 +259,7 @@ class SlotSwitch extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _SlotSwitchState createState() => _SlotSwitchState();
 }
 

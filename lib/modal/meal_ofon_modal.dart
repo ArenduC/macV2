@@ -9,8 +9,7 @@ class MealOfOnModal extends StatefulWidget {
   State<MealOfOnModal> createState() => _MealOfOnModalState();
 }
 
-class _MealOfOnModalState extends State<MealOfOnModal>
-    with SingleTickerProviderStateMixin {
+class _MealOfOnModalState extends State<MealOfOnModal> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _animation;
 
@@ -22,7 +21,7 @@ class _MealOfOnModalState extends State<MealOfOnModal>
     super.initState();
 
     _controller = AnimationController(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
@@ -116,9 +115,7 @@ class _MealOfOnModalState extends State<MealOfOnModal>
                 ),
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(80, 129, 133, 188),
-                      shape: BoxShape.circle),
+                  decoration: const BoxDecoration(color: Color.fromARGB(80, 129, 133, 188), shape: BoxShape.circle),
                   child: GestureDetector(
                     onPanUpdate: _handlePanUpdate,
                     onPanEnd: _handlePanEnd,

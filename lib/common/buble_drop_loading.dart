@@ -4,9 +4,11 @@ import 'dart:math';
 import 'package:maca/styles/colors/app_colors.dart';
 
 class ThreeDotHarmonicLoading extends StatefulWidget {
+  // ignore: use_super_parameters
   const ThreeDotHarmonicLoading({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ThreeDotHarmonicLoadingState createState() => _ThreeDotHarmonicLoadingState();
 }
 

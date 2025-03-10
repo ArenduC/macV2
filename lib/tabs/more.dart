@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maca/function/app_function.dart';
+
 import 'package:open_filex/open_filex.dart';
 import 'dart:io';
 
@@ -25,8 +25,8 @@ class _MoreState extends State<More> {
         build: (pw.Context context) => pw.Center(
           child: pw.Column(
             children: [
-              pw.Text('Hello World', style: pw.TextStyle(fontSize: 40)),
-              pw.Text('This is a PDF test.', style: pw.TextStyle(fontSize: 20)),
+              pw.Text('Hello World', style: const pw.TextStyle(fontSize: 40)),
+              pw.Text('This is a PDF test.', style: const pw.TextStyle(fontSize: 20)),
             ],
           ),
         ),
@@ -40,8 +40,6 @@ class _MoreState extends State<More> {
     // ✅ Save the file
     final file = File(filePath);
     await file.writeAsBytes(await pdf.save());
-
-    print('📄 PDF saved at: $filePath');
 
     // ✅ Open the PDF file
     await OpenFilex.open(filePath);

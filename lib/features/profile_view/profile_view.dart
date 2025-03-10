@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:maca/common/loading_component.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/helper/maca_global_helper.dart';
-import 'package:maca/model/data_model.dart';
-import 'package:maca/models/global_model.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
@@ -36,6 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return loginDetails == null
         ? Container(
+            padding: const EdgeInsets.all(0),
             height: 20,
             width: 20,
           )
@@ -57,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
               mainAxisSize: MainAxisSize.min, // Shrinks column to fit content
               children: [
                 Container(
-                  padding: EdgeInsets.all(8), // Remove extra padding
+                  padding: const EdgeInsets.all(8), // Remove extra padding
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.themeWhite,
@@ -65,11 +63,11 @@ class _ProfileViewState extends State<ProfileView> {
                   child: TextButton(
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero, // Ensures button size is based on text
-                      minimumSize: Size(0, 0), // Avoids extra space
+                      minimumSize: const Size(0, 0), // Avoids extra space
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Removes default tap area padding
                     ),
                     onPressed: () {},
-                    child: Text("${firstAlphabetExtractAndCapitalize(loginDetails?[0]["user_name"])}", style: TextStyle(fontSize: 15, color: AppColors.theme)),
+                    child: Text("${firstAlphabetExtractAndCapitalize(loginDetails?[0]["user_name"])}", style: const TextStyle(fontSize: 15, color: AppColors.theme)),
                   ),
                 ),
               ],

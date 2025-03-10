@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
@@ -53,10 +52,7 @@ class _MColumnGraphState extends State<MColumnGraph> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(0),
-      decoration: const BoxDecoration(
-          boxShadow: [AppBoxShadow.defaultBoxShadow],
-          color: AppColors.themeWhite,
-          borderRadius: BorderRadius.all(Radius.circular(12))),
+      decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
       child: Stack(children: [
         AnimatedContainer(
           duration: const Duration(microseconds: 800),
@@ -71,25 +67,20 @@ class _MColumnGraphState extends State<MColumnGraph> {
                   double height = ((data["value"] / maxValue) * maxHeight);
                   return AnimatedContainer(
                     duration: const Duration(microseconds: 800),
-                    padding: const EdgeInsets.all(
-                        2), // Fixed width for each container
+                    padding: const EdgeInsets.all(2), // Fixed width for each container
                     height: height,
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50),
-                          topRight: Radius.circular(50)),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
                       color: AppColors.themeGray,
                     ),
                     // You can vary colors if needed
                     alignment: Alignment.topCenter,
                     child: Container(
                       padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                          color: AppColors.themeLite, shape: BoxShape.circle),
+                      decoration: const BoxDecoration(color: AppColors.themeLite, shape: BoxShape.circle),
                       child: Text(
                         ((data["value"] / 100)).toStringAsFixed(1),
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 10),
+                        style: const TextStyle(color: Colors.white, fontSize: 10),
                       ),
                     ),
                   );
@@ -97,9 +88,7 @@ class _MColumnGraphState extends State<MColumnGraph> {
               ),
               Container(
                 height: 5,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: AppColors.themeGray),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: AppColors.themeGray),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -107,22 +96,16 @@ class _MColumnGraphState extends State<MColumnGraph> {
                 children: columnData.map<Widget>((data) {
                   return AnimatedContainer(
                     duration: const Duration(microseconds: 800),
-                    padding: const EdgeInsets.only(
-                        left: 8, right: 8), // Fixed width for each container
+                    padding: const EdgeInsets.only(left: 8, right: 8), // Fixed width for each container
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50),
-                          topRight: Radius.circular(50)),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
                       color: Color.fromARGB(255, 255, 255, 255),
                     ),
                     // You can vary colors if needed
                     alignment: Alignment.topCenter,
                     child: Text(
                       data["key"],
-                      style: const TextStyle(
-                          color: AppColors.themeLite,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700),
+                      style: const TextStyle(color: AppColors.themeLite, fontSize: 10, fontWeight: FontWeight.w700),
                     ),
                   );
                 }).toList(),
