@@ -9,7 +9,6 @@ import 'package:maca/package/m_column_graph.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
-import 'package:maca/widget/app_common_widget.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
