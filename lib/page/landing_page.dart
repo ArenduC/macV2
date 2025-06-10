@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:maca/common/loading_component.dart';
 import 'package:maca/connection/api_connection.dart';
+import 'package:maca/features/electric_bills/view/electrics_bill_view.dart';
 import 'package:maca/features/profile_view/profile_view.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/package/m_column_graph.dart';
@@ -39,8 +40,8 @@ class _LandingPageState extends State<LandingPage> {
     dynamic response = await ApiService().apiCallService(endpoint: GetUrl().currentExpenditureDetails, method: "GET");
 
     setState(() {
-      expenditureDetails = AppFunction().macaApiResponsePrintAndGet(data: response)["data"];
       isLoading = false;
+      expenditureDetails = [];
     });
   }
 
@@ -107,13 +108,18 @@ class _LandingPageState extends State<LandingPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      CurrentManagerView(
-                        data: expenditureDetails[0]["user_type_name"],
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      ExpenditureTiles(data: expenditureDetails),
+                      // CurrentManagerView(
+                      //   data: expenditureDetails[0]["user_type_name"],
+                      // ),
+                      // const SizedBox(
+                      //   height: 16,
+                      // ),
+                      // ExpenditureTiles(data: expenditureDetails),
+                      // const SizedBox(
+                      //   height: 16,
+                      // ),
+
+                      const ElectricsBillView(),
                       const SizedBox(
                         height: 16,
                       ),

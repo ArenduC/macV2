@@ -8,6 +8,7 @@ class PostUrl {
   String marketingStatusUpdate = "${Connection().prodUrl}v1/set_marketing_shift";
   String addExpense = "${Connection().prodUrl}v1/add_expense";
   String individualMarketStatus = "${Connection().prodUrl}v1/get_individual_marketing_status";
+  String electricBillCreate = "${Connection().prodUrl}v1/electric_bill_create";
 }
 
 class GetUrl {
@@ -15,4 +16,5 @@ class GetUrl {
   String marketList = "${Connection().prodUrl}v1/get_marketing_status";
   String currentExpenditureDetails = "${Connection().prodUrl}v1/current_marketing_details";
   String marketingDetails = "${Connection().prodUrl}v1/marketing_details";
+  String getAllElectricBills = "${Connection().baseUrl}v1/get_all_electric_bills";
 }
