@@ -4,7 +4,7 @@ import 'package:maca/function/app_function.dart';
 import 'package:maca/page/landing_page.dart';
 import 'package:maca/page/marketing_page.dart';
 import 'package:maca/styles/colors/app_colors.dart';
-import 'package:maca/tabs/more.dart';
+import 'package:maca/tabs/more/more.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

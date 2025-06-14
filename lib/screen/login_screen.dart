@@ -259,7 +259,6 @@ Widget loginSegment(
         ),
         TextField(
           controller: passwordController,
-
           obscureText: true,
           decoration: AppInputStyles.textFieldDecoration(
             hintText: 'Enter your password',

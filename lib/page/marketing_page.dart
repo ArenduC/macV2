@@ -75,6 +75,7 @@ class _MarketingPageState extends State<MarketingPage> {
       return Scaffold(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: AppColors.theme,
           title: const Text('Marketing', style: TextStyle(color: AppColors.themeWhite)),
         ),

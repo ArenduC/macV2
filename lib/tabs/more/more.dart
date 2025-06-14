@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:maca/tabs/more/controller.dart';
+import 'package:maca/tabs/more/model.dart';
 
 import 'package:open_filex/open_filex.dart';
 import 'dart:io';
@@ -50,6 +52,7 @@ class _MoreState extends State<More> {
     return Scaffold(
         backgroundColor: AppColors.themeWhite,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: AppColors.theme,
           title: const Text(
             'More',
@@ -57,23 +60,24 @@ class _MoreState extends State<More> {
           ),
         ),
         body: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                profile(context),
-                GestureDetector(
-                    onTap: () {
-                      pdfGenerator();
-                    },
-                    child: const Text("Help"))
-              ],
-            )));
+          padding: const EdgeInsets.all(8),
+          child: ListView.separated(
+            itemCount: moreItems.length,
+            separatorBuilder: (_, __) => const Divider(
+              height: 10,
+              thickness: 0,
+              color: Colors.transparent,
+            ),
+            itemBuilder: (context, index) {
+              final item = moreItems[index];
+              return profile(context, item);
+            },
+          ),
+        ));
   }
 }
 
-Widget profile(BuildContext context) {
+Widget profile(BuildContext context, MoreItemsProperty moreItems) {
   Future<void> dialogBuilder(BuildContext context) {
     return showDialog<void>(
       context: context,
@@ -117,21 +121,18 @@ Widget profile(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Row(
+        Row(
           children: [
-            Icon(
-              Icons.person,
-              color: AppColors.theme,
-            ),
-            SizedBox(
+            moreItems.icon,
+            const SizedBox(
               width: 8,
             ),
-            Text("Log out")
+            Text(moreItems.title)
           ],
         ),
         GestureDetector(
           onTap: () {
-            dialogBuilder(context);
+            moreItems.title == "Logout" ? dialogBuilder(context) : moreItems.onTap?.call(context);
           },
           child: const Icon(
             Icons.arrow_forward_ios_rounded,

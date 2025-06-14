@@ -60,15 +60,11 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.themeLite,
   );
-  static const TextStyle indicatorTextStyle = TextStyle(
-      fontSize: 10, fontWeight: FontWeight.w400, color: AppColors.theme);
+  static const TextStyle indicatorTextStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: AppColors.theme);
 
-  static const TextStyle cardHeaderLabelStyle = TextStyle(
-      fontSize: 15, fontWeight: FontWeight.w300, color: AppColors.theme);
-  static const TextStyle cardPillTextStyle = TextStyle(
-      fontSize: 10, fontWeight: FontWeight.w300, color: AppColors.theme);
-  static const TextStyle cardHeader2LabelStyle = TextStyle(
-      fontSize: 25, fontWeight: FontWeight.w700, color: AppColors.theme);
+  static const TextStyle cardHeaderLabelStyle = TextStyle(fontSize: 15, fontWeight: FontWeight.w300, color: AppColors.theme);
+  static const TextStyle cardPillTextStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w300, color: AppColors.theme);
+  static const TextStyle cardHeader2LabelStyle = TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: AppColors.theme);
 }
 
 class AppInputStyles {
@@ -84,12 +80,8 @@ class AppInputStyles {
         color: AppColors.themeLite,
         fontSize: 13.0,
       ),
-      prefixIcon: prefixIcon != null
-          ? Icon(prefixIcon, color: AppColors.themeLite)
-          : null, // Optional prefix icon
-      suffixIcon: suffixIcon != null
-          ? Icon(suffixIcon, color: AppColors.themeLite)
-          : null, // Optional suffix icon
+      prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.themeLite) : null, // Optional prefix icon
+      suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: AppColors.themeLite) : null, // Optional suffix icon
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded corners
         borderSide: const BorderSide(
@@ -111,8 +103,50 @@ class AppInputStyles {
           width: 1.0,
         ),
       ),
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 7.0, horizontal: 12.0),
+      contentPadding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 12.0),
+    );
+  }
+}
+
+class AppFormInputStyles {
+  // Common InputDecoration for text fields
+  static InputDecoration textFieldDecoration({
+    required String hintText,
+    IconData? prefixIcon,
+    IconData? suffixIcon,
+    Color? prefixIconColor = AppColors.themeLite,
+    Color? suffixIconColor = AppColors.themeLite,
+  }) {
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: const TextStyle(
+        color: AppColors.themeLite,
+        fontSize: 13.0,
+      ),
+      prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: prefixIconColor) : null, // Optional prefix icon
+      suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: suffixIconColor) : null, // Optional suffix icon
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0), // Rounded corners
+        borderSide: const BorderSide(
+          color: AppColors.themeLite,
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: const BorderSide(
+          color: AppColors.theme,
+          width: 2.0,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: const BorderSide(
+          color: AppColors.themeLite,
+          width: 1.0,
+        ),
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 12.0),
     );
   }
 }
@@ -132,12 +166,8 @@ class AppDateStyles {
       filled: true,
       fillColor: AppColors.themeGray,
 
-      prefixIcon: prefixIcon != null
-          ? Icon(prefixIcon, color: AppColors.theme)
-          : null, // Optional prefix icon
-      suffixIcon: suffixIcon != null
-          ? Icon(suffixIcon, color: AppColors.theme)
-          : null, // Optional suffix icon
+      prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.theme) : null, // Optional prefix icon
+      suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: AppColors.theme) : null, // Optional suffix icon
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded corners
         borderSide: const BorderSide(
@@ -159,8 +189,7 @@ class AppDateStyles {
           width: 1.0,
         ),
       ),
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 7.0, horizontal: 12.0),
+      contentPadding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 12.0),
     );
   }
 }
@@ -199,9 +228,5 @@ class AppButtonStyles {
 }
 
 class AppBoxShadow {
-  static const BoxShadow defaultBoxShadow = BoxShadow(
-      color: Color.fromRGBO(0, 0, 0, 0.13),
-      offset: Offset(0, 4),
-      blurRadius: 5,
-      spreadRadius: 0);
+  static const BoxShadow defaultBoxShadow = BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.13), offset: Offset(0, 4), blurRadius: 5, spreadRadius: 0);
 }

@@ -29,8 +29,8 @@ class _StartUpScreenState extends State<StartUpScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                isLoggedIn ? const HomeScreen() : const LoginScreen()),
+          builder: (context) => isLoggedIn ? const HomeScreen() : const LoginScreen(),
+        ),
       );
     });
   }
