@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:maca/features/add_electric_bill/helper.dart';
+import 'package:maca/features/add_electric_bill/view/user_list_view.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
@@ -16,6 +18,8 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
   final FocusNode _internetFocusNode = FocusNode();
   final FocusNode _eBillFocusNode = FocusNode();
   final FocusNode _unitFocusNode = FocusNode();
+
+  bool isValid = false;
   @override
   void initState() {
     super.initState();
@@ -27,6 +31,14 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
     });
     _unitFocusNode.addListener(() {
       setState(() {}); // Rebuild on focus change
+    });
+  }
+
+  void validateFields() {
+    setState(() {
+      // Check if any of the fields are empty or invalid
+      var jsonObject = {"p_electricBill": electricBillController.text, "p_electricUnit": unitController.text, "p_internetBill": internetController.text};
+      isValid = isAnyFieldEmpty(jsonObject);
     });
   }
 
@@ -62,6 +74,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
               focusNode: _internetFocusNode,
               keyboardType: TextInputType.number,
               controller: internetController,
+              onChanged: (_) => validateFields(),
               decoration: AppFormInputStyles.textFieldDecoration(
                 hintText: 'Enter Internet Bill',
                 prefixIcon: Icons.wifi,
@@ -76,6 +89,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
               focusNode: _eBillFocusNode,
               keyboardType: TextInputType.number,
               controller: electricBillController,
+              onChanged: (_) => validateFields(),
               decoration: AppFormInputStyles.textFieldDecoration(
                 hintText: 'Enter Electric Bill',
                 prefixIcon: Icons.electric_bolt,
@@ -90,6 +104,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
               focusNode: _unitFocusNode,
               keyboardType: TextInputType.number,
               controller: unitController,
+              onChanged: (_) => validateFields(),
               decoration: AppFormInputStyles.textFieldDecoration(
                 hintText: 'Enter Unit Consumed',
                 prefixIcon: Icons.speed,
@@ -100,16 +115,25 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-              onPressed: () {
-                String internet = internetController.text;
-                String electric = electricBillController.text;
-                String unit = unitController.text;
 
-                // Handle form submission logic here
-                print("Submitted: Internet=$internet, Electric=$electric, Unit=$unit");
-              },
-              style: AppButtonStyles.elevatedButtonStyle(),
+            const UserListView(),
+
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: isValid
+                  ? () {
+                      String internet = internetController.text;
+                      String electric = electricBillController.text;
+                      String unit = unitController.text;
+
+                      var jsonObject = {"p_electricBill": electric, "p_electricUnit": unit, "p_internetBill": internet};
+
+                      electricBillCreateUpdate(context, jsonObject);
+                    }
+                  : null,
+              style: AppButtonStyles.elevatedButtonStyle(backgroundColor: isValid ? AppColors.theme : AppColors.themeLite),
               child: const Text(
                 'Submit',
                 style: TextStyle(fontSize: 16.0, color: Colors.white),

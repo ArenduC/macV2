@@ -119,17 +119,52 @@ String getMonthName(int month) {
 }
 
 class AppFunction {
-  macaApiResponsePrintAndGet({dynamic data, bool? snackBarView, dynamic snackBarType, dynamic snackBarMessage, dynamic extractData}) {
+  macaApiResponsePrintAndGet({
+    required dynamic data,
+    BuildContext? context, // add context to show snackbar
+    bool? snackBarView,
+    dynamic snackBarType,
+    dynamic snackBarMessage,
+    dynamic extractData,
+  }) {
     print("Api response: $data");
+
     if (data.statusCode == 200) {
       dynamic response = jsonDecode(data.body);
+
+      // ✅ Show SnackBar if requested and context is available
+      if (snackBarView == true && context != null) {
+        final message = snackBarMessage ?? response["message"] ?? "Success";
+        final isError = snackBarType == "error";
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message.toString()),
+            backgroundColor: isError ? Colors.red : Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+
+      // ✅ Return extracted data or full response
       if (extractData == "data") {
-        print("Api  responsefff: ${response["data"]}");
+        print("Api response (data): ${response["data"]}");
         return response["data"];
       } else {
-        print("Api response: $response");
+        print("Api response (full): $response");
         return response;
       }
+    } else {
+      if (snackBarView == true && context != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Something went wrong"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      print("API Error: ${data.statusCode}");
+      return null;
     }
   }
 

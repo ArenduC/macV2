@@ -16,5 +16,6 @@ class GetUrl {
   String marketList = "${Connection().prodUrl}v1/get_marketing_status";
   String currentExpenditureDetails = "${Connection().prodUrl}v1/current_marketing_details";
   String marketingDetails = "${Connection().prodUrl}v1/marketing_details";
-  String getAllElectricBills = "${Connection().baseUrl}v1/get_all_electric_bills";
+  String getAllElectricBills = "${Connection().prodUrl}v1/get_all_electric_bills";
+  String activeUserList = "${Connection().prodUrl}v1/active_user_list";
 }

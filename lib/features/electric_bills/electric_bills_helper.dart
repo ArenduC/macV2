@@ -7,7 +7,7 @@ import 'package:maca/service/api_service.dart';
 Future<List<ElectricBillModel>> getMarketingDetails() async {
   dynamic response = await ApiService().apiCallService(endpoint: GetUrl().getAllElectricBills, method: ApiType().get);
 
-  final bills = (AppFunction().macaApiResponsePrintAndGet(data: response)["data"] as List).map((e) => ElectricBillModel.fromJson(e)).toList();
-
+  final responseData = AppFunction().macaApiResponsePrintAndGet(data: response)["data"] as List<dynamic>;
+  final bills = responseData.reversed.map((e) => ElectricBillModel.fromJson(e)).toList();
   return bills;
 }
