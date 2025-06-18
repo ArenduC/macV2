@@ -31,32 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     macaPrint(_selectedIndex, "currentIndex");
   }
 
-  void showBedSelectionModal(dynamic value) {
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        isScrollControlled: true, // Allows the modal to take more space
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)), // Optional rounded corners
-        ),
-        builder: (context) {
-          return GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(), // Dismiss keyboard
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height,
-                ),
-                child: getModalItem(value),
-              ),
-            ),
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
@@ -81,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.theme,
           onPressed: () {
-            showBedSelectionModal(_selectedIndex);
+            showBedSelectionModal(context, _selectedIndex);
           },
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300), // Animation duration

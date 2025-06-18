@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:maca/tabs/more/controller.dart';
 import 'package:maca/tabs/more/model.dart';
 
-import 'package:open_filex/open_filex.dart';
-import 'dart:io';
-
-import 'package:pdf/widgets.dart' as pw;
 import 'package:maca/screen/login_screen.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
@@ -19,34 +15,6 @@ class More extends StatefulWidget {
 }
 
 class _MoreState extends State<More> {
-  Future<void> pdfGenerator() async {
-    final pdf = pw.Document();
-
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) => pw.Center(
-          child: pw.Column(
-            children: [
-              pw.Text('Hello World', style: const pw.TextStyle(fontSize: 40)),
-              pw.Text('This is a PDF test.', style: const pw.TextStyle(fontSize: 20)),
-            ],
-          ),
-        ),
-      ),
-    );
-
-    // ✅ Get writable directory (Documents folder)
-    final directory = await getApplicationDocumentsDirectory();
-    final filePath = '${directory.path}/example.pdf';
-
-    // ✅ Save the file
-    final file = File(filePath);
-    await file.writeAsBytes(await pdf.save());
-
-    // ✅ Open the PDF file
-    await OpenFilex.open(filePath);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

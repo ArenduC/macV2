@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maca/features/add_electric_bill/view/add_electric_bill_view.dart';
 import 'package:maca/tabs/more/model.dart';
-import 'package:path/path.dart';
 
 final List<MoreItemsProperty> moreItems = [
   MoreItemsProperty(

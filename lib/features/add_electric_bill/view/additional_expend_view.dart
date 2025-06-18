@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
-
 import 'package:maca/features/add_electric_bill/model.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
-class MeterReadingView extends StatefulWidget {
-  final Function(List<MeterReadingInputModel>)? onSubmit;
-  const MeterReadingView({super.key, required this.onSubmit});
+class AdditionalExpendView extends StatefulWidget {
+  const AdditionalExpendView({super.key});
 
   @override
-  State<MeterReadingView> createState() => _MeterReadingViewState();
+  State<AdditionalExpendView> createState() => _AdditionalExpendViewState();
 }
 
-class _MeterReadingViewState extends State<MeterReadingView> {
-  List<MeterReadingInputModel> inputList = [];
+class _AdditionalExpendViewState extends State<AdditionalExpendView> {
+  List<AdditionalExpendModule> inputList = [];
   List<ActiveUser> convertedList = [];
 
   @override
   void initState() {
     super.initState();
-    inputList.add(MeterReadingInputModel());
-
-    macaPrint("convertedList$convertedList");
+    inputList.add(AdditionalExpendModule()); // Add one by default
   }
 
   void addRow() {
     setState(() {
-      inputList.add(MeterReadingInputModel());
+      inputList.add(AdditionalExpendModule());
     });
   }
 
@@ -39,7 +35,6 @@ class _MeterReadingViewState extends State<MeterReadingView> {
   }
 
   void updateInput(int index, int fieldIndex, String value, {List<ActiveUser>? selectedUser}) {
-    macaPrint("selectedUser$selectedUser");
     setState(() {
       switch (fieldIndex) {
         case 0:
@@ -57,10 +52,6 @@ class _MeterReadingViewState extends State<MeterReadingView> {
 
   void printValues() {
     macaPrint(inputList);
-    if (widget.onSubmit != null) {
-      widget.onSubmit!(inputList); // Pass your list here
-    }
-    AppFunction().macaApiResponsePrintAndGet(snackBarView: true, context: context, snackBarMessage: "Meter reading successfully added", data: "");
   }
 
   @override
@@ -74,41 +65,24 @@ class _MeterReadingViewState extends State<MeterReadingView> {
               const Row(
                 children: [
                   Icon(
-                    Icons.gas_meter_rounded,
+                    Icons.currency_rupee_rounded,
                     color: AppColors.theme,
                   ),
                   Text(
-                    "Meter reading",
+                    "Additional expend",
                     style: TextStyle(color: AppColors.theme),
                   )
                 ],
               ),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      addRow();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
-                      child: const Icon(Icons.add, color: AppColors.themeWhite),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      printValues();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
-                      child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
-                    ),
-                  ),
-                ],
+              GestureDetector(
+                onTap: () {
+                  addRow();
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(0),
+                  decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
+                  child: const Icon(Icons.add, color: AppColors.themeWhite),
+                ),
               ),
             ],
           ),
@@ -126,7 +100,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                       child: TextFormField(
                         onChanged: (value) => updateInput(index, 0, value),
                         decoration: AppFormInputStyles.textFieldDecoration(
-                          hintText: 'Meter',
+                          hintText: 'Purpose',
                         ),
                         style: const TextStyle(color: AppColors.theme),
                       ),
@@ -135,7 +109,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                     Expanded(
                       child: TextFormField(
                         decoration: AppFormInputStyles.textFieldDecoration(
-                          hintText: 'Unit',
+                          hintText: 'Amount',
                         ),
                         style: const TextStyle(color: AppColors.theme),
                         onChanged: (value) => updateInput(index, 1, value),
@@ -149,9 +123,9 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                               selectedUsers: inputList[index].input3,
                               onUserSelected: (data) => {
                                     setState(() {
-                                      inputList[index].input3 = [];
-                                    }),
-                                    updateInput(index, 2, "data", selectedUser: data)
+                                      updateInput(index, 2, "data", selectedUser: data);
+                                      convertedList = data;
+                                    })
                                   });
                         },
                         style: AppButtonStyles.outlinedButtonStyle(),
@@ -171,6 +145,11 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                 ),
               );
             },
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: printValues,
+            child: const Text("Print All Values"),
           ),
         ],
       ),

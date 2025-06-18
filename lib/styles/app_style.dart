@@ -199,6 +199,7 @@ class AppButtonStyles {
   static ButtonStyle elevatedButtonStyle({
     Color backgroundColor = AppColors.themeLite,
     double borderRadius = 10.0,
+    Color borderColor = AppColors.themeLite,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 12.0),
   }) {
     return ElevatedButton.styleFrom(
@@ -215,10 +216,11 @@ class AppButtonStyles {
   static ButtonStyle outlinedButtonStyle({
     Color borderColor = AppColors.themeLite,
     double borderRadius = 10.0,
-    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 16.0),
+    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 12.0),
   }) {
     return OutlinedButton.styleFrom(
-      side: BorderSide(color: borderColor, width: 2.0),
+      backgroundColor: AppColors.themeWhite,
+      side: BorderSide(color: borderColor, width: 1.0),
       padding: padding,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
