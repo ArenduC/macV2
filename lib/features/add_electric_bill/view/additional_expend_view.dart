@@ -5,7 +5,8 @@ import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
 class AdditionalExpendView extends StatefulWidget {
-  const AdditionalExpendView({super.key});
+  final Function(List<AdditionalExpendModule>)? onSubmit;
+  const AdditionalExpendView({super.key, this.onSubmit});
 
   @override
   State<AdditionalExpendView> createState() => _AdditionalExpendViewState();
@@ -52,6 +53,9 @@ class _AdditionalExpendViewState extends State<AdditionalExpendView> {
 
   void printValues() {
     macaPrint(inputList);
+    if (widget.onSubmit != null) {
+      widget.onSubmit!(inputList); // Pass your list here
+    }
   }
 
   @override
@@ -74,15 +78,32 @@ class _AdditionalExpendViewState extends State<AdditionalExpendView> {
                   )
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  addRow();
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(0),
-                  decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
-                  child: const Icon(Icons.add, color: AppColors.themeWhite),
-                ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      addRow();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(0),
+                      decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
+                      child: const Icon(Icons.add, color: AppColors.themeWhite),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      printValues();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(0),
+                      decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
+                      child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -129,7 +150,7 @@ class _AdditionalExpendViewState extends State<AdditionalExpendView> {
                                   });
                         },
                         style: AppButtonStyles.outlinedButtonStyle(),
-                        child: const Text("Border"),
+                        child: inputList[index].input3.isEmpty ? const Text("Border") : Text("${inputList[index].input3.length}"),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -145,11 +166,6 @@ class _AdditionalExpendViewState extends State<AdditionalExpendView> {
                 ),
               );
             },
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: printValues,
-            child: const Text("Print All Values"),
           ),
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/model.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
+import 'package:maca/styles/colors/app_colors.dart';
 
 class UserListView extends StatefulWidget {
   final List<ActiveUser>? activeUserList;
@@ -21,6 +22,7 @@ class _UserListViewState extends State<UserListView> {
   List<ActiveUser> userList = [];
   Set<int> selectedUserIds = {};
   List<ActiveUser> selectedUser = [];
+  bool allSelect = false;
 
   @override
   void initState() {
@@ -63,11 +65,83 @@ class _UserListViewState extends State<UserListView> {
     }
   }
 
+  selectAllList() {
+    setState(() {
+      allSelect = !allSelect;
+      if (allSelect) {
+        selectedUser = List<ActiveUser>.from(userList);
+        selectedUserIds = selectedUser.map((u) => u.id).toSet();
+        widget.onDone?.call(selectedUser);
+      } else {
+        selectedUser = [];
+        selectedUserIds = selectedUser.map((u) => u.id).toSet();
+        widget.onDone?.call(selectedUser);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Text("Add Border", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  if (selectedUser.isNotEmpty)
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          height: 20,
+                          width: 20,
+                          decoration: const BoxDecoration(color: AppColors.theme, borderRadius: BorderRadius.all(Radius.circular(5))),
+                        ),
+                        Text(
+                          "${selectedUser.length}",
+                          style: const TextStyle(color: AppColors.themeWhite, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    )
+                ],
+              ),
+              GestureDetector(
+                onTap: () {
+                  selectAllList();
+                },
+                child: Row(
+                  children: [
+                    const Text("Select All", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    if (allSelect)
+                      const Icon(
+                        Icons.check_box_rounded,
+                        color: AppColors.theme,
+                      )
+                    else
+                      const Icon(
+                        Icons.check_box_outline_blank_rounded,
+                        color: AppColors.themeLite,
+                        weight: 100,
+                      ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
         Flexible(
           child: ListView.builder(
             shrinkWrap: true,
@@ -76,11 +150,32 @@ class _UserListViewState extends State<UserListView> {
               final user = userList[index];
               final isSelected = selectedUserIds.contains(user.id);
               return ListTile(
-                leading: CircleAvatar(child: Text(user.name[0])),
-                title: Text(user.name),
-                subtitle: Text("Bed ID: ${user.userBedId}"),
-                trailing: isSelected ? const Icon(Icons.check_circle, color: Colors.green) : const Icon(Icons.circle_outlined),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2), // Reduce space inside tile
+                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                minVerticalPadding: 0,
+                leading: CircleAvatar(
+                  backgroundColor: AppColors.themeLite,
+                  child: Text(
+                    user.name[0].toUpperCase(),
+                    style: const TextStyle(color: AppColors.themeWhite),
+                  ),
+                ),
+                title: Text(user.name, style: const TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600, fontSize: 15)),
+                subtitle: Text("Bed ID: ${user.userBedId}",
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.theme,
+                    )),
+                trailing: isSelected
+                    ? const Icon(Icons.check_box_rounded, color: AppColors.theme)
+                    : const Icon(
+                        Icons.check_box_outline_blank_rounded,
+                        color: AppColors.themeLite,
+                      ),
                 selected: isSelected,
+                focusColor: AppColors.themeLite,
+                selectedColor: AppColors.themeLite,
+                selectedTileColor: const Color.fromARGB(48, 129, 133, 188),
                 onTap: () => toggleSelection(user),
               );
             },

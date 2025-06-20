@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/model.dart';
+import 'package:maca/features/add_electric_bill/view/meter_list_view.dart';
+import 'package:maca/features/add_electric_bill/view/previous_meter_reading_view.dart';
 import 'package:maca/features/add_electric_bill/view/segment_add_view.dart';
 import 'package:maca/features/add_electric_bill/view/user_list_view.dart';
 import 'package:maca/modal/meal_ofon_modal.dart';
@@ -41,8 +43,12 @@ getMarketStatus(dynamic data) {
 // This is for showing modal based on screen
 getModalItem(
   dynamic data, {
+  int? selectedMeterId,
   List<ActiveUser>? activeUserList,
+  List<ActiveMeter>? activeMeterList,
+  List<MeterReadingInputModel>? meterReadingDetails,
   Function(List<ActiveUser>)? onUserSelected,
+  Function(List<ActiveMeter>)? onMeterSelected,
 }) {
   macaPrint("itemIndex$data");
   switch (data) {
@@ -55,6 +61,16 @@ getModalItem(
         activeUserList: activeUserList,
         onDone: onUserSelected,
       );
+    case 4:
+      return MeterListView(
+        activeMeterList: activeMeterList,
+        selectedMeterId: selectedMeterId,
+        onDone: onMeterSelected,
+      );
+    case 5:
+      return PreviousMeterReadingView(
+        selectedMeterId: selectedMeterId,
+      );
     case 3:
       return const SegmentAddView();
     default:
@@ -65,9 +81,14 @@ getModalItem(
 void showBedSelectionModal(
   BuildContext context,
   dynamic value, {
+  int? selectedMeterId,
   List<ActiveUser>? selectedUsers,
+  List<ActiveMeter>? activeMeterList,
+  List<MeterReadingInputModel>? meterReadingDetails,
   Function(List<ActiveUser>)? onUserSelected,
+  Function(List<ActiveMeter>)? onMeterSelected,
 }) {
+  macaPrint("selectedMeterIdOnSheBedSelectionModal$selectedMeterId");
   showModalBottomSheet(
       context: context,
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -86,7 +107,13 @@ void showBedSelectionModal(
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height,
               ),
-              child: getModalItem(value, activeUserList: selectedUsers, onUserSelected: onUserSelected),
+              child: getModalItem(value,
+                  activeUserList: selectedUsers,
+                  selectedMeterId: selectedMeterId,
+                  meterReadingDetails: meterReadingDetails,
+                  onUserSelected: onUserSelected,
+                  onMeterSelected: onMeterSelected,
+                  activeMeterList: activeMeterList),
             ),
           ),
         );
@@ -136,10 +163,12 @@ formatCustomDate(dynamic dateTime) {
   final day = parsedDate.day;
   final daySuffix = getDaySuffix(day);
   final month = getMonthName(parsedDate.month);
+  final year = parsedDate.year;
 
   return {
     'Day': '$day$daySuffix',
     'Month': month,
+    'Year': year.toString(),
   };
 }
 
@@ -166,7 +195,7 @@ String getMonthName(int month) {
 
 class AppFunction {
   macaApiResponsePrintAndGet({
-    dynamic data,
+    required dynamic data,
     BuildContext? context, // add context to show snackbar
     bool? snackBarView,
     dynamic snackBarType,
@@ -186,44 +215,44 @@ class AppFunction {
             duration: const Duration(seconds: 2),
           ),
         );
-      } else {
-        if (data.statusCode == 200) {
-          dynamic response = jsonDecode(data.body);
+      }
+    } else {
+      if (data.statusCode == 200) {
+        dynamic response = jsonDecode(data.body);
 
-          // ✅ Show SnackBar if requested and context is available
-          if (snackBarView == true && context != null) {
-            final message = snackBarMessage ?? response["message"] ?? "Success";
-            final isError = snackBarType == "error";
+        // ✅ Show SnackBar if requested and context is available
+        if (snackBarView == true && context != null) {
+          final message = snackBarMessage ?? response["message"] ?? "Success";
+          final isError = snackBarType == "error";
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message.toString()),
-                backgroundColor: isError ? Colors.red : Colors.green,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          }
-
-          // ✅ Return extracted data or full response
-          if (extractData == "data") {
-            print("Api response (data): ${response["data"]}");
-            return response["data"];
-          } else {
-            print("Api response (full): $response");
-            return response;
-          }
-        } else {
-          if (snackBarView == true && context != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Something went wrong"),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-          print("API Error: ${data.statusCode}");
-          return null;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message.toString()),
+              backgroundColor: isError ? Colors.red : Colors.green,
+              duration: const Duration(seconds: 2),
+            ),
+          );
         }
+
+        // ✅ Return extracted data or full response
+        if (extractData == "data") {
+          print("Api response (data): ${response["data"]}");
+          return response["data"];
+        } else {
+          print("Api response (full): $response");
+          return response;
+        }
+      } else {
+        if (snackBarView == true && context != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Something went wrong"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        print("API Error: ${data.statusCode}");
+        return null;
       }
     }
   }

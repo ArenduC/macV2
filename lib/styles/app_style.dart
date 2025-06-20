@@ -116,6 +116,7 @@ class AppFormInputStyles {
     IconData? suffixIcon,
     Color? prefixIconColor = AppColors.themeLite,
     Color? suffixIconColor = AppColors.themeLite,
+    VoidCallback? onSuffixIconTap,
   }) {
     return InputDecoration(
       hintText: hintText,
@@ -124,7 +125,13 @@ class AppFormInputStyles {
         fontSize: 13.0,
       ),
       prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: prefixIconColor) : null, // Optional prefix icon
-      suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: suffixIconColor) : null, // Optional suffix icon
+      suffixIcon: suffixIcon != null
+          ? GestureDetector(
+              onTap: onSuffixIconTap,
+              child: Icon(suffixIcon, color: suffixIconColor),
+            )
+          : null,
+// Optional suffix icon
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded corners
         borderSide: const BorderSide(

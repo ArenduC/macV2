@@ -8,7 +8,10 @@ class ListOfStoreKey {
   static const String loginStatus = "loginStatus";
   static const String fcmToken = "fcmToken";
   static const String inUsMrDetails = "inUsMrDetails";
-  static const String activeBorderList = "activeBorderList"; //individualMarketingDetails
+  static const String activeBorderList = "activeBorderList";
+  static const String activeMeterList = "activeMeterList";
+  static const String getMonthlyMeterReadings = "getMonthlyMeterReadings";
+  //individualMarketingDetails
   static const Map<String, String> allKeys = {
     "loginDetails": loginDetails,
     "borderDetails": borderDetails,
@@ -16,6 +19,8 @@ class ListOfStoreKey {
     "fcmToken": fcmToken,
     "inUsMrDetails": inUsMrDetails,
     "activeBorderList": activeBorderList,
+    "activeMeterList": activeMeterList,
+    "getMonthlyMeterReadings": getMonthlyMeterReadings
   };
 }
 

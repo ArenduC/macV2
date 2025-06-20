@@ -30,6 +30,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
   dynamic loginData;
   dynamic isSuccess = false;
   dynamic code;
+  double totalAmount = 0;
 
   List<ExpenseData> expenses = [const ExpenseData(item: "", amount: 0)];
 
@@ -59,6 +60,18 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
         amountController.text = '';
       });
     }
+  }
+
+  void updateTotalExpense() {
+    if (expenses.isNotEmpty) {
+      for (var ex in expenses) {
+        setState(() {
+          totalAmount += ex.amount;
+        });
+        // Assuming `ex.amount` is numeric
+      }
+    }
+    macaPrint("totalAmount$totalAmount");
   }
 
   // this method for getting date from user input
@@ -116,7 +129,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                slotSegment("expense", shift, addExpense, expenses),
+                slotSegment("expense", shift, addExpense, expenses, updateTotalExpense),
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
@@ -145,6 +158,7 @@ Widget slotSegment(
   dynamic shift,
   Function({ExpenseData data, ActionType action, int index}) onAddItem,
   List<ExpenseData> addItems,
+  Function() updateTotalExpense,
 ) {
   return Container(
     padding: const EdgeInsets.all(8),
@@ -159,9 +173,13 @@ Widget slotSegment(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              type == "Start Date" ? "From" : "Expense",
-              style: AppTextStyles.inputLabel,
+            Row(
+              children: [
+                Text(
+                  type == "Start Date" ? "From" : "Expense",
+                  style: AppTextStyles.inputLabel,
+                ),
+              ],
             ),
             GestureDetector(
               onTap: () {
@@ -183,6 +201,7 @@ Widget slotSegment(
           itemBuilder: (BuildContext context, index) {
             TextEditingController itemController = TextEditingController(text: addItems[index].item);
             TextEditingController amountController = TextEditingController(text: addItems[index].amount == 0.0 ? "" : addItems[index].amount.toString());
+
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -18,4 +18,6 @@ class GetUrl {
   String marketingDetails = "${Connection().prodUrl}v1/marketing_details";
   String getAllElectricBills = "${Connection().prodUrl}v1/get_all_electric_bills";
   String activeUserList = "${Connection().prodUrl}v1/active_user_list";
+  String activeMeterList = "${Connection().baseUrl}v1/active_meter_list";
+  String getMonthlyMeterReadings = "${Connection().baseUrl}v1/get_monthly_meter_readings";
 }

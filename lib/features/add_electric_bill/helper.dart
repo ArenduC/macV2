@@ -31,10 +31,154 @@ Future<List<ActiveUser>> getActiveUserList() async {
   return bills;
 }
 
+Future<List<ActiveMeter>> getActiveMeterList() async {
+  dynamic response = await ApiService().apiCallService(endpoint: GetUrl().activeMeterList, method: ApiType().get);
+  final responseData = AppFunction().macaApiResponsePrintAndGet(data: response)["data"] as List<dynamic>;
+  final meterList = responseData.reversed.map((e) => ActiveMeter.fromJson(e)).toList();
+  LocalStore().setStore(ListOfStoreKey.activeMeterList, meterList);
+  return meterList;
+}
+
+Future<List<MeterReading>> getMonthlyReadingList() async {
+  dynamic response = await ApiService().apiCallService(endpoint: GetUrl().getMonthlyMeterReadings, method: ApiType().get);
+  final responseData = AppFunction().macaApiResponsePrintAndGet(data: response)["data"] as List<dynamic>;
+  final meterReadingList = responseData.reversed.map((e) => MeterReading.fromJson(e)).toList();
+  LocalStore().setStore(ListOfStoreKey.getMonthlyMeterReadings, meterReadingList);
+  return meterReadingList;
+}
+
 bool isAnyFieldEmpty(dynamic data) {
   bool isEnable = data.values.any((value) => value == null || value.toString().trim().isEmpty || value == 0);
 
   return !isEnable;
+}
+
+List<UserElectricBillItem> createElectricBillView({
+  required String internetBill,
+  required String totalElectricUnits,
+  required String totalElectricBill,
+  required List<ActiveUser> userList,
+  final List<MeterReadingInputModel>? meterReading,
+  final List<AdditionalExpendModule>? additionalExpendList,
+}) {
+  macaPrint(totalElectricUnits);
+  macaPrint(totalElectricBill);
+  macaPrint(userList);
+  macaPrint(internetBill);
+  macaPrint(meterReading);
+  macaPrint(additionalExpendList);
+
+  List<UserElectricBillItem> steepingList = userList.map((element) {
+    var getDetails = genericElectricAmount(
+        electricBill: totalElectricBill, userId: element.id, electricUnit: totalElectricUnits, userList: userList, meterReading: meterReading, additionalItem: additionalExpendList);
+
+    return UserElectricBillItem(
+      userName: element.name,
+      internet: (int.parse(internetBill) / userList.length).roundToDouble(),
+      unit: getDetails["unit"] ?? 0.0,
+      meterName: getDetails["meterId"] ?? "",
+      gElectricBill: getDetails["genericChargePerHead"] ?? 0.0,
+      mElectricBill: getDetails["chargePerHead"] ?? 0.0,
+      oExpend: getDetails["additionalCharge"] ?? 0.0,
+      total:
+          ((int.parse(internetBill) / userList.length) + (getDetails["additionalCharge"] ?? 0.0) + (getDetails["genericChargePerHead"] ?? 0.0) + (getDetails["chargePerHead"] ?? 0.0)).roundToDouble(),
+    );
+  }).toList();
+
+  macaPrint("steepingList$steepingList");
+
+  List<UserElectricBillItem> finalList = [UserElectricBillItem(userName: "", internet: 00.0, unit: 0.0, gElectricBill: 0.0, mElectricBill: 0.0, oExpend: 0.0, total: 0.0)];
+  return steepingList;
+}
+
+dynamic genericElectricAmount(
+    {List<ActiveUser>? userList, List<MeterReadingInputModel>? meterReading, List<AdditionalExpendModule>? additionalItem, String? electricBill, String? electricUnit, dynamic userId}) {
+  var getUnit = int.parse(electricBill!) / int.parse(electricUnit!);
+  var genericChargePerHead = meterReading!.isEmpty ? (int.parse(electricBill) / userList!.length) : 0;
+  var eachCharge;
+  var totalMeterUnit = 0;
+  var meterUnit;
+  var meterId;
+  var jsonObject;
+  var noOfUserInEachMeter;
+
+  var meterWiseUserList;
+
+  if (userList!.isNotEmpty) {
+    if (meterReading.isNotEmpty) {
+      for (var meter in meterReading) {
+        totalMeterUnit += int.parse(meter.input2);
+      }
+
+      genericChargePerHead = (int.parse(electricBill) - (totalMeterUnit * getUnit)) / userList.length;
+
+      bool foundInMeter = false;
+
+      for (var element in meterReading) {
+        meterUnit = int.parse(element.input2);
+        meterId = element.input1;
+        eachCharge = (meterUnit / element.input3.length) * getUnit;
+
+        for (var mElement in element.input3) {
+          if (mElement.id == userId) {
+            jsonObject = {
+              "userName": mElement.name,
+              "chargePerHead": eachCharge,
+              "genericChargePerHead": genericChargePerHead,
+              "meterId": element.input1,
+              "meterUnit": meterUnit / element.input3.length,
+            };
+            foundInMeter = true;
+            break;
+          }
+        }
+
+        if (foundInMeter) break;
+      }
+
+      if (!foundInMeter) {
+        final fallback = userList.firstWhere((el) => el.id == userId);
+        if (fallback != null) {
+          jsonObject = {
+            "userName": fallback.name,
+            "chargePerHead": 0.0,
+            "genericChargePerHead": genericChargePerHead,
+            "meterId": "",
+            "meterUnit": 0.0,
+          };
+        }
+      }
+    } else {
+      final fallback = userList.firstWhere(
+        (el) => el.id == userId,
+      );
+      if (fallback != null) {
+        jsonObject = {
+          "userName": fallback.name,
+          "chargePerHead": 0.0,
+          "genericChargePerHead": genericChargePerHead,
+          "meterId": "",
+          "meterUnit": 0.0,
+        };
+      }
+    }
+
+    // Add additional charges
+    if (additionalItem!.isNotEmpty) {
+      for (var ad in additionalItem) {
+        var itemTotal = int.parse(ad.input2);
+
+        if (ad.input3.any((adE) => adE.id == userId)) {
+          jsonObject = {
+            ...jsonObject,
+            "additionalCharge": itemTotal / ad.input3.length,
+          };
+        }
+      }
+    }
+  }
+
+  return jsonObject;
 }
 
 Future<void> pdfGenerator({
@@ -42,8 +186,9 @@ Future<void> pdfGenerator({
   required String totalElectricUnits,
   required String totalElectricBill,
   required List<ActiveUser> userList,
+  required List<UserElectricBillItem> userFinalList,
 }) async {
-  final pdf = generateElectricBillPdf(internetBill: internetBill, totalElectricBill: totalElectricBill, totalElectricUnits: totalElectricUnits, userList: userList);
+  final pdf = generateElectricBillPdf(internetBill: internetBill, totalElectricBill: totalElectricBill, totalElectricUnits: totalElectricUnits, userList: userList, userFinalList: userFinalList);
 
   // ✅ Get writable directory (Documents folder)
   final directory = await getApplicationDocumentsDirectory();
@@ -64,21 +209,15 @@ pw.Document generateElectricBillPdf({
   required String totalElectricUnits,
   required String totalElectricBill,
   required List<ActiveUser> userList,
+  required List<UserElectricBillItem> userFinalList,
 }) {
   final pdf = pw.Document();
-
+  macaPrint("userFinalist$userFinalList");
   pdf.addPage(
     pw.Page(
       pageFormat: PdfPageFormat.a4,
       margin: const pw.EdgeInsets.all(24),
       build: (pw.Context context) {
-        final internet = double.tryParse(internetBill) ?? 0.0;
-        final electric = double.tryParse(totalElectricBill) ?? 0.0;
-        final userCount = userList.isNotEmpty ? userList.length : 1;
-
-        final internetPerHead = (internet / userCount).toStringAsFixed(2);
-        final electricPerHead = (electric / userCount).toStringAsFixed(2);
-        final total = ((internet / userCount) + (electric / userCount)).toStringAsFixed(2);
         return pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
@@ -92,14 +231,9 @@ pw.Document generateElectricBillPdf({
 
             // 🔹 Table Header
             pw.Table.fromTextArray(
-              headers: ['Name', 'Internet/Head', 'Electric/Head', 'Total'],
-              data: userList.map((user) {
-                return [
-                  user.name,
-                  internetPerHead,
-                  electricPerHead,
-                  total,
-                ];
+              headers: ['Name', 'Internet', 'GElectric', 'Meter Id', 'Unit', 'MElectric', 'Extra Charge', 'Total'],
+              data: userFinalList.map((user) {
+                return [user.userName, user.internet, user.gElectricBill, user.meterName, user.mElectricBill, user.unit, user.oExpend, user.total];
               }).toList(),
               headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),

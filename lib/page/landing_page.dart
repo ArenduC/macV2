@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:maca/common/loading_component.dart';
@@ -9,6 +11,7 @@ import 'package:maca/package/m_column_graph.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:maca/widget/app_common_widget.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -39,8 +42,9 @@ class _LandingPageState extends State<LandingPage> {
     dynamic response = await ApiService().apiCallService(endpoint: GetUrl().currentExpenditureDetails, method: "GET");
 
     setState(() {
+      expenditureDetails = AppFunction().macaApiResponsePrintAndGet(data: response, extractData: "data");
+      macaPrint("expenditure$expenditureDetails");
       isLoading = false;
-      expenditureDetails = [];
     });
   }
 
@@ -107,17 +111,16 @@ class _LandingPageState extends State<LandingPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // CurrentManagerView(
-                      //   data: expenditureDetails[0]["user_type_name"],
-                      // ),
-                      // const SizedBox(
-                      //   height: 16,
-                      // ),
-                      // ExpenditureTiles(data: expenditureDetails),
-                      // const SizedBox(
-                      //   height: 16,
-                      // ),
-
+                      CurrentManagerView(
+                        data: expenditureDetails[0]["user_type_name"],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ExpenditureTiles(data: expenditureDetails),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       const ElectricsBillView(),
                       const SizedBox(
                         height: 16,

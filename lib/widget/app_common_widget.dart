@@ -238,7 +238,7 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "₹${expenditure['total_sum']}",
+                              "₹${expenditure['current_month_total']}",
                               style: AppTextStyles.cardLabel1.copyWith(height: 0),
                             ),
                             Text(

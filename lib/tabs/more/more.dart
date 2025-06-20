@@ -5,7 +5,6 @@ import 'package:maca/tabs/more/model.dart';
 import 'package:maca/screen/login_screen.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
-import 'package:path_provider/path_provider.dart';
 
 class More extends StatefulWidget {
   const More({super.key});
@@ -28,11 +27,11 @@ class _MoreState extends State<More> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(20),
           child: ListView.separated(
             itemCount: moreItems.length,
             separatorBuilder: (_, __) => const Divider(
-              height: 10,
+              height: 15,
               thickness: 0,
               color: Colors.transparent,
             ),
@@ -51,63 +50,79 @@ Widget profile(BuildContext context, MoreItemsProperty moreItems) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Basic dialog title'),
+          backgroundColor: AppColors.themeWhite,
+          title: const Text(
+            'Logout Warning',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColors.theme),
+          ),
           content: const Text(
-            'A dialog is a type of modal window that\n'
-            'appears in front of app content to\n'
-            'provide critical information, or prompt\n'
-            'for a decision to be made.',
+            "You will be logged out from the application shortly.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColors.theme),
           ),
           actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Yes'),
-              onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
-              },
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: AppButtonStyles.elevatedButtonStyle(backgroundColor: AppColors.theme),
+                  child: const Text(
+                    'No',
+                    style: TextStyle(color: AppColors.themeWhite),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  style: AppButtonStyles.outlinedButtonStyle(),
+                  child: const Text('Yes'),
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                  },
+                ),
+              ],
+            )
           ],
         );
       },
     );
   }
 
-  return Container(
-    decoration: BoxDecoration(boxShadow: const [AppBoxShadow.defaultBoxShadow], borderRadius: BorderRadius.circular(11), color: AppColors.themeWhite),
-    padding: const EdgeInsets.all(8),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            moreItems.icon,
-            const SizedBox(
-              width: 8,
-            ),
-            Text(moreItems.title)
-          ],
-        ),
-        GestureDetector(
-          onTap: () {
-            moreItems.title == "Logout" ? dialogBuilder(context) : moreItems.onTap?.call(context);
-          },
-          child: const Icon(
+  return GestureDetector(
+    onTap: () {
+      moreItems.title == "Logout" ? dialogBuilder(context) : moreItems.onTap?.call(context);
+    },
+    child: Container(
+      decoration: BoxDecoration(boxShadow: const [AppBoxShadow.defaultBoxShadow], borderRadius: BorderRadius.circular(11), color: AppColors.themeWhite),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              moreItems.icon,
+              const SizedBox(
+                width: 8,
+              ),
+              Text(
+                moreItems.title,
+                style: const TextStyle(color: AppColors.theme),
+              )
+            ],
+          ),
+          const Icon(
             Icons.arrow_forward_ios_rounded,
             size: 18,
+            color: AppColors.theme,
           ),
-        )
-      ],
+        ],
+      ),
     ),
   );
 }

@@ -14,6 +14,8 @@ class MeterReadingView extends StatefulWidget {
 }
 
 class _MeterReadingViewState extends State<MeterReadingView> {
+  List<TextEditingController> inputControllers = [];
+  String inputMeterReadingControllers = "";
   List<MeterReadingInputModel> inputList = [];
   List<ActiveUser> convertedList = [];
 
@@ -123,39 +125,66 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
+                      child: TextField(
+                        controller: TextEditingController(text: inputMeterReadingControllers != "" ? "M${inputList[index].input1}" : ""),
                         onChanged: (value) => updateInput(index, 0, value),
                         decoration: AppFormInputStyles.textFieldDecoration(
-                          hintText: 'Meter',
-                        ),
+                            hintText: 'Meter',
+                            suffixIcon: Icons.arrow_drop_down_rounded,
+                            onSuffixIconTap: () => {
+                                  showBedSelectionModal(context, 4,
+                                      selectedMeterId: int.tryParse(inputList[index].input1) ?? 0,
+                                      onMeterSelected: (data) => {
+                                            setState(() {
+                                              inputMeterReadingControllers = inputList[index].input1;
+                                              macaPrint("meterSelectedId$data");
+                                            }),
+                                            updateInput(index, 0, (data.first.id).toString()),
+                                          })
+                                }),
                         style: const TextStyle(color: AppColors.theme),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: TextFormField(
+                      child: TextField(
                         decoration: AppFormInputStyles.textFieldDecoration(
-                          hintText: 'Unit',
-                        ),
+                            hintText: 'Unit',
+                            suffixIcon: Icons.arrow_drop_down_rounded,
+                            onSuffixIconTap: () => {
+                                  showBedSelectionModal(
+                                    context,
+                                    5,
+                                    selectedMeterId: int.tryParse(inputList[index].input1) ?? 0,
+                                  )
+                                }),
                         style: const TextStyle(color: AppColors.theme),
                         onChanged: (value) => updateInput(index, 1, value),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showBedSelectionModal(context, 2,
-                              selectedUsers: inputList[index].input3,
-                              onUserSelected: (data) => {
-                                    setState(() {
-                                      inputList[index].input3 = [];
-                                    }),
-                                    updateInput(index, 2, "data", selectedUser: data)
-                                  });
-                        },
-                        style: AppButtonStyles.outlinedButtonStyle(),
-                        child: const Text("Border"),
+                      child: TextField(
+                        controller: TextEditingController(text: inputControllers.isNotEmpty ? "${inputList[index].input3.length}" : ""),
+                        readOnly: true,
+                        decoration: AppFormInputStyles.textFieldDecoration(
+                            hintText: 'Border',
+                            suffixIcon: Icons.arrow_drop_down_rounded,
+                            onSuffixIconTap: () => {
+                                  showBedSelectionModal(context, 2,
+                                      selectedUsers: inputList[index].input3,
+                                      meterReadingDetails: inputList,
+                                      onUserSelected: (data) => {
+                                            setState(() {
+                                              inputList[index].input3 = [];
+                                              if (inputControllers.length <= index) {
+                                                inputControllers.add(TextEditingController());
+                                              }
+                                            }),
+                                            updateInput(index, 2, "data", selectedUser: data)
+                                          })
+                                }),
+                        style: const TextStyle(color: AppColors.theme),
                       ),
                     ),
                     const SizedBox(width: 8),
