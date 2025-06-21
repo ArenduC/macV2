@@ -9,7 +9,7 @@ class PostUrl {
   String addExpense = "${Connection().prodUrl}v1/add_expense";
   String individualMarketStatus = "${Connection().prodUrl}v1/get_individual_marketing_status";
   String electricBillCreate = "${Connection().prodUrl}v1/electric_bill_create";
-  String addMeterReading = "${Connection().baseUrl}v1/add_meter_reading";
+  String addMeterReading = "${Connection().prodUrl}v1/add_meter_reading";
 }
 
 class GetUrl {
