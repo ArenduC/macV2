@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maca/features/add_electric_bill/helper.dart';
 
 import 'package:maca/features/add_electric_bill/model.dart';
 import 'package:maca/function/app_function.dart';
@@ -57,10 +58,15 @@ class _MeterReadingViewState extends State<MeterReadingView> {
     });
   }
 
-  void printValues() {
+  void printValues() async {
     macaPrint(inputList);
     if (widget.onSubmit != null) {
       widget.onSubmit!(inputList); // Pass your list here
+    }
+    for (var meter in inputList) {
+      var jsonObject = {"meterId": meter.input1, "meterReading": meter.input2};
+
+      await addMeterReading(context, jsonObject);
     }
     AppFunction().macaApiResponsePrintAndGet(snackBarView: true, context: context, snackBarMessage: "Meter reading successfully added", data: "");
   }
@@ -136,10 +142,10 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                                       selectedMeterId: int.tryParse(inputList[index].input1) ?? 0,
                                       onMeterSelected: (data) => {
                                             setState(() {
+                                              updateInput(index, 0, (data.first.id).toString());
                                               inputMeterReadingControllers = inputList[index].input1;
                                               macaPrint("meterSelectedId$data");
                                             }),
-                                            updateInput(index, 0, (data.first.id).toString()),
                                           })
                                 }),
                         style: const TextStyle(color: AppColors.theme),
@@ -148,6 +154,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         decoration: AppFormInputStyles.textFieldDecoration(
                             hintText: 'Unit',
                             suffixIcon: Icons.arrow_drop_down_rounded,

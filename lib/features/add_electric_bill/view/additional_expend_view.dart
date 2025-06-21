@@ -129,6 +129,7 @@ class _AdditionalExpendViewState extends State<AdditionalExpendView> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextFormField(
+                        keyboardType: TextInputType.number,
                         decoration: AppFormInputStyles.textFieldDecoration(
                           hintText: 'Amount',
                         ),

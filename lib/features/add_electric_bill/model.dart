@@ -234,3 +234,33 @@ class UserElectricBillItem {
     return 'UserElectricBillItem(userName: $userName, internet: $internet, unit: $unit, gElectricBill: $gElectricBill, mElectricBill: $mElectricBill, oExpend: $oExpend, total: $total)';
   }
 }
+
+class UserValidationStatus {
+  bool isGenericValid;
+  bool isMeterReading;
+  bool isAdditionalReading;
+  bool isMeterReadingNotEmpty;
+  bool isAdditionalReadingNotEmpty;
+
+  UserValidationStatus({
+    this.isGenericValid = false,
+    this.isMeterReading = false,
+    this.isAdditionalReading = false,
+    this.isMeterReadingNotEmpty = false,
+    this.isAdditionalReadingNotEmpty = false,
+  });
+
+  @override
+  String toString() {
+    return '''
+UserValidationStatus(
+  isGenericValid: $isGenericValid,
+  isMeterReading: $isMeterReading,
+  isAdditionalReading: $isAdditionalReading,
+  isMeterReadingNotEmpty: $isMeterReadingNotEmpty,
+  isAdditionalReadingNotEmpty: $isAdditionalReadingNotEmpty
+)''';
+  }
+
+  bool get isValid => isGenericValid && isMeterReading && isAdditionalReading && isMeterReadingNotEmpty && isAdditionalReadingNotEmpty;
+}

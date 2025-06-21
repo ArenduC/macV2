@@ -70,8 +70,8 @@ class _PreviousMeterReadingViewState extends State<PreviousMeterReadingView> {
                   shrinkWrap: true,
                   itemCount: selectedMeterDetails[0].readings.length,
                   itemBuilder: (context, index) {
-                    final user = selectedMeterDetails[0].readings[index];
-
+                    final user = selectedMeterDetails[0].readings.reversed.toList()[index];
+                    macaPrint("user$user");
                     return ListTile(
                       textColor: AppColors.theme,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2), // Reduce space inside tile

@@ -3,7 +3,7 @@ import 'package:maca/features/add_electric_bill/helper.dart';
 import 'package:maca/features/add_electric_bill/model.dart';
 import 'package:maca/features/add_electric_bill/view/additional_expend_view.dart';
 import 'package:maca/features/add_electric_bill/view/meter_reading_view.dart';
-import 'package:maca/features/add_electric_bill/view/user_list_view.dart';
+import 'package:maca/features/add_electric_bill/view/pdf/repaint_widget.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';
@@ -23,13 +23,16 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
   final FocusNode _internetFocusNode = FocusNode();
   final FocusNode _eBillFocusNode = FocusNode();
   final FocusNode _unitFocusNode = FocusNode();
+  final validation = UserValidationStatus();
 
   List<ActiveUser> activeUserList = [];
   List<ActiveUser> selectedUserList = [];
   List<MeterReadingInputModel> meterReadingList = [];
   List<AdditionalExpendModule> additionalExpandList = [];
+  List<MeterReading> monthlyMeterReadingList = [];
 
   bool isValid = false;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +45,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
     _unitFocusNode.addListener(() {
       setState(() {}); // Rebuild on focus change
     });
+    handleGetActiveUserList();
     handleSetActiveUserList();
 
     segmentNotifier.value = segmentNotifier.value.copyWith(
@@ -58,21 +62,34 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
 
   handleGetActiveUserList() async {
     var data = await LocalStore().getStore(ListOfStoreKey.activeBorderList);
+    var meterList = await LocalStore().getStore(ListOfStoreKey.getMonthlyMeterReadings);
 
     if (data is List) {
       setState(() {
         activeUserList = data.map((item) => ActiveUser.fromJson(item as Map<String, dynamic>)).toList();
       });
     }
+    if (meterList is List) {
+      setState(() {
+        monthlyMeterReadingList = meterList.map((item) => MeterReading.fromJson(item as Map<String, dynamic>)).toList();
+      });
+    }
   }
 
-  handleGetSelectedUserList() async {}
+  handleGetSelectedUserList({bool? isGenericValid, bool? isMeterReading, bool? isAdditionalReading, bool? isMeterReadingNotEmpty, bool? isAdditionalReadingNotEmpty}) {
+    macaPrint('isGenericValid: ${validation.isMeterReading}');
+
+    macaPrint("isValid$isValid");
+  }
 
   void validateFields() {
     setState(() {
-      // Check if any of the fields are empty or invalid
       var jsonObject = {"p_electricBill": electricBillController.text, "p_electricUnit": unitController.text, "p_internetBill": internetController.text};
-      isValid = isAnyFieldEmpty(jsonObject);
+
+      macaPrint("addValid${isAnyFieldEmpty(jsonObject)}");
+      setState(() {
+        isValid = isAnyFieldEmpty(jsonObject);
+      });
     });
   }
 
@@ -125,6 +142,9 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
             ValueListenableBuilder<SegmentItemModule>(
                 valueListenable: segmentNotifier,
                 builder: (context, value, child) {
+                  validation.isMeterReading = value.isMeterActive;
+                  validation.isAdditionalReading = value.isAddition;
+
                   return Column(
                     children: [
                       TextField(
@@ -180,6 +200,8 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                             setState(() {
                               selectedUserList = data[0].input3;
                               meterReadingList = data;
+                              validation.isMeterReadingNotEmpty = data.isNotEmpty;
+                              handleGetSelectedUserList(isMeterReadingNotEmpty: data.isNotEmpty);
                             });
                             macaPrint("Received data from meterReadingView: $data");
                             macaPrint("Received data from meterReadingView: $meterReadingList");
@@ -194,6 +216,8 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                             handleGetActiveUserList();
                             setState(() {
                               additionalExpandList = data;
+                              validation.isAdditionalReadingNotEmpty = data.isNotEmpty;
+                              handleGetSelectedUserList(isAdditionalReadingNotEmpty: data.isNotEmpty);
                             });
                             macaPrint("Received data from additionalExpand: $data");
                             macaPrint("Received data from additionalExpand: $additionalExpandList");
@@ -211,23 +235,36 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: isValid
-                        ? () {
+                        ? () async {
                             String internet = internetController.text;
                             String electric = electricBillController.text;
                             String unit = unitController.text;
 
-//var jsonObject = {"p_electricBill": electric, "p_electricUnit": unit, "p_internetBill": internet};
+                            var jsonObject = {"p_electricBill": electric, "p_electricUnit": unit, "p_internetBill": internet};
 
-                            // electricBillCreateUpdate(context, jsonObject);
-                            // pdfGenerator(billDetails: jsonObject);
+                            electricBillCreateUpdate(context, jsonObject);
+
                             var electricBillItem = createElectricBillView(
                                 internetBill: internet,
                                 totalElectricBill: electric,
                                 totalElectricUnits: unit,
                                 userList: activeUserList,
                                 meterReading: meterReadingList,
-                                additionalExpendList: additionalExpandList);
-                            pdfGenerator(internetBill: internet, totalElectricBill: electric, totalElectricUnits: unit, userList: activeUserList, userFinalList: electricBillItem);
+                                additionalExpendList: additionalExpandList,
+                                monthlyMeterReadingList: monthlyMeterReadingList);
+                            // pdfGenerator(
+                            //   internetBill: internet,
+                            //   totalElectricBill: electric,
+                            //   totalElectricUnits: unit,
+                            //   userList: activeUserList,
+                            //   userFinalList: electricBillItem,
+                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RepaintWidget(),
+                              ),
+                            );
                           }
                         : null,
                     style: AppButtonStyles.elevatedButtonStyle(
