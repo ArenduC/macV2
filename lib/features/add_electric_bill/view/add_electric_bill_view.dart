@@ -31,6 +31,8 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
   List<AdditionalExpendModule> additionalExpandList = [];
   List<MeterReading> monthlyMeterReadingList = [];
 
+  dynamic expenditureDetails = [];
+
   bool isValid = false;
 
   @override
@@ -63,6 +65,11 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
   handleGetActiveUserList() async {
     var data = await LocalStore().getStore(ListOfStoreKey.activeBorderList);
     var meterList = await LocalStore().getStore(ListOfStoreKey.getMonthlyMeterReadings);
+    var expenditureData = await LocalStore().getStore(ListOfStoreKey.expenditureDetails);
+
+    setState(() {
+      expenditureDetails = expenditureData;
+    });
 
     if (data is List) {
       setState(() {
@@ -252,17 +259,17 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                                 meterReading: meterReadingList,
                                 additionalExpendList: additionalExpandList,
                                 monthlyMeterReadingList: monthlyMeterReadingList);
-                            // pdfGenerator(
-                            //   internetBill: internet,
-                            //   totalElectricBill: electric,
-                            //   totalElectricUnits: unit,
-                            //   userList: activeUserList,
-                            //   userFinalList: electricBillItem,
-                            // );
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const RepaintWidget(),
+                                builder: (context) => RepaintWidget(
+                                  expenditureDetails: expenditureDetails,
+                                  totalElectricBill: electric,
+                                  internetBill: internet,
+                                  totalElectricUnits: unit,
+                                  userList: activeUserList,
+                                  userFinalList: electricBillItem,
+                                ),
                               ),
                             );
                           }

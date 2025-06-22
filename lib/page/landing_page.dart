@@ -41,6 +41,7 @@ class _LandingPageState extends State<LandingPage> {
 
     setState(() {
       expenditureDetails = AppFunction().macaApiResponsePrintAndGet(data: response, extractData: "data");
+      LocalStore().setStore(ListOfStoreKey.expenditureDetails, expenditureDetails);
       macaPrint("expenditure$expenditureDetails");
       isLoading = false;
     });

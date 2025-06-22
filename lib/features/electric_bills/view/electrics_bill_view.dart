@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:maca/features/electric_bills/electric_bills_helper.dart';
 import 'package:maca/features/electric_bills/electric_bills_model.dart';
+import 'package:maca/function/app_function.dart';
+import 'package:maca/styles/app_style.dart';
+import 'package:maca/styles/colors/app_colors.dart';
 
 class ElectricsBillView extends StatefulWidget {
   const ElectricsBillView({super.key});
@@ -23,18 +26,168 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
           return const Text('No data found');
         }
 
-        final bills = snapshot.data!;
-        return Expanded(
-          child: ListView.builder(
-            itemCount: bills.length,
-            itemBuilder: (context, index) {
-              final bill = bills[index];
-              return ListTile(
-                title: Text('Electric Bill: ₹${bill.electricBill}'),
-                subtitle: Text('Manager ID: ${bill.managerId} • Date: ${bill.createdDate}'),
-              );
-            },
-          ),
+        final bills = snapshot.data![0];
+        final previousBill = snapshot.data![1];
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                boxShadow: [AppBoxShadow.defaultBoxShadow],
+                color: AppColors.themeWhite,
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // const Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     Row(
+                  //       children: [Text("₹"), Text("470")],
+                  //     ),
+                  //     Row(
+                  //       children: [Text("Electric Bill"), Icon(Icons.gas_meter_rounded)],
+                  //     ),
+                  //     Row(
+                  //       children: [Text("Previous | 320"), Icon(Icons.arrow_circle_up_sharp)],
+                  //     )
+                  //   ],
+                  // ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                "₹",
+                                style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w200),
+                              ),
+                              Text(
+                                "${bills.electricBill}",
+                                style: AppTextStyles.cardLabel1.copyWith(height: 0),
+                              )
+                            ],
+                          ),
+                          const Text(
+                            "Total Bill",
+                            style: AppTextStyles.header11,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "${bills.electricUnit}",
+                                style: AppTextStyles.header18.copyWith(height: 0),
+                              ),
+                              const Icon(
+                                Icons.arrow_circle_up_sharp,
+                                size: 10,
+                                color: AppColors.theme,
+                              )
+                            ],
+                          ),
+                          const Text("Unit", style: AppTextStyles.header11),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                "₹",
+                                style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w200),
+                              ),
+                              Text(
+                                "${previousBill.electricBill}",
+                                style: AppTextStyles.header18.copyWith(height: 0),
+                              )
+                            ],
+                          ),
+                          const Text("Previous", style: AppTextStyles.header11)
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            " ${previousBill.electricUnit}",
+                            style: AppTextStyles.header18.copyWith(height: 0),
+                          ),
+                          const Row(
+                            children: [Text("Unit", style: AppTextStyles.header11)],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                "₹",
+                                style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w200),
+                              ),
+                              Text(
+                                "${bills.internetBill}",
+                                style: AppTextStyles.header18.copyWith(height: 0),
+                              )
+                            ],
+                          ),
+                          const Text("Internet", style: AppTextStyles.header11)
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "${formatCustomDate(bills.createdDate)["Day"]} ${formatCustomDate(bills.createdDate)["Month"]}",
+                            style: AppTextStyles.header16.copyWith(height: 0),
+                          ),
+                          const Row(
+                            children: [Text("Created Date", style: AppTextStyles.header11)],
+                          )
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
         );
       },
     );

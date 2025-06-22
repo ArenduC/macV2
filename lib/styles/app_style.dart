@@ -37,6 +37,26 @@ class AppTextStyles {
     fontWeight: FontWeight.w300,
     color: AppColors.theme,
   );
+  static const TextStyle header11B = TextStyle(
+    fontSize: 11.0,
+    fontWeight: FontWeight.w500,
+    color: AppColors.theme,
+  );
+  static const TextStyle header16 = TextStyle(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w300,
+    color: AppColors.theme,
+  );
+  static const TextStyle header17 = TextStyle(
+    fontSize: 17.0,
+    fontWeight: FontWeight.w300,
+    color: AppColors.theme,
+  );
+  static const TextStyle header18 = TextStyle(
+    fontSize: 18.0,
+    fontWeight: FontWeight.w500,
+    color: AppColors.theme,
+  );
 
   static const TextStyle bodyText = TextStyle(
     fontSize: 10.0,
