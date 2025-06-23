@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:maca/features/add_electric_bill/model.dart';
+import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/features/add_electric_bill/view/meter_list_view.dart';
 import 'package:maca/features/add_electric_bill/view/previous_meter_reading_view.dart';
 import 'package:maca/features/add_electric_bill/view/segment_add_view.dart';
@@ -39,6 +39,7 @@ getMarketStatus(dynamic data) {
     case 3:
       return "Completed";
     default:
+      return "Please wait...";
   }
 }
 

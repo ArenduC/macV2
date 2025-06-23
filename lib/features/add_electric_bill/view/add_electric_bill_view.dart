@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:maca/features/add_electric_bill/helper.dart';
-import 'package:maca/features/add_electric_bill/model.dart';
+import 'package:maca/features/add_electric_bill/helper/helper.dart';
+import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/features/add_electric_bill/view/additional_expend_view.dart';
 import 'package:maca/features/add_electric_bill/view/meter_reading_view.dart';
-import 'package:maca/features/add_electric_bill/view/pdf/repaint_widget.dart';
+import 'package:maca/features/add_electric_bill/pdf/repaint_widget.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';

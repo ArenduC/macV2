@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:maca/features/add_electric_bill/helper.dart';
-import 'package:maca/features/add_electric_bill/model.dart';
+import 'package:maca/features/add_electric_bill/helper/helper.dart';
+import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/function/app_function.dart';
 
 List<RowItemModel> rowItems = [

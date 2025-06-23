@@ -25,7 +25,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   dynamic shift;
   dynamic startShift = false;
   dynamic endShift = false;
-  dynamic viewState = 2;
+  dynamic viewState = 5;
   dynamic loginData;
   dynamic marketingStatus;
 
@@ -122,10 +122,14 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
     if (mounted) {
       setState(() {
         marketingStatus = value["data"][0];
-        if (marketingStatus["status"] != 0) {
+        if (marketingStatus["status"] == 1) {
           viewState = 1;
+        } else if (marketingStatus["status"] == 2) {
+          viewState = 6;
+        } else if (marketingStatus["status"] == 3 && formatCustomDate(marketingStatus["endDate"])["Month"] == formatCustomDate(DateTime.now())["Month"]) {
+          viewState = 6;
         } else {
-          viewState = 2;
+          viewState = 6;
         }
       });
     }
@@ -142,7 +146,11 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
       case 0:
         return const SuccessView();
       case 1:
-        return marketDetailsView(marketingStatus);
+        return marketDetailsView(marketingStatus["status"]);
+      case 5:
+        return marketDetailsView(9);
+      case 6:
+        return inputSegment(startDateController, endDateController, shift, datePickerHandle, selectedShift, marketingStatusUpdate);
       default:
         return inputSegment(startDateController, endDateController, shift, datePickerHandle, selectedShift, marketingStatusUpdate);
     }
@@ -364,6 +372,6 @@ Widget marketDetailsView(dynamic data) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
-        children: [Text(getMarketStatus(data["status"]))],
+        children: [Text(getMarketStatus(data))],
       ));
 }

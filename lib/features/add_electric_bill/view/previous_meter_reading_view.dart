@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maca/features/add_electric_bill/model.dart';
+import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';

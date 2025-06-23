@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:maca/features/add_electric_bill/helper.dart';
-import 'package:maca/features/add_electric_bill/model.dart';
-import 'package:maca/features/add_electric_bill/view/pdf/electric_bill_pdf_view.dart';
+import 'package:maca/features/add_electric_bill/helper/helper.dart';
+import 'package:maca/features/add_electric_bill/model/model.dart';
+import 'package:maca/features/add_electric_bill/pdf/electric_bill_pdf_view.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
@@ -48,9 +48,10 @@ class _RepaintWidgetState extends State<RepaintWidget> {
         backgroundColor: AppColors.themeWhite,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(top: 0, bottom: 20, left: 20, right: 20),
         child: Stack(alignment: Alignment.bottomCenter, children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Offstage(
                 offstage: false,

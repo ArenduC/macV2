@@ -19,7 +19,7 @@ class _IndividualDetailsState extends State<IndividualDetails> {
       builder: (context, constraints) {
         final maxHeight = constraints.maxHeight;
         // Each row height approx ~50px + some padding
-        final estimatedItemHeight = 60.0;
+        const estimatedItemHeight = 60.0;
         final totalHeight = itemCount * estimatedItemHeight;
         final targetHeight = totalHeight > maxHeight * 0.5 ? maxHeight * 0.5 : totalHeight;
 

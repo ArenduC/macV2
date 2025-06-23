@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
-import 'package:maca/features/add_electric_bill/model.dart';
+import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
@@ -17,6 +17,7 @@ import 'package:pdf/pdf.dart';
 import 'dart:io';
 
 import 'package:pdf/widgets.dart' as pw;
+import 'package:share_plus/share_plus.dart';
 
 Future<dynamic> electricBillCreateUpdate(BuildContext context, dynamic data) async {
   var loginData = await getLocalStorageData("loginDetails");
@@ -166,21 +167,6 @@ dynamic genericElectricAmount({
 
       if (!foundInMeter) {
         final fallback = userList.firstWhere((el) => el.id == userId);
-        if (fallback != null) {
-          jsonObject = {
-            "userName": fallback.name,
-            "chargePerHead": 0.0,
-            "genericChargePerHead": genericChargePerHead,
-            "meterId": "",
-            "meterUnit": 0.0,
-          };
-        }
-      }
-    } else {
-      final fallback = userList.firstWhere(
-        (el) => el.id == userId,
-      );
-      if (fallback != null) {
         jsonObject = {
           "userName": fallback.name,
           "chargePerHead": 0.0,
@@ -189,6 +175,17 @@ dynamic genericElectricAmount({
           "meterUnit": 0.0,
         };
       }
+    } else {
+      final fallback = userList.firstWhere(
+        (el) => el.id == userId,
+      );
+      jsonObject = {
+        "userName": fallback.name,
+        "chargePerHead": 0.0,
+        "genericChargePerHead": genericChargePerHead,
+        "meterId": "",
+        "meterUnit": 0.0,
+      };
     }
 
     // Add additional charges
@@ -209,27 +206,6 @@ dynamic genericElectricAmount({
   return jsonObject;
 }
 
-// Future<void> pdfGenerator({
-//   required String internetBill,
-//   required String totalElectricUnits,
-//   required String totalElectricBill,
-//   required List<ActiveUser> userList,
-//   required List<UserElectricBillItem> userFinalList,
-// }) async {
-//   final pdf = generateElectricBillPdf(internetBill: internetBill, totalElectricBill: totalElectricBill, totalElectricUnits: totalElectricUnits, userList: userList, userFinalList: userFinalList);
-
-//   // ✅ Get writable directory (Documents folder)
-//   final directory = await getApplicationDocumentsDirectory();
-//   final filePath = '${directory.path}/example.pdf';
-
-//   // ✅ Save the file
-//   final file = File(filePath);
-//   await file.writeAsBytes(await pdf.save());
-
-//   // ✅ Open the PDF file
-//   await OpenFilex.open(filePath);
-// }
-
 final ValueNotifier<SegmentItemModule> segmentNotifier = ValueNotifier(SegmentItemModule());
 
 Future<Uint8List> captureWidgetImage(GlobalKey key) async {
@@ -244,22 +220,35 @@ Future<Uint8List> captureWidgetImage(GlobalKey key) async {
 }
 
 Future<void> generatePdfFromWidget(GlobalKey key) async {
-  final imageBytes = await captureWidgetImage(key);
-  final pdf = pw.Document();
+  try {
+    final imageBytes = await captureWidgetImage(key);
+    final pdf = pw.Document();
 
-  final pwImage = pw.MemoryImage(imageBytes);
+    final pwImage = pw.MemoryImage(imageBytes);
 
-  pdf.addPage(
-    pw.Page(
-      margin: pw.EdgeInsets.zero,
-      pageFormat: PdfPageFormat.a4,
-      build: (context) => pw.Center(child: pw.Image(pwImage)),
-    ),
-  );
+    pdf.addPage(
+      pw.Page(
+        margin: pw.EdgeInsets.zero,
+        pageFormat: PdfPageFormat.a4,
+        build: (context) => pw.Center(child: pw.Image(pwImage)),
+      ),
+    );
 
-  final dir = await getApplicationDocumentsDirectory();
-  final filePath = '${dir.path}/flutter_widget_invoice.pdf';
-  final file = File(filePath);
-  await file.writeAsBytes(await pdf.save());
-  await OpenFilex.open(filePath);
+    final dir = await getApplicationDocumentsDirectory();
+    final filePath = '${dir.path}/flutter_widget_invoice.pdf';
+    final file = File(filePath);
+    await file.writeAsBytes(await pdf.save());
+    // await OpenFilex.open(filePath);
+
+    await file.writeAsBytes(await pdf.save());
+
+    /// Now share it
+    await Share.shareXFiles(
+      [XFile(filePath)],
+      text: 'Here is your invoice 📄',
+      subject: 'PDF Invoice',
+    );
+  } catch (e) {
+    macaPrint("Error generating PDF and sharing: $e");
+  }
 }

@@ -71,7 +71,7 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
                     MonthlyData? matchedMonth = individualList.where((monthData) => monthData.month == widget.monthData).cast<MonthlyData?>().firstOrNull;
                     List<ItemData>? individualMarketing = [];
                     if (matchedMonth != null) {
-                      final matchedUsers = matchedMonth.userData.where((user) => user.userId == 14).toList();
+                      final matchedUsers = matchedMonth.userData.where((user) => user.userId == userData.userId).toList();
 
                       for (var user in matchedUsers) {
                         individualMarketing.addAll(user.data);
@@ -82,7 +82,7 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
                     showBedSelectionModal(context, 6, individualMarketing: individualMarketing);
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.only(top: 2, bottom: 2),
                     color: AppColors.themeWhite.withOpacity(0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

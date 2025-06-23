@@ -31,6 +31,16 @@ final List<MoreItemsProperty> moreItems = [
   ),
   MoreItemsProperty(
     icon: const Icon(
+      Icons.add_business_rounded,
+      color: AppColors.theme,
+    ),
+    title: 'Expenditure',
+    onTap: (context) {
+      Navigator.pushNamed(context, '/expenditure');
+    },
+  ),
+  MoreItemsProperty(
+    icon: const Icon(
       Icons.logout,
       color: AppColors.theme,
     ),
