@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'maca',
+      title: 'Maca',
       initialRoute: '/',
       onGenerateRoute: AppRouter.generateRoute,
       theme: ThemeData(

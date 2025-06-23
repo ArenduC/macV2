@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maca/store/local_store.dart';
 import 'package:maca/tabs/more/controller.dart';
 import 'package:maca/tabs/more/model.dart';
 
@@ -83,6 +84,8 @@ Widget profile(BuildContext context, MoreItemsProperty moreItems) {
                   style: AppButtonStyles.outlinedButtonStyle(),
                   child: const Text('Yes'),
                   onPressed: () {
+                    LocalStore().deleteStore(ListOfStoreKey.loginDetails);
+                    LocalStore().setStore(ListOfStoreKey.loginStatus, false);
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                   },
                 ),

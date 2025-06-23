@@ -40,9 +40,27 @@ class _MarketingDetailsViewState extends State<MarketingDetailsView> {
     return Scaffold(
         backgroundColor: AppColors.themeWhite,
         appBar: AppBar(
-          backgroundColor: AppColors.theme,
-          automaticallyImplyLeading: true,
-          title: const Text('Maca', style: TextStyle(color: AppColors.themeWhite)),
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios_rounded,
+                    color: AppColors.theme,
+                  )),
+              const SizedBox(
+                width: 5,
+              ),
+              const Text(
+                "Monthly marketing",
+                style: TextStyle(color: AppColors.theme, fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+          backgroundColor: AppColors.themeWhite,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8),

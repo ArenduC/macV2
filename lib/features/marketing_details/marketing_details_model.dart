@@ -42,3 +42,81 @@ class MonthData {
     };
   }
 }
+
+class MonthlyData {
+  final String month;
+  final String monthYear;
+  final List<UserData> userData;
+
+  MonthlyData({
+    required this.month,
+    required this.monthYear,
+    required this.userData,
+  });
+
+  factory MonthlyData.fromJson(Map<String, dynamic> json) {
+    return MonthlyData(
+      month: json['month'].trim(),
+      monthYear: json['month_year'],
+      userData: List<UserData>.from(
+        json['user_data'].map((x) => UserData.fromJson(x)),
+      ),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Month: $month ($monthYear)\n${userData.map((e) => e.toString()).join('\n')}';
+  }
+}
+
+class UserData {
+  final String user;
+  final int userId;
+  final List<ItemData> data;
+
+  UserData({
+    required this.user,
+    required this.userId,
+    required this.data,
+  });
+
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(
+      user: json['user'],
+      userId: json['userId'],
+      data: List<ItemData>.from(
+        json['data'].map((x) => ItemData.fromJson(x)),
+      ),
+    );
+  }
+
+  @override
+  String toString() {
+    return '  User: $user (ID: $userId)\n${data.map((e) => e.toString()).join('\n')}';
+  }
+}
+
+class ItemData {
+  final String createdDate;
+  final String item;
+  final int price;
+
+  ItemData({
+    required this.createdDate,
+    required this.item,
+    required this.price,
+  });
+
+  factory ItemData.fromJson(Map<String, dynamic> json) {
+    return ItemData(
+      createdDate: json['created_date'],
+      item: json['item'].trim(),
+      price: json['price'],
+    );
+  }
+  @override
+  String toString() {
+    return '    - $createdDate | $item | ₹$price';
+  }
+}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maca/features/marketing_details/marketing_details_helper.dart';
+import 'package:maca/features/marketing_details/marketing_details_model.dart';
+import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
@@ -13,6 +15,20 @@ class MarketingListWidget extends StatefulWidget {
 }
 
 class _MarketingListWidgetState extends State<MarketingListWidget> {
+  List<MonthlyData> individualList = [];
+  @override
+  void initState() {
+    setIndividualList();
+    super.initState();
+  }
+
+  setIndividualList() async {
+    var data = await getMonthlyIndividualMarketingList();
+    setState(() {
+      individualList = data;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,15 +62,39 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
               widget.marketingDetails.data.length,
               (innerIndex) {
                 final userData = widget.marketingDetails.data[innerIndex];
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      caseConverter(data: userData.user),
-                      style: AppTextStyles.header10,
+                return GestureDetector(
+                  onTap: () {
+                    // List<ItemData> userdataList = individualList.  .userData.map((item)=>{
+                    //   item.userId == 14
+                    // })
+
+                    MonthlyData? matchedMonth = individualList.where((monthData) => monthData.month == widget.monthData).cast<MonthlyData?>().firstOrNull;
+                    List<ItemData>? individualMarketing = [];
+                    if (matchedMonth != null) {
+                      final matchedUsers = matchedMonth.userData.where((user) => user.userId == 14).toList();
+
+                      for (var user in matchedUsers) {
+                        individualMarketing.addAll(user.data);
+                      }
+                    }
+
+                    macaPrint("individualData$individualMarketing");
+                    showBedSelectionModal(context, 6, individualMarketing: individualMarketing);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(0),
+                    color: AppColors.themeWhite.withOpacity(0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          caseConverter(data: userData.user),
+                          style: AppTextStyles.header10,
+                        ),
+                        Text((userData.totalAmount).toString()),
+                      ],
                     ),
-                    Text((userData.totalAmount).toString()),
-                  ],
+                  ),
                 );
               },
             ),

@@ -62,7 +62,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
     }
   }
 
-  void updateTotalExpense() {
+  void updateItemAmount() {
     if (expenses.isNotEmpty) {
       for (var ex in expenses) {
         setState(() {
@@ -72,6 +72,14 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
       }
     }
     macaPrint("totalAmount$totalAmount");
+  }
+
+  void updateTotalExpense({int? index, String? value}) {
+    expenses[index!] = ExpenseData(
+      item: expenses[index].item,
+      amount: double.tryParse(value!) ?? 0.0,
+    );
+    updateItemAmount();
   }
 
   // this method for getting date from user input
@@ -158,7 +166,7 @@ Widget slotSegment(
   dynamic shift,
   Function({ExpenseData data, ActionType action, int index}) onAddItem,
   List<ExpenseData> addItems,
-  Function() updateTotalExpense,
+  Function({int index, String? value}) updateTotalExpense,
 ) {
   return Container(
     padding: const EdgeInsets.all(8),
@@ -234,10 +242,12 @@ Widget slotSegment(
                     style: const TextStyle(color: AppColors.themeLite),
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
-                      addItems[index] = ExpenseData(
+                      (addItems[index] = ExpenseData(
                         item: addItems[index].item,
                         amount: double.tryParse(value) ?? 0.0,
-                      );
+                      ));
+
+                      // (Optional) setState(() => this.total = total);
                     },
                   ),
                 ),

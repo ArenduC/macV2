@@ -7,6 +7,8 @@ import 'package:maca/features/add_electric_bill/view/meter_list_view.dart';
 import 'package:maca/features/add_electric_bill/view/previous_meter_reading_view.dart';
 import 'package:maca/features/add_electric_bill/view/segment_add_view.dart';
 import 'package:maca/features/add_electric_bill/view/user_list_view.dart';
+import 'package:maca/features/marketing_details/marketing_details_model.dart';
+import 'package:maca/features/marketing_details/view/individual_details.dart';
 import 'package:maca/modal/meal_ofon_modal.dart';
 import 'package:maca/page/expend_add_page.dart';
 import 'package:maca/page/marketing_add_page.dart';
@@ -46,6 +48,7 @@ getModalItem(
   int? selectedMeterId,
   List<ActiveUser>? activeUserList,
   List<ActiveMeter>? activeMeterList,
+  List<ItemData>? individualMarketing,
   List<MeterReadingInputModel>? meterReadingDetails,
   Function(List<ActiveUser>)? onUserSelected,
   Function(List<ActiveMeter>)? onMeterSelected,
@@ -71,6 +74,8 @@ getModalItem(
       return PreviousMeterReadingView(
         selectedMeterId: selectedMeterId,
       );
+    case 6:
+      return IndividualDetails(individualMarketing: individualMarketing);
     case 3:
       return const SegmentAddView();
     default:
@@ -85,6 +90,7 @@ void showBedSelectionModal(
   List<ActiveUser>? selectedUsers,
   List<ActiveMeter>? activeMeterList,
   List<MeterReadingInputModel>? meterReadingDetails,
+  List<ItemData>? individualMarketing,
   Function(List<ActiveUser>)? onUserSelected,
   Function(List<ActiveMeter>)? onMeterSelected,
 }) {
@@ -110,6 +116,7 @@ void showBedSelectionModal(
               child: getModalItem(value,
                   activeUserList: selectedUsers,
                   selectedMeterId: selectedMeterId,
+                  individualMarketing: individualMarketing,
                   meterReadingDetails: meterReadingDetails,
                   onUserSelected: onUserSelected,
                   onMeterSelected: onMeterSelected,
