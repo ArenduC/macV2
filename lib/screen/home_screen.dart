@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.theme,
           onPressed: () {
-            showBedSelectionModal(context, _selectedIndex);
+            showBedSelectionModal(context, _selectedIndex == 2 ? 7 : _selectedIndex);
           },
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300), // Animation duration

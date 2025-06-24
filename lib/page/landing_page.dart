@@ -4,6 +4,9 @@ import 'package:maca/common/loading_component.dart';
 import 'package:maca/connection/api_connection.dart';
 import 'package:maca/features/electric_bills/view/electrics_bill_view.dart';
 import 'package:maca/features/profile_view/profile_view.dart';
+import 'package:maca/features/rule_base_attendance/controller/meal_sift.dart';
+import 'package:maca/features/rule_base_attendance/model/mealsInformation.dart';
+import 'package:maca/features/rule_base_attendance/service/api_service.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/package/m_column_graph.dart';
 import 'package:maca/service/api_service.dart';
@@ -20,6 +23,8 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   dynamic expenditureDetails = [];
+  List<AbsentUserData> absentUserData = [];
+  dynamic mealCountDetails;
   bool isLoading = true;
 
   @override
@@ -38,13 +43,23 @@ class _LandingPageState extends State<LandingPage> {
 
   Future<void> borderList() async {
     dynamic response = await ApiService().apiCallService(endpoint: GetUrl().currentExpenditureDetails, method: "GET");
+    absentUserData = await getCurrentMonthAbsentData();
 
     setState(() {
       expenditureDetails = AppFunction().macaApiResponsePrintAndGet(data: response, extractData: "data");
       LocalStore().setStore(ListOfStoreKey.expenditureDetails, expenditureDetails);
       macaPrint("expenditure$expenditureDetails");
-      isLoading = false;
+      getMealDetails();
     });
+  }
+
+  getMealDetails() {
+    macaPrint("AbsentUserDetailsListData$absentUserData");
+
+    mealCountDetails = calculateTotalMeals(daysInMonth: 30, totalUsers: 10, absentData: absentUserData);
+
+    macaPrint("meal absent details $mealCountDetails");
+    isLoading = false;
   }
 
   getLoginDetails() async {
@@ -110,6 +125,36 @@ class _LandingPageState extends State<LandingPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(11)), color: Color.fromARGB(38, 40, 46, 137)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.account_circle_rounded,
+                              color: AppColors.theme,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${formatCustomDate(DateTime.now())["Day"]} ${formatCustomDate(DateTime.now())["Month"]}",
+                                  style: const TextStyle(color: AppColors.theme, fontWeight: FontWeight.w500, fontSize: 12),
+                                ),
+                                Text(
+                                  "Morning meal ${mealCountDetails["currentDayMealCount"]["day"]} | Evening meal ${mealCountDetails["currentDayMealCount"]["night"]} ",
+                                  style: const TextStyle(color: AppColors.theme, fontSize: 10),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                       CurrentManagerView(
                         data: expenditureDetails[0]["user_type_name"],
                       ),

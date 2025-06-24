@@ -9,6 +9,7 @@ import 'package:maca/features/add_electric_bill/view/segment_add_view.dart';
 import 'package:maca/features/add_electric_bill/view/user_list_view.dart';
 import 'package:maca/features/marketing_details/marketing_details_model.dart';
 import 'package:maca/features/marketing_details/view/individual_details.dart';
+import 'package:maca/features/rule_base_attendance/view/add_meal_off.dart';
 import 'package:maca/modal/meal_ofon_modal.dart';
 import 'package:maca/page/expend_add_page.dart';
 import 'package:maca/page/marketing_add_page.dart';
@@ -46,6 +47,7 @@ getMarketStatus(dynamic data) {
 // This is for showing modal based on screen
 getModalItem(
   dynamic data, {
+  BuildContext? context,
   int? selectedMeterId,
   List<ActiveUser>? activeUserList,
   List<ActiveMeter>? activeMeterList,
@@ -77,6 +79,8 @@ getModalItem(
       );
     case 6:
       return IndividualDetails(individualMarketing: individualMarketing);
+    case 7:
+      return AddMealOff(context: context);
     case 3:
       return const SegmentAddView();
     default:
@@ -105,7 +109,10 @@ void showBedSelectionModal(
       ),
       builder: (context) {
         return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(), // Dismiss keyboard
+          onTap: () => {
+            FocusScope.of(context).unfocus(),
+          },
+          // Dismiss keyboard
           child: Padding(
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -114,7 +121,9 @@ void showBedSelectionModal(
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height,
               ),
-              child: getModalItem(value,
+              child: getModalItem(
+                  context: context,
+                  value,
                   activeUserList: selectedUsers,
                   selectedMeterId: selectedMeterId,
                   individualMarketing: individualMarketing,

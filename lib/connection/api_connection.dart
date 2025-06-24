@@ -10,6 +10,7 @@ class PostUrl {
   String individualMarketStatus = "${Connection().prodUrl}v1/get_individual_marketing_status";
   String electricBillCreate = "${Connection().prodUrl}v1/electric_bill_create";
   String addMeterReading = "${Connection().prodUrl}v1/add_meter_reading";
+  String insertMealAbsentDetail = "${Connection().prodUrl}v1/insert_meal_absent_detail";
 }
 
 class GetUrl {
@@ -21,4 +22,5 @@ class GetUrl {
   String activeUserList = "${Connection().prodUrl}v1/active_user_list";
   String activeMeterList = "${Connection().prodUrl}v1/active_meter_list";
   String getMonthlyMeterReadings = "${Connection().prodUrl}v1/get_monthly_meter_readings";
+  String getCurrentMonthAbsentData = "${Connection().prodUrl}v1/get_current_month_absent_data";
 }

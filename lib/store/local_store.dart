@@ -12,6 +12,7 @@ class ListOfStoreKey {
   static const String activeMeterList = "activeMeterList";
   static const String getMonthlyMeterReadings = "getMonthlyMeterReadings";
   static const String expenditureDetails = "expenditureDetails";
+  static const String notificationList = "notificationList";
   //individualMarketingDetails
   static const Map<String, String> allKeys = {
     "loginDetails": loginDetails,
@@ -22,7 +23,8 @@ class ListOfStoreKey {
     "activeBorderList": activeBorderList,
     "activeMeterList": activeMeterList,
     "getMonthlyMeterReadings": getMonthlyMeterReadings,
-    "expenditureDetails": expenditureDetails
+    "expenditureDetails": expenditureDetails,
+    "notificationList": notificationList,
   };
 }
 

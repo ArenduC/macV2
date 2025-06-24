@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/main.dart';
 import 'package:maca/provider/notification_provider.dart';
+import 'package:maca/styles/colors/app_colors.dart';
 import 'package:provider/provider.dart';
 
 appMessagingService(BuildContext context) async {
@@ -43,13 +44,43 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class NotificationHandler {
   static void handleMessage(RemoteMessage message, BuildContext context) {
-    macaPrint(message);
+    macaPrint("notificationComing");
+    macaPrint(message.data);
     final context = navigatorKey.currentContext;
     if (context != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-              'Notification: ${message.notification!.title}\n${message.notification!.body}'),
+          backgroundColor: AppColors.themeWhite,
+          content: Container(
+            padding: const EdgeInsets.all(5),
+            margin: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(11)), color: AppColors.theme),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.account_circle_rounded,
+                  color: AppColors.themeLite,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${message.notification!.title}',
+                      style: const TextStyle(color: AppColors.themeLite, fontWeight: FontWeight.w500, fontSize: 12),
+                    ),
+                    Text(
+                      "${message.notification!.body}",
+                      style: const TextStyle(color: AppColors.themeLite, fontSize: 10),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
         ),
       );
 

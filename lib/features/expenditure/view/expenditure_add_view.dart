@@ -3,6 +3,9 @@ import 'package:maca/features/add_electric_bill/helper/helper.dart';
 import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/features/expenditure/model/border_item.dart';
 import 'package:maca/features/expenditure/model/establishment_item.dart';
+import 'package:maca/features/rule_base_attendance/data/absentData.dart';
+import 'package:maca/features/rule_base_attendance/controller/meal_sift.dart';
+import 'package:maca/features/rule_base_attendance/model/mealsInformation.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';
@@ -260,7 +263,7 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      showBedSelectionModal(context, 3);
+                      // showBedSelectionModal(context, 3);
                     },
                     style: AppButtonStyles.outlinedButtonStyle(),
                     child: const Text(
