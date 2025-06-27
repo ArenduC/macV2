@@ -11,7 +11,6 @@ import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/service/api_service.dart';
 import 'package:maca/store/local_store.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';
@@ -90,7 +89,6 @@ List<UserElectricBillItem> createElectricBillView({
         meterReading: meterReading,
         additionalItem: additionalExpendList,
         monthlyMeterReadingList: monthlyMeterReadingList);
-
     return UserElectricBillItem(
       userName: element.name,
       internet: (int.parse(internetBill) / userList.length).roundToDouble(),
@@ -103,9 +101,6 @@ List<UserElectricBillItem> createElectricBillView({
           ((int.parse(internetBill) / userList.length) + (getDetails["additionalCharge"] ?? 0.0) + (getDetails["genericChargePerHead"] ?? 0.0) + (getDetails["chargePerHead"] ?? 0.0)).roundToDouble(),
     );
   }).toList();
-
-  macaPrint("steepingList$steepingList");
-
   return steepingList;
 }
 
@@ -124,18 +119,13 @@ dynamic genericElectricAmount({
   var totalMeterUnit = 0;
   var meterUnit = 0;
   var jsonObject = {};
-
   List<MeterReading> selectedMeterDetails = [];
-
-  macaPrint("meterList");
-
   if (userList!.isNotEmpty) {
     if (meterReading.isNotEmpty) {
       for (var meter in meterReading) {
         selectedMeterDetails = monthlyMeterReadingList!.where((m) => m.meterId == int.parse(meter.input1)).toList();
         totalMeterUnit += selectedMeterDetails.isNotEmpty ? int.parse(meter.input2) - selectedMeterDetails[0].readings.reversed.toList()[0].reading : int.parse(meter.input2);
       }
-
       genericChargePerHead = (int.parse(electricBill) - (totalMeterUnit * getUnit)) / userList.length;
 
       bool foundInMeter = false;
@@ -145,7 +135,6 @@ dynamic genericElectricAmount({
 
         meterUnit = selectedMeterDetails.isNotEmpty ? int.parse(element.input2) - selectedMeterDetails[0].readings.reversed.toList()[0].reading : int.parse(element.input2);
         eachCharge = (meterUnit / element.input3.length) * getUnit;
-        macaPrint("meterUnit$meterUnit");
         for (var mElement in element.input3) {
           if (mElement.id == userId) {
             jsonObject = {
@@ -155,16 +144,12 @@ dynamic genericElectricAmount({
               "meterId": element.input1,
               "meterUnit": meterUnit / (element.input3.length).roundToDouble(),
             };
-
-            macaPrint("jsonObject$jsonObject");
             foundInMeter = true;
             break;
           }
         }
-
         if (foundInMeter) break;
       }
-
       if (!foundInMeter) {
         final fallback = userList.firstWhere((el) => el.id == userId);
         jsonObject = {
@@ -188,7 +173,6 @@ dynamic genericElectricAmount({
       };
     }
 
-    // Add additional charges
     if (additionalItem!.isNotEmpty) {
       for (var ad in additionalItem) {
         var itemTotal = int.parse(ad.input2);
@@ -211,9 +195,7 @@ final ValueNotifier<SegmentItemModule> segmentNotifier = ValueNotifier(SegmentIt
 Future<Uint8List> captureWidgetImage(GlobalKey key) async {
   await Future.delayed(const Duration(milliseconds: 100));
   final boundary = key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-
   if (boundary == null) throw Exception("Render boundary not found");
-
   final image = await boundary.toImage(pixelRatio: 5);
   final byteData = await image.toByteData(format: ImageByteFormat.png);
   return byteData!.buffer.asUint8List();
@@ -223,9 +205,7 @@ Future<void> generatePdfFromWidget(GlobalKey key) async {
   try {
     final imageBytes = await captureWidgetImage(key);
     final pdf = pw.Document();
-
     final pwImage = pw.MemoryImage(imageBytes);
-
     pdf.addPage(
       pw.Page(
         margin: pw.EdgeInsets.zero,

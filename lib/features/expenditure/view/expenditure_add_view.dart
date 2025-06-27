@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/helper/helper.dart';
 import 'package:maca/features/add_electric_bill/model/model.dart';
+import 'package:maca/features/expenditure/helper/add_border_item.dart';
 import 'package:maca/features/expenditure/model/border_item.dart';
 import 'package:maca/features/expenditure/model/establishment_item.dart';
-import 'package:maca/features/rule_base_attendance/data/absentData.dart';
-import 'package:maca/features/rule_base_attendance/controller/meal_sift.dart';
-import 'package:maca/features/rule_base_attendance/model/mealsInformation.dart';
+import 'package:maca/features/expenditure/notifiers/added_border_item_notifier.dart';
+import 'package:maca/features/expenditure/view/add_border_item.dart';
+import 'package:maca/features/marketing_details/marketing_details_model.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';
@@ -33,19 +34,19 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
   dynamic expenditureDetails = [];
 
   bool isValid = false;
+  bool isBorderAddedView = false;
 
   @override
   void initState() {
     establishmentList.add(EstablishmentItem());
-    super.initState();
-
     handleGetActiveUserList();
     handleSetActiveUserList();
-
     segmentNotifier.value = segmentNotifier.value.copyWith(
       isMeterActive: false,
       isAddition: false,
     );
+
+    super.initState();
   }
 
   handleSetActiveUserList() async {
@@ -75,7 +76,7 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
     }
   }
 
-  addBorderItem() {
+  addBorderItemMethod() {
     setState(() {
       establishmentList.add(EstablishmentItem());
     });
@@ -147,101 +148,103 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ValueListenableBuilder<SegmentItemModule>(
-                valueListenable: segmentNotifier,
+            ValueListenableBuilder<List<AddedBorderItem>>(
+                valueListenable: addedBorderListNotifier,
                 builder: (context, value, child) {
-                  return Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Row(
-                            children: [
-                              Icon(
-                                Icons.currency_rupee_rounded,
-                                color: AppColors.theme,
-                              ),
-                              Text(
-                                "Establishment",
-                                style: TextStyle(color: AppColors.theme),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // addRow();
-                                  addBorderItem();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(0),
-                                  decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
-                                  child: const Icon(Icons.add, color: AppColors.themeWhite),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  validateFields();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(0),
-                                  decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
-                                  child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      ListView.builder(
-                        itemCount: establishmentList.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
-                            child: Row(
+                  return isBorderAddedView
+                      ? const AddBorderItem()
+                      : Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    onChanged: (value) => updateInput(index, 0, value),
-                                    decoration: AppFormInputStyles.textFieldDecoration(
-                                      hintText: 'Item',
+                                const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.currency_rupee_rounded,
+                                      color: AppColors.theme,
                                     ),
-                                    style: const TextStyle(color: AppColors.theme),
-                                  ),
+                                    Text(
+                                      "Expenditure",
+                                      style: TextStyle(color: AppColors.theme),
+                                    )
+                                  ],
                                 ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    decoration: AppFormInputStyles.textFieldDecoration(
-                                      hintText: 'Amount',
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        // addRow();
+                                        addBorderItemMethod();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(0),
+                                        decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
+                                        child: const Icon(Icons.add, color: AppColors.themeWhite),
+                                      ),
                                     ),
-                                    style: const TextStyle(color: AppColors.theme),
-                                    onChanged: (value) => updateInput(index, 1, double.parse(value)),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                ElevatedButton(
-                                  onPressed: () => deleteRow(index),
-                                  style: AppButtonStyles.outlinedButtonStyle(),
-                                  child: const Icon(
-                                    Icons.delete_outline_rounded,
-                                    color: AppColors.themeLite,
-                                  ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        validateFields();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(0),
+                                        decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
+                                        child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  );
+                            ListView.builder(
+                              itemCount: establishmentList.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextFormField(
+                                          onChanged: (value) => updateInput(index, 0, value),
+                                          decoration: AppFormInputStyles.textFieldDecoration(
+                                            hintText: 'Item',
+                                          ),
+                                          style: const TextStyle(color: AppColors.theme),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          decoration: AppFormInputStyles.textFieldDecoration(
+                                            hintText: 'Amount',
+                                          ),
+                                          style: const TextStyle(color: AppColors.theme),
+                                          onChanged: (value) => updateInput(index, 1, double.parse(value)),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      ElevatedButton(
+                                        onPressed: () => deleteRow(index),
+                                        style: AppButtonStyles.outlinedButtonStyle(),
+                                        child: const Icon(
+                                          Icons.delete_outline_rounded,
+                                          color: AppColors.themeLite,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
                 }),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -249,13 +252,17 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: isValid ? () async {} : null,
+                    onPressed: () async {
+                      setState(() {
+                        isBorderAddedView = !isBorderAddedView;
+                      });
+                    },
                     style: AppButtonStyles.elevatedButtonStyle(
-                      backgroundColor: isValid ? AppColors.theme : AppColors.themeLite,
+                      backgroundColor: AppColors.theme,
                     ),
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    child: Text(
+                      isBorderAddedView ? 'Back' : "Next",
+                      style: const TextStyle(fontSize: 16.0, color: Colors.white),
                     ),
                   ),
                 ),
@@ -263,7 +270,14 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // showBedSelectionModal(context, 3);
+                      showBedSelectionModal(context, 2,
+                          selectedUsers: addedBorderListNotifier.value.map((item) {
+                            return ActiveUser(
+                              id: item.id,
+                              name: item.name,
+                              userBedId: item.userBedId,
+                            );
+                          }).toList());
                     },
                     style: AppButtonStyles.outlinedButtonStyle(),
                     child: const Text(

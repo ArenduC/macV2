@@ -44,8 +44,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class NotificationHandler {
   static void handleMessage(RemoteMessage message, BuildContext context) {
-    macaPrint("notificationComing");
-    macaPrint(message.data);
     final context = navigatorKey.currentContext;
     if (context != null) {
       ScaffoldMessenger.of(context).showSnackBar(

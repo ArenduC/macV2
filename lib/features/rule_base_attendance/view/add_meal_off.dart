@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:maca/connection/api_connection.dart';
-import 'package:maca/data/app_data.dart';
 import 'package:maca/features/rule_base_attendance/service/api_service.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/helper/maca_global_helper.dart';
 import 'package:maca/page/marketing_add_page.dart';
-import 'package:maca/provider/notification_provider.dart';
-import 'package:maca/service/api_service.dart';
 import 'package:maca/widget/app_common_widget.dart';
-import 'package:provider/provider.dart';
 
 class AddMealOff extends StatefulWidget {
   final BuildContext? context;
@@ -80,17 +75,7 @@ class _AddMealOffState extends State<AddMealOff> {
 
     macaPrint("addShift$jsonBody");
 
-    if (mounted) {
-      dynamic response = await insertMealAbsentDetail(context, jsonBody);
-      // dynamic data = AppFunction().macaApiResponsePrintAndGet(data: response);
-      // setState(() {
-      //   if (data["isSuccess"] == true) {
-      //     viewState = 0;
-      //     context.read<WidgetUpdate>().increment();
-      //   }
-      // });
-      Navigator.of(widget.context!).pop();
-    }
+    await insertMealAbsentDetail(widget.context!, jsonBody);
   }
 
   getViewController(dynamic data) {

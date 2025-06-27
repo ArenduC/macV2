@@ -2,13 +2,13 @@ import 'package:maca/features/expenditure/model/guest_meal_item.dart';
 import 'package:maca/function/app_function.dart';
 
 class UserMealData {
-  final String? userId;
-  final String? userName;
-  final double? meal;
-  final double? deposit;
-  final double? expenditure;
-  final bool? gMeal;
-  final GMealDetails? gMealDetails;
+  String? userId;
+  String? userName;
+  double? meal;
+  double? deposit;
+  double? expenditure;
+  bool? gMeal;
+  GMealDetails? gMealDetails;
 
   UserMealData({
     this.userId,
@@ -51,5 +51,38 @@ class UserMealData {
   @override
   String toString() {
     return 'UserMealData(userId: $userId, userName: $userName, meal: $meal, deposit: $deposit, expenditure: $expenditure, gMeal: $gMeal, gMealDetails: $gMealDetails)';
+  }
+}
+
+class AddedBorderItem {
+  final int id;
+  final String name;
+  final int userBedId;
+
+  AddedBorderItem({
+    required this.id,
+    required this.name,
+    required this.userBedId,
+  });
+
+  factory AddedBorderItem.fromJson(Map<String, dynamic> json) {
+    return AddedBorderItem(
+      id: json['id'],
+      name: json['name'],
+      userBedId: json['user_bed_id'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'user_bed_id': userBedId,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'ActiveUser(id: $id, name: $name, userBedId: $userBedId)';
   }
 }

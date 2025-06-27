@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/model/model.dart';
+import 'package:maca/features/expenditure/helper/add_border_item.dart';
+import 'package:maca/features/expenditure/model/border_item.dart';
+import 'package:maca/features/expenditure/notifiers/added_border_item_notifier.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
@@ -44,6 +47,13 @@ class _UserListViewState extends State<UserListView> {
         selectedUserIds.add(userId.id);
         selectedUser.add(userId);
       }
+
+      final addedItem = AddedBorderItem(
+        id: userId.id,
+        name: userId.name,
+        userBedId: userId.userBedId,
+      );
+      addBlankBorderItem(addedItem);
       selectedUser = userList.where((user) => selectedUserIds.contains(user.id)).toList();
       widget.onDone?.call(selectedUser);
     });
@@ -71,10 +81,16 @@ class _UserListViewState extends State<UserListView> {
       if (allSelect) {
         selectedUser = List<ActiveUser>.from(userList);
         selectedUserIds = selectedUser.map((u) => u.id).toSet();
+        final addedItem = userList.map((e) => AddedBorderItem(id: e.id, name: e.name, userBedId: e.userBedId)).toList();
+
+        addedBorderListNotifier.value = addedItem;
         widget.onDone?.call(selectedUser);
       } else {
         selectedUser = [];
         selectedUserIds = selectedUser.map((u) => u.id).toSet();
+        final addedItem = selectedUser.map((e) => AddedBorderItem(id: e.id, name: e.name, userBedId: e.userBedId)).toList();
+
+        addedBorderListNotifier.value = addedItem;
         widget.onDone?.call(selectedUser);
       }
     });

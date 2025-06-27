@@ -9,7 +9,9 @@ Future<dynamic> insertMealAbsentDetail(BuildContext context, dynamic data) async
   dynamic jsonBody = data;
   macaPrint("jsonData: $jsonBody");
   dynamic response = await ApiService().apiCallService(endpoint: PostUrl().insertMealAbsentDetail, method: ApiType().post, body: jsonBody);
+
   AppFunction().macaApiResponsePrintAndGet(data: response, snackBarView: true, context: context);
+  Navigator.of(context).pop();
 }
 
 Future<List<AbsentUserData>> getCurrentMonthAbsentData() async {

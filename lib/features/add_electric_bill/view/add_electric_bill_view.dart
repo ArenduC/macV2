@@ -210,9 +210,6 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                               validation.isMeterReadingNotEmpty = data.isNotEmpty;
                               handleGetSelectedUserList(isMeterReadingNotEmpty: data.isNotEmpty);
                             });
-                            macaPrint("Received data from meterReadingView: $data");
-                            macaPrint("Received data from meterReadingView: $meterReadingList");
-                            // Now you can use it however you want.
                           },
                         ),
                         const SizedBox(height: 20),
@@ -226,8 +223,6 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                               validation.isAdditionalReadingNotEmpty = data.isNotEmpty;
                               handleGetSelectedUserList(isAdditionalReadingNotEmpty: data.isNotEmpty);
                             });
-                            macaPrint("Received data from additionalExpand: $data");
-                            macaPrint("Received data from additionalExpand: $additionalExpandList");
                           },
                         ),
                         const SizedBox(height: 20),
