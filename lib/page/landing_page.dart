@@ -166,10 +166,10 @@ class _LandingPageState extends State<LandingPage> {
                         height: 16,
                       ),
                       const ElectricsBillView(),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      MColumnGraph(data: expenditureDetails),
+                      // const SizedBox(
+                      //   height: 16,
+                      // ),
+                      // MColumnGraph(data: expenditureDetails),
                     ],
                   )));
   }

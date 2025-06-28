@@ -63,7 +63,7 @@ class _MarketingDetailsViewState extends State<MarketingDetailsView> {
           backgroundColor: AppColors.themeWhite,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(0),
           child: marketingDetails == null || marketingDetails!.isEmpty
               ? const LoadingComponent()
               : ListView.builder(

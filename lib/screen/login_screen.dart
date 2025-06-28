@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 },
                 child: isLoginPage
-                    ? KeyedSubtree(key: const ValueKey('login'), child: loginSegment(pageSwitch, userNameController, passwordController, focusNode, handleLogin))
+                    ? KeyedSubtree(key: const ValueKey('login'), child: loginSegment(pageSwitch, emailController, passwordController, focusNode, handleLogin))
                     : KeyedSubtree(
                         key: const ValueKey('register'),
                         child: registrationSegment(context, pageSwitch, bedActive, availableBet, emailController, passwordController, userNameController, bedNoController, phoneNoController,
@@ -223,7 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
 @override
 Widget loginSegment(
   VoidCallback pageSwitch,
-  TextEditingController usernameController,
+  TextEditingController emailController,
   TextEditingController passwordController,
   FocusNode focusNode,
   Function(String username, String password) handleLogin,
@@ -247,9 +247,9 @@ Widget loginSegment(
           height: 20,
         ),
         TextField(
-          controller: usernameController,
+          controller: emailController,
           decoration: AppInputStyles.textFieldDecoration(
-            hintText: 'Enter your username',
+            hintText: 'Enter your email',
             prefixIcon: Icons.person,
           ),
           style: const TextStyle(color: AppColors.header1), // Text style
@@ -271,7 +271,7 @@ Widget loginSegment(
         ),
         ElevatedButton(
           onPressed: () {
-            String username = usernameController.text;
+            String username = emailController.text;
             String password = passwordController.text;
 
             // Pass data to the parent widget's callback

@@ -90,8 +90,7 @@ class _MarketingPageState extends State<MarketingPage> {
                       itemBuilder: (context, index) {
                         final user = marketingList[index];
                         return Container(
-                            width: double.infinity, // Make it take full width
-                            alignment: Alignment.centerLeft, // Align text to the left
+                            // Align text to the left
                             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
                             child: marketingStatusView(user));
                       },

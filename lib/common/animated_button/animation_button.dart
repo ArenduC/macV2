@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:maca/common/animated_button/animation_model.dart';
 import 'package:maca/helper/add_expense.dart';
-import 'package:maca/model/data_model.dart';
+import 'package:maca/features/add_marketing_details/model/data_model.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
 // ignore: must_be_immutable

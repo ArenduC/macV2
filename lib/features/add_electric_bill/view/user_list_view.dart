@@ -48,11 +48,7 @@ class _UserListViewState extends State<UserListView> {
         selectedUser.add(userId);
       }
 
-      final addedItem = AddedBorderItem(
-        id: userId.id,
-        name: userId.name,
-        userBedId: userId.userBedId,
-      );
+      final addedItem = AddedBorderItem(id: userId.id, name: userId.name, userBedId: userId.userBedId, isGestMeal: false, mealCount: 35, gestMeal: 0, deposit: 0, expenditure: 0);
       addBlankBorderItem(addedItem);
       selectedUser = userList.where((user) => selectedUserIds.contains(user.id)).toList();
       widget.onDone?.call(selectedUser);
@@ -81,14 +77,14 @@ class _UserListViewState extends State<UserListView> {
       if (allSelect) {
         selectedUser = List<ActiveUser>.from(userList);
         selectedUserIds = selectedUser.map((u) => u.id).toSet();
-        final addedItem = userList.map((e) => AddedBorderItem(id: e.id, name: e.name, userBedId: e.userBedId)).toList();
+        final addedItem = userList.map((e) => AddedBorderItem(id: e.id, name: e.name, userBedId: e.userBedId, isGestMeal: false, mealCount: 35, gestMeal: 0, deposit: 0, expenditure: 0)).toList();
 
         addedBorderListNotifier.value = addedItem;
         widget.onDone?.call(selectedUser);
       } else {
         selectedUser = [];
         selectedUserIds = selectedUser.map((u) => u.id).toSet();
-        final addedItem = selectedUser.map((e) => AddedBorderItem(id: e.id, name: e.name, userBedId: e.userBedId)).toList();
+        final addedItem = selectedUser.map((e) => AddedBorderItem(id: e.id, name: e.name, userBedId: e.userBedId, isGestMeal: false, mealCount: 35, gestMeal: 0, deposit: 0, expenditure: 0)).toList();
 
         addedBorderListNotifier.value = addedItem;
         widget.onDone?.call(selectedUser);

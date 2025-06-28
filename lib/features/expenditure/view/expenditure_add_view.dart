@@ -148,104 +148,112 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ValueListenableBuilder<List<AddedBorderItem>>(
-                valueListenable: addedBorderListNotifier,
-                builder: (context, value, child) {
-                  return isBorderAddedView
-                      ? const AddBorderItem()
-                      : Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Row(
-                                  children: [
-                                    Icon(
-                                      Icons.currency_rupee_rounded,
-                                      color: AppColors.theme,
-                                    ),
-                                    Text(
-                                      "Expenditure",
-                                      style: TextStyle(color: AppColors.theme),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        // addRow();
-                                        addBorderItemMethod();
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(0),
-                                        decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
-                                        child: const Icon(Icons.add, color: AppColors.themeWhite),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        validateFields();
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(0),
-                                        decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
-                                        child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            ListView.builder(
-                              itemCount: establishmentList.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
-                                  child: Row(
+            Expanded(
+              child: ValueListenableBuilder<List<AddedBorderItem>>(
+                  valueListenable: addedBorderListNotifier,
+                  builder: (context, value, child) {
+                    return isBorderAddedView
+                        ? const AddBorderItem()
+                        : Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Row(
                                     children: [
-                                      Expanded(
-                                        child: TextFormField(
-                                          onChanged: (value) => updateInput(index, 0, value),
-                                          decoration: AppFormInputStyles.textFieldDecoration(
-                                            hintText: 'Item',
-                                          ),
-                                          style: const TextStyle(color: AppColors.theme),
+                                      Icon(
+                                        Icons.currency_rupee_rounded,
+                                        color: AppColors.theme,
+                                      ),
+                                      Text(
+                                        "Expenditure",
+                                        style: TextStyle(color: AppColors.theme),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // addRow();
+                                          addBorderItemMethod();
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(0),
+                                          decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
+                                          child: const Icon(Icons.add, color: AppColors.themeWhite),
                                         ),
                                       ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          decoration: AppFormInputStyles.textFieldDecoration(
-                                            hintText: 'Amount',
-                                          ),
-                                          style: const TextStyle(color: AppColors.theme),
-                                          onChanged: (value) => updateInput(index, 1, double.parse(value)),
-                                        ),
+                                      const SizedBox(
+                                        width: 5,
                                       ),
-                                      const SizedBox(width: 8),
-                                      ElevatedButton(
-                                        onPressed: () => deleteRow(index),
-                                        style: AppButtonStyles.outlinedButtonStyle(),
-                                        child: const Icon(
-                                          Icons.delete_outline_rounded,
-                                          color: AppColors.themeLite,
+                                      GestureDetector(
+                                        onTap: () {
+                                          validateFields();
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(0),
+                                          decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
+                                          child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
                                         ),
                                       ),
                                     ],
                                   ),
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                }),
+                                ],
+                              ),
+                              AnimatedPadding(
+                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeOut,
+                                child: SizedBox(
+                                  height: MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom - 206,
+                                  child: ListView.builder(
+                                    itemCount: establishmentList.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextFormField(
+                                                onChanged: (value) => updateInput(index, 0, value),
+                                                decoration: AppFormInputStyles.textFieldDecoration(
+                                                  hintText: 'Item',
+                                                ),
+                                                style: const TextStyle(color: AppColors.theme),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: TextFormField(
+                                                keyboardType: TextInputType.number,
+                                                decoration: AppFormInputStyles.textFieldDecoration(
+                                                  hintText: 'Amount',
+                                                ),
+                                                style: const TextStyle(color: AppColors.theme),
+                                                onChanged: (value) => updateInput(index, 1, double.parse(value)),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            ElevatedButton(
+                                              onPressed: () => deleteRow(index),
+                                              style: AppButtonStyles.outlinedButtonStyle(),
+                                              child: const Icon(
+                                                Icons.delete_outline_rounded,
+                                                color: AppColors.themeLite,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                  }),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.max,

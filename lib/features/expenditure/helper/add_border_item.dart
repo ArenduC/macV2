@@ -10,11 +10,8 @@ void addBlankBorderItem(AddedBorderItem addedBorderItem) {
     currentList.removeAt(index);
   } else {
     // Item not in list → add it (toggle on)
-    currentList.add(AddedBorderItem(
-      id: addedBorderItem.id,
-      name: addedBorderItem.name,
-      userBedId: addedBorderItem.userBedId,
-    ));
+    currentList
+        .add(AddedBorderItem(id: addedBorderItem.id, name: addedBorderItem.name, userBedId: addedBorderItem.userBedId, isGestMeal: false, mealCount: 35, gestMeal: 0, deposit: 0, expenditure: 0));
   }
 
   addedBorderListNotifier.value = currentList;

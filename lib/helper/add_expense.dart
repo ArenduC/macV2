@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maca/model/data_model.dart';
+import 'package:maca/features/add_marketing_details/model/data_model.dart';
 
 addExpense({ExpenseData? data}) {}
 

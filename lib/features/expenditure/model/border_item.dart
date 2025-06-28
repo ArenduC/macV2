@@ -58,31 +58,34 @@ class AddedBorderItem {
   final int id;
   final String name;
   final int userBedId;
+  bool isGestMeal;
+  int mealCount;
+  int deposit;
+  int expenditure;
+  int gestMeal;
 
-  AddedBorderItem({
-    required this.id,
-    required this.name,
-    required this.userBedId,
-  });
+  AddedBorderItem(
+      {required this.id, required this.name, required this.userBedId, required this.isGestMeal, required this.mealCount, required this.deposit, required this.expenditure, required this.gestMeal});
 
   factory AddedBorderItem.fromJson(Map<String, dynamic> json) {
     return AddedBorderItem(
       id: json['id'],
       name: json['name'],
       userBedId: json['user_bed_id'],
+      isGestMeal: json['isGestMeal'],
+      mealCount: json['mealCount'],
+      deposit: json['deposit'],
+      expenditure: json['expenditure'],
+      gestMeal: json['gestMeal'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'user_bed_id': userBedId,
-    };
+    return {'id': id, 'name': name, 'user_bed_id': userBedId, 'isGestMeal': isGestMeal, 'mealCount': mealCount, 'deposit': deposit, 'expenditure': expenditure, 'gestMeal': gestMeal};
   }
 
   @override
   String toString() {
-    return 'ActiveUser(id: $id, name: $name, userBedId: $userBedId)';
+    return 'ActiveUser(id: $id, name: $name, userBedId: $userBedId, isGestMeal: $isGestMeal, mealCount: $mealCount), deposit: $deposit';
   }
 }

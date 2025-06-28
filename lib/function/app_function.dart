@@ -11,7 +11,7 @@ import 'package:maca/features/marketing_details/marketing_details_model.dart';
 import 'package:maca/features/marketing_details/view/individual_details.dart';
 import 'package:maca/features/rule_base_attendance/view/add_meal_off.dart';
 import 'package:maca/modal/meal_ofon_modal.dart';
-import 'package:maca/page/expend_add_page.dart';
+import 'package:maca/features/add_marketing_details/view/expend_add_page.dart';
 import 'package:maca/page/marketing_add_page.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/colors/app_colors.dart';
