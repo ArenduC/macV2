@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class MealAbsentDetail {
   final DateTime startDate;
   final String startShift; // 'D0' or 'N0'

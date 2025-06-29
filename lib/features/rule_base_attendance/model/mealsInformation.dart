@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:maca/function/app_function.dart';
 
 class MealShiftInfo {
@@ -45,8 +47,6 @@ class AbsentUserData {
   AbsentUserData({required this.userId, required this.mealOfSetDetails});
 
   factory AbsentUserData.fromJson(Map<String, dynamic> json) {
-    print('Parsing AbsentUserData from: $json');
-
     final parsed = AbsentUserData(
       userId: json['userId'],
       mealOfSetDetails: (json['mealOfSetDetails'] as List).map((e) => MealOfSetDetail.fromJson(e)).toList(),

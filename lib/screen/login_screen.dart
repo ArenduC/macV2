@@ -287,24 +287,24 @@ Widget loginSegment(
         const SizedBox(
           height: 16,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Don’t have account ?",
-              style: AppTextStyles.linkText,
-            ),
-            GestureDetector(
-              onTap: () {
-                pageSwitch();
-              },
-              child: const Text(
-                "Register here",
-                style: AppTextStyles.bodyText,
-              ),
-            )
-          ],
-        )
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     const Text(
+        //       "Don’t have account ?",
+        //       style: AppTextStyles.linkText,
+        //     ),
+        //     GestureDetector(
+        //       onTap: () {
+        //         pageSwitch();
+        //       },
+        //       child: const Text(
+        //         "Register here",
+        //         style: AppTextStyles.bodyText,
+        //       ),
+        //     )
+        //   ],
+        // )
       ],
     ),
   );

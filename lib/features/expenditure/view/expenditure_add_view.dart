@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/helper/helper.dart';
 import 'package:maca/features/add_electric_bill/model/model.dart';
-import 'package:maca/features/expenditure/helper/add_border_item.dart';
+import 'package:maca/features/expenditure/helper/empty_border_list_check.dart';
+import 'package:maca/features/expenditure/helper/empty_field_check.dart';
+import 'package:maca/features/expenditure/helper/establishment_calculation.dart';
 import 'package:maca/features/expenditure/model/border_item.dart';
 import 'package:maca/features/expenditure/model/establishment_item.dart';
 import 'package:maca/features/expenditure/notifiers/added_border_item_notifier.dart';
+import 'package:maca/features/expenditure/pdf/repaint_widget.dart';
 import 'package:maca/features/expenditure/view/add_border_item.dart';
-import 'package:maca/features/marketing_details/marketing_details_model.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';
@@ -79,6 +81,7 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
   addBorderItemMethod() {
     setState(() {
       establishmentList.add(EstablishmentItem());
+      establishmentNotifier.value = establishmentList;
     });
   }
 
@@ -86,19 +89,6 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
     macaPrint("rowIndex $index");
     setState(() {
       establishmentList.removeAt(index);
-    });
-  }
-
-  void updateInput(int index, int fieldIndex, dynamic value, {List<EstablishmentItem>? selectedUser}) {
-    setState(() {
-      switch (fieldIndex) {
-        case 0:
-          establishmentList[index].itemName = value;
-          break;
-        case 1:
-          establishmentList[index].itemAmount = value;
-          break;
-      }
     });
   }
 
@@ -110,7 +100,8 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
 
   void validateFields() {
     setState(() {
-      macaPrint("addValid$establishmentList");
+      macaPrint("addValid${establishmentNotifier.value}");
+      emptyExpenditureArrayCheck(context: context, data: establishmentNotifier.value);
     });
   }
 
@@ -149,8 +140,8 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: ValueListenableBuilder<List<AddedBorderItem>>(
-                  valueListenable: addedBorderListNotifier,
+              child: ValueListenableBuilder<List<EstablishmentItem>>(
+                  valueListenable: establishmentNotifier,
                   builder: (context, value, child) {
                     return isBorderAddedView
                         ? const AddBorderItem()
@@ -166,7 +157,7 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
                                         color: AppColors.theme,
                                       ),
                                       Text(
-                                        "Expenditure",
+                                        "Establishment",
                                         style: TextStyle(color: AppColors.theme),
                                       )
                                     ],
@@ -201,52 +192,61 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
                                   ),
                                 ],
                               ),
-                              AnimatedPadding(
-                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeOut,
-                                child: SizedBox(
-                                  height: MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom - 206,
-                                  child: ListView.builder(
-                                    itemCount: establishmentList.length,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: TextFormField(
-                                                onChanged: (value) => updateInput(index, 0, value),
-                                                decoration: AppFormInputStyles.textFieldDecoration(
-                                                  hintText: 'Item',
+                              Flexible(
+                                child: AnimatedPadding(
+                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeOut,
+                                  child: SizedBox(
+                                    height: MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom - 206,
+                                    child: ListView.builder(
+                                      itemCount: value.length,
+                                      itemBuilder: (context, index) {
+                                        final establishmentData = value[index];
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: TextFormField(
+                                                  controller: TextEditingController(
+                                                    text: establishmentData.itemName?.isEmpty == true ? null : establishmentData.itemName,
+                                                  ),
+                                                  onChanged: (e) => {establishmentNotifier.value[index].itemName = e},
+                                                  decoration: AppFormInputStyles.textFieldDecoration(
+                                                    hintText: 'Item',
+                                                  ),
+                                                  style: const TextStyle(color: AppColors.theme),
                                                 ),
-                                                style: const TextStyle(color: AppColors.theme),
                                               ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Expanded(
-                                              child: TextFormField(
-                                                keyboardType: TextInputType.number,
-                                                decoration: AppFormInputStyles.textFieldDecoration(
-                                                  hintText: 'Amount',
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: TextFormField(
+                                                  keyboardType: TextInputType.number,
+                                                  controller: TextEditingController(
+                                                    text: (establishmentData.itemAmount == null || establishmentData.itemAmount == 0.0) ? null : establishmentData.itemAmount.toString(),
+                                                  ),
+                                                  decoration: AppFormInputStyles.textFieldDecoration(
+                                                    hintText: 'Amount',
+                                                  ),
+                                                  style: const TextStyle(color: AppColors.theme),
+                                                  onChanged: (e) => {establishmentNotifier.value[index].itemAmount = double.parse(e)},
                                                 ),
-                                                style: const TextStyle(color: AppColors.theme),
-                                                onChanged: (value) => updateInput(index, 1, double.parse(value)),
                                               ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            ElevatedButton(
-                                              onPressed: () => deleteRow(index),
-                                              style: AppButtonStyles.outlinedButtonStyle(),
-                                              child: const Icon(
-                                                Icons.delete_outline_rounded,
-                                                color: AppColors.themeLite,
+                                              const SizedBox(width: 8),
+                                              ElevatedButton(
+                                                onPressed: () => deleteRow(index),
+                                                style: AppButtonStyles.outlinedButtonStyle(),
+                                                child: const Icon(
+                                                  Icons.delete_outline_rounded,
+                                                  color: AppColors.themeLite,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -262,7 +262,11 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
                   child: ElevatedButton(
                     onPressed: () async {
                       setState(() {
-                        isBorderAddedView = !isBorderAddedView;
+                        final status = emptyExpenditureArrayCheck(context: context, data: establishmentNotifier.value)["status"];
+                        macaPrint("status$status");
+                        if (!status) {
+                          isBorderAddedView = !isBorderAddedView;
+                        }
                       });
                     },
                     style: AppButtonStyles.elevatedButtonStyle(
@@ -274,6 +278,39 @@ class _ExpenditureAddViewState extends State<ExpenditureAddView> {
                     ),
                   ),
                 ),
+                const SizedBox(width: 16),
+                if (isBorderAddedView)
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        var isValid = emptyAddedBorderArrayCheck(context: context, data: addedBorderListNotifier.value)["status"];
+                        if (!isValid) {
+                          var expenditure = establishmentCalculation();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RepaintWidget(
+                                expenditureDetails: expenditureDetails,
+                                totalMeal: expenditure["totalMeal"],
+                                userFinalList: expenditure["userFinalList"],
+                                establishmentList: expenditure["establishmentList"],
+                                totalEstablishment: expenditure["totalEstablishment"],
+                                totalMarketing: expenditure["totalMarketing"],
+                                totalMember: expenditure["totalMember"],
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      style: AppButtonStyles.elevatedButtonStyle(
+                        backgroundColor: AppColors.theme,
+                      ),
+                      child: const Text(
+                        "Preview",
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
+                    ),
+                  ),
                 const SizedBox(width: 16), // spacing between buttons
                 Expanded(
                   child: ElevatedButton(

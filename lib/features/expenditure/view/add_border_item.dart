@@ -52,19 +52,6 @@ class _AddBorderItemState extends State<AddBorderItem> {
     });
   }
 
-  void updateInput(int index, int fieldIndex, dynamic value, {List<UserMealData>? selectedUser}) {
-    setState(() {
-      switch (fieldIndex) {
-        case 0:
-          borderMealDetailsList[index].meal = value;
-          break;
-        case 1:
-          borderMealDetailsList[index].deposit = value;
-          break;
-      }
-    });
-  }
-
   void validateFields() {
     setState(() {
       macaPrint("addValid$borderMealDetailsList");
@@ -92,20 +79,6 @@ class _AddBorderItemState extends State<AddBorderItem> {
             ),
             Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    // addRow();
-                    addBorderItem();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(0),
-                    decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
-                    child: const Icon(Icons.add, color: AppColors.themeWhite),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
                 GestureDetector(
                   onTap: () {
                     validateFields();
@@ -239,6 +212,9 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                   children: [
                                     Expanded(
                                       child: TextFormField(
+                                        controller: TextEditingController(
+                                          text: (borderData.deposit == 0.0) ? null : borderData.deposit.toString(),
+                                        ),
                                         onChanged: (value) => addedBorderListNotifier.value[index].deposit = int.parse(value),
                                         keyboardType: TextInputType.number,
                                         decoration: AppFormInputStyles.textFieldDecoration(
@@ -250,12 +226,15 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                     const SizedBox(width: 5),
                                     Expanded(
                                       child: TextFormField(
+                                        controller: TextEditingController(
+                                          text: (borderData.expenditure == 0.0) ? null : borderData.expenditure.toString(),
+                                        ),
                                         keyboardType: TextInputType.number,
                                         decoration: AppFormInputStyles.textFieldDecoration(
                                           hintText: 'Expend',
                                         ),
                                         style: const TextStyle(color: AppColors.theme),
-                                        onChanged: (value) => updateInput(index, 1, double.parse(value)),
+                                        onChanged: (value) => addedBorderListNotifier.value[index].expenditure = int.parse(value),
                                       ),
                                     ),
                                   ],
@@ -264,7 +243,10 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                   if (borderData.isGestMeal) ...[
                                     const SizedBox(height: 5),
                                     TextFormField(
-                                      onChanged: (value) => updateInput(index, 0, value),
+                                      controller: TextEditingController(
+                                        text: (borderData.gestMeal == 0.0) ? null : borderData.gestMeal.toString(),
+                                      ),
+                                      onChanged: (v) => addedBorderListNotifier.value[index].gestMeal = int.parse(v),
                                       keyboardType: TextInputType.number,
                                       decoration: AppFormInputStyles.textFieldDecoration(
                                         hintText: 'Gest meal',

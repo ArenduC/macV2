@@ -1,4 +1,6 @@
-final List<Map<String, dynamic>> absentDataList = [
+// ignore_for_file: file_names
+
+const List<Map<String, dynamic>> absentDataList = [
   {
     "userId": 14,
     "mealOfSetDetails": [

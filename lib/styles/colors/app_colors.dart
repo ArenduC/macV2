@@ -16,6 +16,7 @@ class AppColors {
   static const Color defaultColor = Color.fromRGBO(40, 47, 137, 1);
   static const Color loadingColor = Color.fromRGBO(184, 247, 141, 1);
   static const Color successColor = Color.fromRGBO(92, 229, 0, 1);
+  static const Color errorColor = Color.fromRGBO(229, 34, 0, 1);
   static const Color failedColor = Color.fromRGBO(255, 195, 195, 1);
   static const Color warningColor = Color.fromRGBO(255, 231, 195, 1);
   static const Color noneColor = Color.fromRGBO(217, 217, 217, 1);

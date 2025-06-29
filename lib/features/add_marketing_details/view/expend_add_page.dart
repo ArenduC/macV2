@@ -4,7 +4,7 @@ import 'package:maca/connection/api_connection.dart';
 import 'package:maca/data/app_data.dart';
 import 'package:maca/features/add_marketing_details/view/slot_segment.dart';
 import 'package:maca/function/app_function.dart';
-import 'package:maca/helper/add_expense.dart';
+import 'package:maca/features/add_marketing_details/helper/add_expense.dart';
 import 'package:maca/features/add_marketing_details/model/data_model.dart';
 import 'package:maca/models/global_model.dart';
 import 'package:maca/provider/notification_provider.dart';
@@ -31,7 +31,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
   dynamic code;
   double totalAmount = 0;
 
-  List<ExpenseData> expenses = [ExpenseData(item: "", amount: 0)];
+  List<ExpenseData> expenses = [const ExpenseData(item: "", amount: 0)];
 
   @override
   void initState() {
@@ -85,7 +85,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
     setState(() {
       code = 200;
       isSuccess = data["isSuccess"];
-      expenses = [ExpenseData(item: "", amount: 0)];
+      expenses = [const ExpenseData(item: "", amount: 0)];
     });
     Future.delayed(const Duration(seconds: 2), () {
       // Action after timeout
