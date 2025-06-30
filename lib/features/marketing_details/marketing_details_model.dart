@@ -20,6 +20,11 @@ class IndividualMarketingDetails {
       'totalAmount': totalAmount,
     };
   }
+
+  @override
+  String toString() {
+    return 'MonthData(userId: $userId, user: $user,totalAmount :$totalAmount  ';
+  }
 }
 
 class MonthData {
@@ -40,6 +45,11 @@ class MonthData {
       'month': month,
       'data': data.map((e) => e.toJson()).toList(),
     };
+  }
+
+  @override
+  String toString() {
+    return 'MonthData(month: $month, data: $data, ';
   }
 }
 

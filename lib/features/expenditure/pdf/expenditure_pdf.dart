@@ -152,18 +152,18 @@ class _ExpenditurePdfState extends State<ExpenditurePdf> {
                 billItem(data: widget.totalMarketing, unit: "Rs.", label: "Marketing"),
                 billItem(data: widget.totalEstablishment, unit: "Rs.", label: "Establishment"),
                 billItem(data: widget.totalMeal, unit: "Rs.", label: "Meal"),
-                billItem(data: widget.totalMember, unit: "p", label: "Border")
+                billItem(data: (widget.totalMarketing / widget.totalMeal).toDouble().toStringAsFixed(2), unit: "Rs.", label: "Per Meal")
               ],
             ),
           ),
           const SizedBox(
             height: 15,
           ),
-          establishmentList(establishmentList: widget.establishmentList),
+          establishmentList(establishmentList: widget.establishmentList, totalMember: widget.totalMember),
           const SizedBox(
             height: 15,
           ),
-          borderList(borderList: widget.userFinalList),
+          borderList(borderList: widget.userFinalList, manager: widget.expenditureDetails[0]["user_type_name"]),
         ],
       ),
     );
@@ -179,13 +179,13 @@ Widget billItem({data, label, unit}) {
         Row(
           children: [
             Text(
+              "$unit",
+              style: AppTextStyles.header11,
+            ),
+            Text(
               "$data",
               style: AppTextStyles.cardLabel1,
             ),
-            Text(
-              "$unit",
-              style: AppTextStyles.header11,
-            )
           ],
         ),
         Text(
@@ -198,7 +198,7 @@ Widget billItem({data, label, unit}) {
 }
 
 @override
-Widget borderList({List<ExpendBorderItem>? borderList}) {
+Widget borderList({List<ExpendBorderItem>? borderList, String? manager}) {
   if (borderList == null || borderList.isEmpty) {
     return const Center(child: Text("No data available"));
   }
@@ -221,9 +221,9 @@ Widget borderList({List<ExpendBorderItem>? borderList}) {
           padding: const EdgeInsets.all(5),
           child: const Row(children: [
             Expanded(
-              flex: 4,
+              flex: 2,
               child: Text(
-                'Border List',
+                'Boarder',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.themeWhite),
               ),
             ),
@@ -231,6 +231,13 @@ Widget borderList({List<ExpendBorderItem>? borderList}) {
               flex: 1,
               child: Text(
                 'Meal',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.themeWhite),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                'Deposit',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.themeWhite),
               ),
             ),
@@ -274,13 +281,25 @@ Widget borderList({List<ExpendBorderItem>? borderList}) {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex: 2,
                     child: Row(
                       children: [
                         Text(
                           item.name,
                           style: const TextStyle(fontSize: 10),
                         ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        if (item.name == manager)
+                          Container(
+                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(11)), color: AppColors.theme),
+                            child: const Text(
+                              "M",
+                              style: TextStyle(fontSize: 10, color: AppColors.themeWhite),
+                            ),
+                          ),
                         const SizedBox(
                           width: 2,
                         ),
@@ -306,6 +325,13 @@ Widget borderList({List<ExpendBorderItem>? borderList}) {
                     flex: 1,
                     child: Text(
                       "${item.mealCount}",
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      "${item.deposit}",
                       style: const TextStyle(fontSize: 10),
                     ),
                   ),
@@ -354,7 +380,7 @@ Widget borderList({List<ExpendBorderItem>? borderList}) {
 }
 
 @override
-Widget establishmentList({List<EstablishmentItem>? establishmentList}) {
+Widget establishmentList({List<EstablishmentItem>? establishmentList, int? totalMember}) {
   if (establishmentList == null || establishmentList.isEmpty) {
     return const Center(child: Text("No data available"));
   }
@@ -442,10 +468,20 @@ Widget establishmentList({List<EstablishmentItem>? establishmentList}) {
         ),
         Container(
           padding: const EdgeInsets.only(right: 5),
-          child: Text(
-            "Total: $totalAmount",
-            textAlign: TextAlign.right,
-            style: const TextStyle(fontSize: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Per Head: ${(totalAmount / totalMember!.toDouble()).toStringAsFixed(2)}",
+                textAlign: TextAlign.right,
+                style: const TextStyle(fontSize: 10),
+              ),
+              Text(
+                "Total: $totalAmount",
+                textAlign: TextAlign.right,
+                style: const TextStyle(fontSize: 10),
+              ),
+            ],
           ),
         )
       ],

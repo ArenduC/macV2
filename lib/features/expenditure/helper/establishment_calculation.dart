@@ -9,7 +9,7 @@ establishmentCalculation() {
   var totalMember = borderExpenditureDetails.length;
   var totalMeal = 0;
   var totalEstablishment = 0;
-  var perHeadEstablishment = 0;
+  var perHeadEstablishment = 0.0;
   var perMealCharge = 0.0;
   var totalExpenditure = 0;
   var totalGestMeal = 0;
@@ -20,13 +20,14 @@ establishmentCalculation() {
       totalExpenditure += data.expenditure;
       totalGestMeal += data.gestMeal;
     }
-    perMealCharge = double.parse(((totalExpenditure - totalGestMeal) / totalMeal).toStringAsFixed(2));
+    totalExpenditure = totalExpenditure - totalGestMeal;
+    perMealCharge = double.parse(((totalExpenditure) / totalMeal).toStringAsFixed(2));
   }
   if (establishment.isNotEmpty) {
     for (var data in establishment) {
       totalEstablishment += data.itemAmount!.toInt();
     }
-    perHeadEstablishment = totalEstablishment ~/ totalMember;
+    perHeadEstablishment = double.parse((totalEstablishment / totalMember).toStringAsFixed(2));
   }
 
   if (borderExpenditureDetails.isNotEmpty) {
@@ -40,7 +41,7 @@ establishmentCalculation() {
           deposit: data.deposit,
           expenditure: data.expenditure,
           gestMeal: data.gestMeal,
-          balance: (data.deposit + data.expenditure) - ((data.mealCount.toDouble() * perMealCharge) + perHeadEstablishment.toDouble()).toInt(),
+          balance: (data.deposit + data.expenditure) - ((data.mealCount.toDouble() * perMealCharge) + perHeadEstablishment.toDouble()).toInt() - data.gestMeal,
           totalExpend: ((data.mealCount.toDouble() * perMealCharge) + perHeadEstablishment.toDouble()).toInt()));
     }
   }

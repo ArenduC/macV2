@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/features/expenditure/model/border_item.dart';
 import 'package:maca/features/expenditure/notifiers/added_border_item_notifier.dart';
+import 'package:maca/features/expenditure/service/individual_marketing.dart';
+import 'package:maca/features/marketing_details/marketing_details_model.dart';
+import 'package:maca/features/marketing_details/view/individual_details.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';
@@ -20,11 +23,21 @@ class _AddBorderItemState extends State<AddBorderItem> {
   List<ActiveUser> userList = [];
   List<bool> isGuestMealList = [];
   List<int> sliderValues = [];
+  MonthData monthlyIndividualData = MonthData(month: "", data: []);
 
   @override
   void initState() {
+    getIndividualData();
     addUserList();
+
     super.initState();
+  }
+
+  getIndividualData() async {
+    var data = await individualMarketing();
+    setState(() {
+      monthlyIndividualData = data;
+    });
   }
 
   addUserList() async {
@@ -110,6 +123,13 @@ class _AddBorderItemState extends State<AddBorderItem> {
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     final borderData = value[index];
+
+                    final expenditureData = getIndividualExpenditure(monthlyIndividualData, borderData.id);
+                    macaPrint("expenditureData$expenditureData");
+
+                    if (expenditureData != 0.0) {
+                      addedBorderListNotifier.value[index].expenditure = expenditureData.toInt();
+                    }
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
@@ -227,7 +247,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                     Expanded(
                                       child: TextFormField(
                                         controller: TextEditingController(
-                                          text: (borderData.expenditure == 0.0) ? null : borderData.expenditure.toString(),
+                                          text: expenditureData != 0.0 ? expenditureData.toString() : ((borderData.expenditure == 0.0) ? null : borderData.expenditure.toString()),
                                         ),
                                         keyboardType: TextInputType.number,
                                         decoration: AppFormInputStyles.textFieldDecoration(
