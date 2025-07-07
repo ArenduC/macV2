@@ -195,7 +195,7 @@ Widget inputSegment(TextEditingController startDateController, TextEditingContro
             borderRadius: BorderRadius.circular(12),
             color: AppColors.themeLite,
           ),
-          child: const Text(
+          child: Text(
             "Add shift",
             style: TextStyle(color: AppColors.themeWhite),
           ),
@@ -210,7 +210,7 @@ Widget slotSegment(
     type, TextEditingController dateController, dynamic shift, Function(dynamic data, dynamic selectedShift) datePickerHandle, Function(dynamic data, dynamic selectedShift) selectedShift) {
   return (Container(
     padding: const EdgeInsets.all(8),
-    decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
+    decoration: BoxDecoration(boxShadow: const [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: const BorderRadius.all(Radius.circular(12))),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -233,7 +233,7 @@ Widget slotSegment(
                   hintText: 'Enter $type',
                   prefixIcon: Icons.calendar_month_rounded,
                 ),
-                style: const TextStyle(color: AppColors.themeLite),
+                style: TextStyle(color: AppColors.themeLite),
                 onTap: () {
                   datePickerHandle(type, "");
                 }, // Text style
@@ -312,7 +312,7 @@ class _SlotSwitchState extends State<SlotSwitch> {
             Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(5),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

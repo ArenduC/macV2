@@ -81,7 +81,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
                   Icon(
                     Icons.gas_meter_rounded,
@@ -102,7 +102,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                     child: Container(
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(color: AppColors.themeLite, borderRadius: BorderRadius.circular(50)),
-                      child: const Icon(Icons.add, color: AppColors.themeWhite),
+                      child: Icon(Icons.add, color: AppColors.themeWhite),
                     ),
                   ),
                   const SizedBox(
@@ -115,7 +115,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                     child: Container(
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
-                      child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
+                      child: Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
                     ),
                   ),
                 ],
@@ -150,7 +150,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                                             }),
                                           })
                                 }),
-                        style: const TextStyle(color: AppColors.theme),
+                        style: TextStyle(color: AppColors.theme),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -167,7 +167,7 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                                     selectedMeterId: int.tryParse(inputList[index].input1) ?? 0,
                                   )
                                 }),
-                        style: const TextStyle(color: AppColors.theme),
+                        style: TextStyle(color: AppColors.theme),
                         onChanged: (value) => updateInput(index, 1, value),
                       ),
                     ),
@@ -193,14 +193,14 @@ class _MeterReadingViewState extends State<MeterReadingView> {
                                             updateInput(index, 2, "data", selectedUser: data)
                                           })
                                 }),
-                        style: const TextStyle(color: AppColors.theme),
+                        style: TextStyle(color: AppColors.theme),
                       ),
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: () => deleteRow(index),
                       style: AppButtonStyles.outlinedButtonStyle(),
-                      child: const Icon(
+                      child: Icon(
                         Icons.delete_outline_rounded,
                         color: AppColors.themeLite,
                       ),

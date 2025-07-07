@@ -77,7 +77,7 @@ class _MarketingPageState extends State<MarketingPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.theme,
-          title: const Text('Marketing', style: TextStyle(color: AppColors.themeWhite)),
+          title: Text('Marketing', style: TextStyle(color: AppColors.themeWhite)),
         ),
         body: Padding(
           padding: const EdgeInsets.all(0.0),
@@ -113,7 +113,7 @@ Widget marketingStatusView(dynamic data) {
     padding: const EdgeInsets.all(8.0),
     child: Container(
       padding: const EdgeInsets.all(0),
-      decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
+      decoration: BoxDecoration(boxShadow: const [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: const BorderRadius.all(Radius.circular(12))),
       child: Stack(children: [
         Container(
           margin: const EdgeInsets.only(left: 20),
@@ -138,7 +138,7 @@ Widget marketingStatusView(dynamic data) {
                           'assets/APPSVGICON/profileIcon.svg',
                           width: 40,
                           height: 40,
-                          colorFilter: status ? const ColorFilter.mode(AppColors.themeLite, BlendMode.dst) : const ColorFilter.mode(Color.fromARGB(108, 217, 217, 217), BlendMode.dstIn),
+                          colorFilter: status ? ColorFilter.mode(AppColors.themeLite, BlendMode.dst) : const ColorFilter.mode(Color.fromARGB(108, 217, 217, 217), BlendMode.dstIn),
                         ),
                         const SizedBox(
                           width: 5,
@@ -188,12 +188,12 @@ Widget shiftView(dynamic data) {
             alignment: Alignment.center,
             height: 50,
             width: 80,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: AppColors.themeWhite,
-              borderRadius: BorderRadius.all(Radius.circular(6)),
+              borderRadius: const BorderRadius.all(Radius.circular(6)),
             ),
             padding: const EdgeInsets.all(2),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

@@ -43,14 +43,14 @@ class _RepaintWidgetState extends State<RepaintWidget> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.arrow_back_ios_rounded,
                   color: AppColors.theme,
                 )),
             const SizedBox(
               width: 5,
             ),
-            const Text(
+            Text(
               "Invoice",
               style: TextStyle(color: AppColors.theme, fontSize: 20, fontWeight: FontWeight.w600),
             ),
@@ -92,7 +92,7 @@ class _RepaintWidgetState extends State<RepaintWidget> {
                   backgroundColor: AppColors.theme,
                 ),
                 onPressed: () => generatePdfFromWidget(previewContainer),
-                child: const Text(
+                child: Text(
                   "Download",
                   style: TextStyle(color: AppColors.themeWhite),
                 ),

@@ -47,14 +47,14 @@ class _MarketingDetailsViewState extends State<MarketingDetailsView> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.arrow_back_ios_rounded,
                     color: AppColors.theme,
                   )),
               const SizedBox(
                 width: 5,
               ),
-              const Text(
+              Text(
                 "Monthly marketing",
                 style: TextStyle(color: AppColors.theme, fontSize: 20, fontWeight: FontWeight.w600),
               ),

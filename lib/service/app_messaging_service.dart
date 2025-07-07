@@ -52,11 +52,11 @@ class NotificationHandler {
           content: Container(
             padding: const EdgeInsets.all(5),
             margin: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(11)), color: AppColors.theme),
+            decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(11)), color: AppColors.theme),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(
+                Icon(
                   Icons.account_circle_rounded,
                   color: AppColors.themeLite,
                 ),
@@ -68,11 +68,11 @@ class NotificationHandler {
                   children: [
                     Text(
                       '${message.notification!.title}',
-                      style: const TextStyle(color: AppColors.themeLite, fontWeight: FontWeight.w500, fontSize: 12),
+                      style: TextStyle(color: AppColors.themeLite, fontWeight: FontWeight.w500, fontSize: 12),
                     ),
                     Text(
                       "${message.notification!.body}",
-                      style: const TextStyle(color: AppColors.themeLite, fontSize: 10),
+                      style: TextStyle(color: AppColors.themeLite, fontSize: 10),
                     )
                   ],
                 )

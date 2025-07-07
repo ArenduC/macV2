@@ -42,7 +42,7 @@ class _ExpenditurePdfState extends State<ExpenditurePdf> {
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(color: AppColors.theme, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
+                decoration: BoxDecoration(color: AppColors.theme, borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
                 child: Column(
                   children: [
                     Row(
@@ -52,7 +52,7 @@ class _ExpenditurePdfState extends State<ExpenditurePdf> {
                           width: 30,
                           height: 30,
                         ),
-                        const Text(
+                        Text(
                           "Expenditure",
                           style: TextStyle(color: AppColors.themeWhite, fontSize: 20, fontWeight: FontWeight.w600),
                         )
@@ -69,14 +69,14 @@ class _ExpenditurePdfState extends State<ExpenditurePdf> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(widget.expenditureDetails[0]["user_type_name"],
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.themeWhite,
                                   fontSize: 15,
                                 )),
-                            const Text("Manager", style: TextStyle(color: AppColors.themeWhite, fontSize: 10, height: 0))
+                            Text("Manager", style: TextStyle(color: AppColors.themeWhite, fontSize: 10, height: 0))
                           ],
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 100,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,11 +103,11 @@ class _ExpenditurePdfState extends State<ExpenditurePdf> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("${formatCustomDate(DateTime.now())["Month"]} ${formatCustomDate(DateTime.now())["Year"]}",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.themeWhite,
                                   fontSize: 15,
                                 )),
-                            const Text("Month",
+                            Text("Month",
                                 style: TextStyle(
                                   color: AppColors.themeWhite,
                                   fontSize: 10,
@@ -121,11 +121,11 @@ class _ExpenditurePdfState extends State<ExpenditurePdf> {
                             children: [
                               Text(
                                   "E${widget.expenditureDetails[0]["user_type_name"][0]}${widget.totalMeal}${formatCustomDate(DateTime.now())["Month"][0]}${formatCustomDate(DateTime.now())["Day"][0]}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppColors.themeWhite,
                                     fontSize: 15,
                                   )),
-                              const Text("Invoice",
+                              Text("Invoice",
                                   style: TextStyle(
                                     color: AppColors.themeWhite,
                                     fontSize: 10,
@@ -215,11 +215,11 @@ Widget borderList({List<ExpendBorderItem>? borderList, String? manager}) {
         // HEADER
         Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.theme,
           ),
           padding: const EdgeInsets.all(5),
-          child: const Row(children: [
+          child: Row(children: [
             Expanded(
               flex: 2,
               child: Text(
@@ -294,8 +294,8 @@ Widget borderList({List<ExpendBorderItem>? borderList, String? manager}) {
                         if (item.name == manager)
                           Container(
                             padding: const EdgeInsets.only(left: 5, right: 5),
-                            decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(11)), color: AppColors.theme),
-                            child: const Text(
+                            decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(11)), color: AppColors.theme),
+                            child: Text(
                               "M",
                               style: TextStyle(fontSize: 10, color: AppColors.themeWhite),
                             ),
@@ -363,7 +363,7 @@ Widget borderList({List<ExpendBorderItem>? borderList, String? manager}) {
             );
           },
         ),
-        const Divider(
+        Divider(
           color: AppColors.theme,
         ),
         Container(
@@ -398,11 +398,11 @@ Widget establishmentList({List<EstablishmentItem>? establishmentList, int? total
         // HEADER
         Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.theme,
           ),
           padding: const EdgeInsets.all(5),
-          child: const Row(children: [
+          child: Row(children: [
             Expanded(
               flex: 4,
               child: Text(
@@ -463,7 +463,7 @@ Widget establishmentList({List<EstablishmentItem>? establishmentList, int? total
             );
           },
         ),
-        const Divider(
+        Divider(
           color: AppColors.theme,
         ),
         Container(

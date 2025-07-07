@@ -52,7 +52,7 @@ class _MColumnGraphState extends State<MColumnGraph> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(0),
-      decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
+      decoration: BoxDecoration(boxShadow: const [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: const BorderRadius.all(Radius.circular(12))),
       child: Stack(children: [
         AnimatedContainer(
           duration: const Duration(microseconds: 800),
@@ -69,15 +69,15 @@ class _MColumnGraphState extends State<MColumnGraph> {
                     duration: const Duration(microseconds: 800),
                     padding: const EdgeInsets.all(2), // Fixed width for each container
                     height: height,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
                       color: AppColors.themeGray,
                     ),
                     // You can vary colors if needed
                     alignment: Alignment.topCenter,
                     child: Container(
                       padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(color: AppColors.themeLite, shape: BoxShape.circle),
+                      decoration: BoxDecoration(color: AppColors.themeLite, shape: BoxShape.circle),
                       child: Text(
                         ((data["value"] / 100)).toStringAsFixed(1),
                         style: const TextStyle(color: Colors.white, fontSize: 10),
@@ -105,7 +105,7 @@ class _MColumnGraphState extends State<MColumnGraph> {
                     alignment: Alignment.topCenter,
                     child: Text(
                       data["key"],
-                      style: const TextStyle(color: AppColors.themeLite, fontSize: 10, fontWeight: FontWeight.w700),
+                      style: TextStyle(color: AppColors.themeLite, fontSize: 10, fontWeight: FontWeight.w700),
                     ),
                   );
                 }).toList(),

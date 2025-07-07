@@ -18,7 +18,7 @@ class SuccessView extends StatefulWidget {
 class _SuccessViewState extends State<SuccessView> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -28,7 +28,7 @@ class _SuccessViewState extends State<SuccessView> {
           size: 50,
           color: AppColors.themeLite,
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
@@ -69,15 +69,15 @@ class _CurrentManagerViewState extends State<CurrentManagerView> {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(0),
-        decoration: const BoxDecoration(boxShadow: [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: BorderRadius.all(Radius.circular(12))),
+        decoration: BoxDecoration(boxShadow: const [AppBoxShadow.defaultBoxShadow], color: AppColors.themeWhite, borderRadius: const BorderRadius.all(Radius.circular(12))),
         child: Stack(children: [
           Positioned(
               bottom: 0,
               right: 0,
               child: Container(
                 padding: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
                   color: AppColors.themeGray,
                 ),
                 child: Text(
@@ -177,10 +177,10 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                   margin: const EdgeInsets.only(right: 8),
                   // Add some spacing around containers
                   padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    boxShadow: [AppBoxShadow.defaultBoxShadow],
+                  decoration: BoxDecoration(
+                    boxShadow: const [AppBoxShadow.defaultBoxShadow],
                     color: AppColors.themeWhite,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -193,7 +193,7 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                               borderRadius: BorderRadius.circular(100),
                               border: Border.all(width: 1, color: AppColors.theme),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.supervisor_account_rounded,
                               color: AppColors.theme,
                             ),
@@ -209,7 +209,7 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                                 "₹${expenditure["overall_current_month_total"]}",
                                 style: AppTextStyles.cardLabel1.copyWith(height: 0),
                               ),
-                              const Text(
+                              Text(
                                 "Expenditure",
                                 style: AppTextStyles.header11,
                               ),
@@ -240,10 +240,10 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                 child: Container(
                   margin: const EdgeInsets.only(left: 8.0),
                   padding: const EdgeInsets.all(8), // Add some spacing around containers
-                  decoration: const BoxDecoration(
-                    boxShadow: [AppBoxShadow.defaultBoxShadow],
+                  decoration: BoxDecoration(
+                    boxShadow: const [AppBoxShadow.defaultBoxShadow],
                     color: AppColors.themeWhite,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -253,7 +253,7 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), border: Border.all(width: 1, color: AppColors.theme)),
-                            child: const Icon(Icons.person, color: AppColors.theme),
+                            child: Icon(Icons.person, color: AppColors.theme),
                           ),
                           const SizedBox(
                             width: 5,

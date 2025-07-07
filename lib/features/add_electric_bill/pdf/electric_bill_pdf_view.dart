@@ -38,7 +38,7 @@ class _ElectricBillPdfViewState extends State<ElectricBillPdfView> {
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(color: AppColors.theme, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
+                decoration: BoxDecoration(color: AppColors.theme, borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
                 child: Column(
                   children: [
                     Row(
@@ -48,7 +48,7 @@ class _ElectricBillPdfViewState extends State<ElectricBillPdfView> {
                           width: 30,
                           height: 30,
                         ),
-                        const Text(
+                        Text(
                           "Electric Bill",
                           style: TextStyle(color: AppColors.themeWhite, fontSize: 20, fontWeight: FontWeight.w600),
                         )
@@ -65,14 +65,14 @@ class _ElectricBillPdfViewState extends State<ElectricBillPdfView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(widget.expenditureDetails[0]["user_type_name"],
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.themeWhite,
                                   fontSize: 15,
                                 )),
-                            const Text("Manager", style: TextStyle(color: AppColors.themeWhite, fontSize: 10, height: 0))
+                            Text("Manager", style: TextStyle(color: AppColors.themeWhite, fontSize: 10, height: 0))
                           ],
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 100,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,11 +99,11 @@ class _ElectricBillPdfViewState extends State<ElectricBillPdfView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("${formatCustomDate(DateTime.now())["Month"]} ${formatCustomDate(DateTime.now())["Year"]}",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.themeWhite,
                                   fontSize: 15,
                                 )),
-                            const Text("Month",
+                            Text("Month",
                                 style: TextStyle(
                                   color: AppColors.themeWhite,
                                   fontSize: 10,
@@ -117,11 +117,11 @@ class _ElectricBillPdfViewState extends State<ElectricBillPdfView> {
                             children: [
                               Text(
                                   "E${widget.expenditureDetails[0]["user_type_name"][0]}${widget.internetBill[0]}${widget.totalElectricBill[0]}${formatCustomDate(DateTime.now())["Month"][0]}${formatCustomDate(DateTime.now())["Day"][0]}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppColors.themeWhite,
                                     fontSize: 15,
                                   )),
-                              const Text("Invoice",
+                              Text("Invoice",
                                   style: TextStyle(
                                     color: AppColors.themeWhite,
                                     fontSize: 10,
@@ -200,11 +200,11 @@ Widget borderList({List<UserElectricBillItem>? borderList}) {
         // HEADER
         Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.theme,
           ),
           padding: const EdgeInsets.all(5),
-          child: const Row(children: [
+          child: Row(children: [
             Expanded(
               flex: 4,
               child: Text(

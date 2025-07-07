@@ -124,7 +124,7 @@ class _MealOfOnModalState extends State<MealOfOnModal> with SingleTickerProvider
                       child: Container(
                         height: 50,
                         width: 50,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.theme,
                         ),

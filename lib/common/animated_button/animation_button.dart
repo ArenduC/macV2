@@ -79,7 +79,7 @@ class _AnimationButtonState extends State<AnimationButton> {
           buttonColor = AnimationButtonColor.successColor,
           textColor = AnimationButtonTextColor.successColor,
           buttonText = "Successfully Added",
-          icon = const Icon(Icons.check_circle, color: AnimationButtonTextColor.successColor)
+          icon = Icon(Icons.check_circle, color: AnimationButtonTextColor.successColor)
         };
       case 400:
         return {buttonColor = AnimationButtonColor.failedColor};
@@ -88,7 +88,7 @@ class _AnimationButtonState extends State<AnimationButton> {
           buttonColor = AnimationButtonColor.warningColor,
           textColor = AnimationButtonTextColor.warningColor,
           buttonText = "All fields are required",
-          icon = const Icon(
+          icon = Icon(
             Icons.warning_rounded,
             color: AnimationButtonTextColor.warningColor,
           )
@@ -190,12 +190,12 @@ Widget buttonState({required AnimationModel model, required String buttonText}) 
     case AnimationModel.loading:
       return const CircularProgressIndicator();
     case AnimationModel.success:
-      return const Icon(
+      return Icon(
         Icons.check_circle,
         color: AppColors.themeLite,
       );
     case AnimationModel.failed:
-      return const Icon(
+      return Icon(
         Icons.error,
         color: AppColors.themeLite,
       );

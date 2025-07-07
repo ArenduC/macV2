@@ -22,7 +22,7 @@ class _MoreState extends State<More> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.theme,
-          title: const Text(
+          title: Text(
             'More',
             style: TextStyle(color: AppColors.themeWhite),
           ),
@@ -52,12 +52,12 @@ Widget profile(BuildContext context, MoreItemsProperty moreItems) {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppColors.themeWhite,
-          title: const Text(
+          title: Text(
             'Logout Warning',
             textAlign: TextAlign.center,
             style: TextStyle(color: AppColors.theme),
           ),
-          content: const Text(
+          content: Text(
             "You will be logged out from the application shortly.",
             textAlign: TextAlign.center,
             style: TextStyle(color: AppColors.theme),
@@ -69,7 +69,7 @@ Widget profile(BuildContext context, MoreItemsProperty moreItems) {
               children: [
                 ElevatedButton(
                   style: AppButtonStyles.elevatedButtonStyle(backgroundColor: AppColors.theme),
-                  child: const Text(
+                  child: Text(
                     'No',
                     style: TextStyle(color: AppColors.themeWhite),
                   ),
@@ -115,11 +115,11 @@ Widget profile(BuildContext context, MoreItemsProperty moreItems) {
               ),
               Text(
                 moreItems.title,
-                style: const TextStyle(color: AppColors.theme),
+                style: TextStyle(color: AppColors.theme),
               )
             ],
           ),
-          const Icon(
+          Icon(
             Icons.arrow_forward_ios_rounded,
             size: 18,
             color: AppColors.theme,

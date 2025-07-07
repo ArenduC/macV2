@@ -33,10 +33,10 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      decoration: const BoxDecoration(
-        boxShadow: [AppBoxShadow.defaultBoxShadow],
+      decoration: BoxDecoration(
+        boxShadow: const [AppBoxShadow.defaultBoxShadow],
         color: AppColors.themeWhite,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: ExpansionTile(
         initiallyExpanded: true,

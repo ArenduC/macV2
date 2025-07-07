@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 left: 20,
                 right: 0,
                 child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text(
+                  Text(
                     "Welcome to",
                     style: AppTextStyles.headline2,
                   ),
@@ -233,7 +233,7 @@ Widget loginSegment(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -252,7 +252,7 @@ Widget loginSegment(
             hintText: 'Enter your email',
             prefixIcon: Icons.person,
           ),
-          style: const TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.header1), // Text style
         ),
         const SizedBox(
           height: 16,
@@ -264,7 +264,7 @@ Widget loginSegment(
             hintText: 'Enter your password',
             prefixIcon: Icons.password,
           ),
-          style: const TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.header1), // Text style
         ),
         const SizedBox(
           height: 16,
@@ -372,7 +372,7 @@ Widget registrationSegment(
                   height: 5,
                   width: MediaQuery.of(context).size.width * 0.2,
                   margin: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: const BoxDecoration(color: AppColors.textHint, borderRadius: BorderRadius.all(Radius.circular(10))),
+                  decoration: BoxDecoration(color: AppColors.textHint, borderRadius: const BorderRadius.all(Radius.circular(10))),
                 ),
               ),
               Padding(
@@ -390,7 +390,7 @@ Widget registrationSegment(
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text(
+                        Text(
                           "Bed available",
                           style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.theme),
                         )
@@ -471,7 +471,7 @@ Widget registrationSegment(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -490,7 +490,7 @@ Widget registrationSegment(
             hintText: 'Enter your username',
             prefixIcon: Icons.person,
           ),
-          style: const TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.header1), // Text style
         ),
         const SizedBox(
           height: 16,
@@ -501,7 +501,7 @@ Widget registrationSegment(
             hintText: 'Enter email',
             prefixIcon: Icons.email,
           ),
-          style: const TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.header1), // Text style
         ),
         const SizedBox(
           height: 16,
@@ -519,7 +519,7 @@ Widget registrationSegment(
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.bed,
                       color: AppColors.themeLite,
                     ),
@@ -534,7 +534,7 @@ Widget registrationSegment(
                     ),
                   ],
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_downward,
                   color: AppColors.themeLite,
                 ),
@@ -551,7 +551,7 @@ Widget registrationSegment(
             hintText: 'Phone no',
             prefixIcon: Icons.phone_android,
           ),
-          style: const TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.header1), // Text style
         ),
         const SizedBox(
           height: 16,
@@ -563,7 +563,7 @@ Widget registrationSegment(
             hintText: 'Enter your password',
             prefixIcon: Icons.password,
           ),
-          style: const TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.header1), // Text style
         ),
         const SizedBox(
           height: 16,
@@ -586,7 +586,7 @@ Widget registrationSegment(
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Have an account ?",
               style: AppTextStyles.linkText,
             ),
@@ -594,7 +594,7 @@ Widget registrationSegment(
               onTap: () {
                 pageSwitch();
               },
-              child: const Text(
+              child: Text(
                 "Login here",
                 style: AppTextStyles.bodyText,
               ),

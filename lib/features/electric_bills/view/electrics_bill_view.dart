@@ -34,10 +34,10 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
           children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                boxShadow: [AppBoxShadow.defaultBoxShadow],
+              decoration: BoxDecoration(
+                boxShadow: const [AppBoxShadow.defaultBoxShadow],
                 color: AppColors.themeWhite,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +64,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                         children: [
                           Row(
                             children: [
-                              const Text(
+                              Text(
                                 "₹",
                                 style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w200),
                               ),
@@ -74,7 +74,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                               )
                             ],
                           ),
-                          const Text(
+                          Text(
                             "Total Bill",
                             style: AppTextStyles.header11,
                           )
@@ -96,14 +96,14 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                                 "${bills.electricUnit}",
                                 style: AppTextStyles.header18.copyWith(height: 0),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_circle_up_sharp,
                                 size: 10,
                                 color: AppColors.theme,
                               )
                             ],
                           ),
-                          const Text("Unit", style: AppTextStyles.header11),
+                          Text("Unit", style: AppTextStyles.header11),
                         ],
                       ),
                     ],
@@ -116,7 +116,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                         children: [
                           Row(
                             children: [
-                              const Text(
+                              Text(
                                 "₹",
                                 style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w200),
                               ),
@@ -126,7 +126,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                               )
                             ],
                           ),
-                          const Text("Previous", style: AppTextStyles.header11)
+                          Text("Previous", style: AppTextStyles.header11)
                         ],
                       ),
                       const SizedBox(
@@ -139,7 +139,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                             " ${previousBill.electricUnit}",
                             style: AppTextStyles.header18.copyWith(height: 0),
                           ),
-                          const Row(
+                          Row(
                             children: [Text("Unit", style: AppTextStyles.header11)],
                           )
                         ],
@@ -154,7 +154,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                         children: [
                           Row(
                             children: [
-                              const Text(
+                              Text(
                                 "₹",
                                 style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w200),
                               ),
@@ -164,7 +164,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                               )
                             ],
                           ),
-                          const Text("Internet", style: AppTextStyles.header11)
+                          Text("Internet", style: AppTextStyles.header11)
                         ],
                       ),
                       const SizedBox(
@@ -177,7 +177,7 @@ class _ElectricsBillViewState extends State<ElectricsBillView> {
                             "${formatCustomDate(bills.createdDate)["Day"]} ${formatCustomDate(bills.createdDate)["Month"]}",
                             style: AppTextStyles.header16.copyWith(height: 0),
                           ),
-                          const Row(
+                          Row(
                             children: [Text("Created Date", style: AppTextStyles.header11)],
                           )
                         ],

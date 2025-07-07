@@ -131,7 +131,7 @@ class _LandingPageState extends State<LandingPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.account_circle_rounded,
                               color: AppColors.theme,
                             ),
@@ -143,11 +143,11 @@ class _LandingPageState extends State<LandingPage> {
                               children: [
                                 Text(
                                   "${formatCustomDate(DateTime.now())["Day"]} ${formatCustomDate(DateTime.now())["Month"]}",
-                                  style: const TextStyle(color: AppColors.theme, fontWeight: FontWeight.w500, fontSize: 12),
+                                  style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w500, fontSize: 12),
                                 ),
                                 Text(
                                   "Morning meal ${mealCountDetails["currentDayMealCount"]["day"]} | Evening meal ${mealCountDetails["currentDayMealCount"]["night"]} ",
-                                  style: const TextStyle(color: AppColors.theme, fontSize: 10),
+                                  style: TextStyle(color: AppColors.theme, fontSize: 10),
                                 )
                               ],
                             )

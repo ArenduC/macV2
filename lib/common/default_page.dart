@@ -12,7 +12,7 @@ class _DefaultPageState extends State<DefaultPage> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Container(padding: const EdgeInsets.all(10), decoration: const BoxDecoration(color: AppColors.ongoing), child: const Text('Default Page')),
+      Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: AppColors.ongoing), child: const Text('Default Page')),
     ]);
   }
 }

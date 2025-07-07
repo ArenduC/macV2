@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(color: AppColors.theme, borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          decoration: BoxDecoration(color: AppColors.theme, borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
           child: BottomNavigationBar(
             elevation: 0,
             backgroundColor: const Color.fromARGB(0, 40, 46, 137),

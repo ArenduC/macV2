@@ -26,8 +26,8 @@ class _IndividualDetailsState extends State<IndividualDetails> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(20.0),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -37,14 +37,14 @@ class _IndividualDetailsState extends State<IndividualDetails> {
                         "Marketing list",
                         style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                     ],
                   ),
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -60,7 +60,7 @@ class _IndividualDetailsState extends State<IndividualDetails> {
                 ],
               ),
             ),
-            const Divider(
+            Divider(
               height: 2,
               color: AppColors.theme,
             ),
@@ -76,10 +76,10 @@ class _IndividualDetailsState extends State<IndividualDetails> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(child: Text(user.item, style: const TextStyle(color: AppColors.theme))),
-                        Expanded(child: Text("₹${user.price}", style: const TextStyle(color: AppColors.theme))),
+                        Expanded(child: Text(user.item, style: TextStyle(color: AppColors.theme))),
+                        Expanded(child: Text("₹${user.price}", style: TextStyle(color: AppColors.theme))),
                         Expanded(
-                          child: Text(user.createdDate, textAlign: TextAlign.right, style: const TextStyle(color: AppColors.theme)),
+                          child: Text(user.createdDate, textAlign: TextAlign.right, style: TextStyle(color: AppColors.theme)),
                         ),
                       ],
                     ),

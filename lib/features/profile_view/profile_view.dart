@@ -56,7 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(8), // Remove extra padding
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.themeWhite,
                   ),
@@ -67,7 +67,7 @@ class _ProfileViewState extends State<ProfileView> {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Removes default tap area padding
                     ),
                     onPressed: () {},
-                    child: Text("${firstAlphabetExtractAndCapitalize(loginDetails?[0]["user_name"])}", style: const TextStyle(fontSize: 15, color: AppColors.theme)),
+                    child: Text("${firstAlphabetExtractAndCapitalize(loginDetails?[0]["user_name"])}", style: TextStyle(fontSize: 15, color: AppColors.theme)),
                   ),
                 ),
               ],

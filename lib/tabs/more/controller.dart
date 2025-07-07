@@ -4,7 +4,7 @@ import 'package:maca/tabs/more/model.dart';
 
 final List<MoreItemsProperty> moreItems = [
   MoreItemsProperty(
-    icon: const Icon(
+    icon: Icon(
       Icons.settings,
       color: AppColors.theme,
     ),
@@ -12,7 +12,7 @@ final List<MoreItemsProperty> moreItems = [
     onTap: (context) {},
   ),
   MoreItemsProperty(
-    icon: const Icon(
+    icon: Icon(
       Icons.person,
       color: AppColors.theme,
     ),
@@ -20,7 +20,7 @@ final List<MoreItemsProperty> moreItems = [
     onTap: (context) {},
   ),
   MoreItemsProperty(
-    icon: const Icon(
+    icon: Icon(
       Icons.pages_rounded,
       color: AppColors.theme,
     ),
@@ -30,7 +30,7 @@ final List<MoreItemsProperty> moreItems = [
     },
   ),
   MoreItemsProperty(
-    icon: const Icon(
+    icon: Icon(
       Icons.add_business_rounded,
       color: AppColors.theme,
     ),
@@ -40,7 +40,7 @@ final List<MoreItemsProperty> moreItems = [
     },
   ),
   MoreItemsProperty(
-    icon: const Icon(
+    icon: Icon(
       Icons.logout,
       color: AppColors.theme,
     ),

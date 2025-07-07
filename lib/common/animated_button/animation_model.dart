@@ -12,19 +12,19 @@ enum AnimationModel {
 }
 
 class AnimationButtonColor {
-  static const Color defaultColor = AppColors.defaultColor;
-  static const Color loadingColor = AppColors.loadingColor;
-  static const Color successColor = AppColors.successColor;
-  static const Color failedColor = AppColors.failedColor;
-  static const Color warningColor = AppColors.warningColor;
-  static const Color noneColor = AppColors.noneColor;
+  static Color defaultColor = AppColors.defaultColor;
+  static Color loadingColor = AppColors.loadingColor;
+  static Color successColor = AppColors.successColor;
+  static Color failedColor = AppColors.failedColor;
+  static Color warningColor = AppColors.warningColor;
+  static Color noneColor = AppColors.noneColor;
 }
 
 class AnimationButtonTextColor {
-  static const Color defaultColor = AppColors.themeWhite;
-  static const Color loadingColor = AppColors.theme;
-  static const Color successColor = Color.fromARGB(255, 47, 114, 2);
-  static const Color failedColor = AppColors.themeWhite;
-  static const Color warningColor = Color.fromARGB(255, 133, 82, 6);
-  static const Color noneColor = AppColors.theme;
+  static Color defaultColor = AppColors.themeWhite;
+  static Color loadingColor = AppColors.theme;
+  static Color successColor = const Color.fromARGB(255, 47, 114, 2);
+  static Color failedColor = AppColors.themeWhite;
+  static Color warningColor = const Color.fromARGB(255, 133, 82, 6);
+  static Color noneColor = AppColors.theme;
 }

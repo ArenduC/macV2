@@ -26,7 +26,7 @@ class _SegmentAddViewState extends State<SegmentAddView> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(padding: const EdgeInsets.all(10), child: const Text("Electric bill item", style: AppTextStyles.inputLabel)),
+          Container(padding: const EdgeInsets.all(10), child: Text("Electric bill item", style: AppTextStyles.inputLabel)),
           Row(
             // Optional for even spacing
             children: rowItems.map((item) {
@@ -51,7 +51,7 @@ class _SegmentAddViewState extends State<SegmentAddView> {
                           Text(
                             item.label,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppColors.theme,
                               fontWeight: FontWeight.normal,
                               fontSize: 12,

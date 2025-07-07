@@ -51,7 +51,7 @@ class _ThreeDotHarmonicLoadingState extends State<ThreeDotHarmonicLoading> with 
     return Container(
       width: 12,
       height: 12,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.themeLite,
         shape: BoxShape.circle,
       ),

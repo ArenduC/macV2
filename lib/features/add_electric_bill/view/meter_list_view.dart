@@ -97,7 +97,7 @@ class _MeterListViewState extends State<MeterListView> {
             children: [
               Row(
                 children: [
-                  const Text("Add Meter", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
+                  Text("Add Meter", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
                   const SizedBox(
                     width: 20,
                   ),
@@ -110,11 +110,11 @@ class _MeterListViewState extends State<MeterListView> {
                           alignment: Alignment.center,
                           height: 20,
                           width: 50,
-                          decoration: const BoxDecoration(color: AppColors.theme, borderRadius: BorderRadius.all(Radius.circular(5))),
+                          decoration: BoxDecoration(color: AppColors.theme, borderRadius: const BorderRadius.all(Radius.circular(5))),
                         ),
                         Text(
                           "M${selectedMeterIds.first}",
-                          style: const TextStyle(color: AppColors.themeWhite, fontWeight: FontWeight.w600),
+                          style: TextStyle(color: AppColors.themeWhite, fontWeight: FontWeight.w600),
                         )
                       ],
                     )
@@ -134,21 +134,21 @@ class _MeterListViewState extends State<MeterListView> {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2), // Reduce space inside tile
                 visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                 minVerticalPadding: 0,
-                leading: const CircleAvatar(
+                leading: CircleAvatar(
                     backgroundColor: AppColors.themeLite,
                     child: Icon(
                       Icons.gas_meter_rounded,
                       color: AppColors.themeWhite,
                     )),
-                title: Text(user.meterName, style: const TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600, fontSize: 15)),
+                title: Text(user.meterName, style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600, fontSize: 15)),
                 subtitle: Text("Meter ID: ${user.id}",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       color: AppColors.theme,
                     )),
                 trailing: isSelected
-                    ? const Icon(Icons.check_box_rounded, color: AppColors.theme)
-                    : const Icon(
+                    ? Icon(Icons.check_box_rounded, color: AppColors.theme)
+                    : Icon(
                         Icons.check_box_outline_blank_rounded,
                         color: AppColors.themeLite,
                       ),

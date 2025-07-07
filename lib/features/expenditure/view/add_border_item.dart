@@ -78,7 +78,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Row(
+            Row(
               children: [
                 Icon(
                   Icons.currency_rupee_rounded,
@@ -99,7 +99,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
                   child: Container(
                     padding: const EdgeInsets.all(0),
                     decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(50)),
-                    child: const Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
+                    child: Icon(Icons.published_with_changes_rounded, color: AppColors.themeLite),
                   ),
                 ),
               ],
@@ -154,7 +154,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                             softWrap: true,
                                             maxLines: 2,
                                             overflow: TextOverflow.clip,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: AppColors.theme,
                                             ),
                                           ),
@@ -164,10 +164,10 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                           Container(
                                             alignment: Alignment.centerLeft,
                                             padding: const EdgeInsets.all(3),
-                                            decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.themeLite),
+                                            decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.themeLite),
                                             child: Text(
                                               borderData.mealCount.toStringAsFixed(0),
-                                              style: const TextStyle(color: AppColors.themeWhite, fontSize: 10),
+                                              style: TextStyle(color: AppColors.themeWhite, fontSize: 10),
                                             ),
                                           ),
                                         ],
@@ -202,7 +202,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Text(
+                                        Text(
                                           "Gest",
                                           style: TextStyle(
                                             color: AppColors.themeLite,
@@ -212,11 +212,11 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                           width: 5,
                                         ),
                                         borderData.isGestMeal
-                                            ? const Icon(
+                                            ? Icon(
                                                 Icons.check_box_rounded,
                                                 color: AppColors.themeLite,
                                               )
-                                            : const Icon(
+                                            : Icon(
                                                 Icons.check_box_outline_blank_rounded,
                                                 color: AppColors.themeLite,
                                                 opticalSize: Checkbox.width,
@@ -240,7 +240,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                         decoration: AppFormInputStyles.textFieldDecoration(
                                           hintText: 'Deposit',
                                         ),
-                                        style: const TextStyle(color: AppColors.theme),
+                                        style: TextStyle(color: AppColors.theme),
                                       ),
                                     ),
                                     const SizedBox(width: 5),
@@ -253,7 +253,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                         decoration: AppFormInputStyles.textFieldDecoration(
                                           hintText: 'Expend',
                                         ),
-                                        style: const TextStyle(color: AppColors.theme),
+                                        style: TextStyle(color: AppColors.theme),
                                         onChanged: (value) => addedBorderListNotifier.value[index].expenditure = int.parse(value),
                                       ),
                                     ),
@@ -271,7 +271,7 @@ class _AddBorderItemState extends State<AddBorderItem> {
                                       decoration: AppFormInputStyles.textFieldDecoration(
                                         hintText: 'Gest meal',
                                       ),
-                                      style: const TextStyle(color: AppColors.theme),
+                                      style: TextStyle(color: AppColors.theme),
                                     ),
                                   ]
                                 ]

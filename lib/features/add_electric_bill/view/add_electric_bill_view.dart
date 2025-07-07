@@ -124,14 +124,14 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                 onDoubleTap: () {
                   Navigator.pop(context);
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.arrow_back_ios_rounded,
                   color: AppColors.theme,
                 )),
             const SizedBox(
               width: 5,
             ),
-            const Text(
+            Text(
               "Add electric bill",
               style: TextStyle(color: AppColors.theme, fontSize: 20, fontWeight: FontWeight.w600),
             ),
@@ -164,7 +164,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                           prefixIcon: Icons.wifi,
                           prefixIconColor: isInternetFocused ? AppColors.theme : AppColors.themeLite,
                         ),
-                        style: const TextStyle(color: AppColors.theme),
+                        style: TextStyle(color: AppColors.theme),
                       ),
                       const SizedBox(height: 16),
 
@@ -179,7 +179,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                           prefixIcon: Icons.electric_bolt,
                           prefixIconColor: isEBillFocused ? AppColors.theme : AppColors.themeLite,
                         ),
-                        style: const TextStyle(color: AppColors.theme),
+                        style: TextStyle(color: AppColors.theme),
                       ),
                       const SizedBox(height: 16),
 
@@ -194,7 +194,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                           prefixIcon: Icons.speed,
                           prefixIconColor: isUnityFocused ? AppColors.theme : AppColors.themeLite,
                         ),
-                        style: const TextStyle(color: AppColors.theme),
+                        style: TextStyle(color: AppColors.theme),
                       ),
                       const SizedBox(
                         height: 20,
@@ -285,7 +285,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                       showBedSelectionModal(context, 3);
                     },
                     style: AppButtonStyles.outlinedButtonStyle(),
-                    child: const Text(
+                    child: Text(
                       'Add',
                       style: TextStyle(fontSize: 16.0, color: AppColors.themeLite),
                     ),

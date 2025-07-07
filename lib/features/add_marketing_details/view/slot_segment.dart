@@ -17,10 +17,10 @@ Widget slotSegment(
     builder: (context, value, child) {
       return Container(
         padding: const EdgeInsets.all(8),
-        decoration: const BoxDecoration(
-          boxShadow: [AppBoxShadow.defaultBoxShadow],
+        decoration: BoxDecoration(
+          boxShadow: const [AppBoxShadow.defaultBoxShadow],
           color: AppColors.themeWhite,
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,7 @@ Widget slotSegment(
                     onAddItem(data: const ExpenseData(item: "", amount: 0), action: ActionType.add);
                     // Add a new empty expense
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.add_circle_outlined,
                     color: AppColors.theme,
                   ),
@@ -69,7 +69,7 @@ Widget slotSegment(
                           hintText: 'Enter item',
                           prefixIcon: Icons.local_grocery_store_rounded,
                         ),
-                        style: const TextStyle(color: AppColors.themeLite),
+                        style: TextStyle(color: AppColors.themeLite),
                         onChanged: (value) {
                           addItems[index] = ExpenseData(
                             item: value,
@@ -87,7 +87,7 @@ Widget slotSegment(
                           hintText: 'Enter amount',
                           prefixIcon: Icons.currency_rupee_sharp,
                         ),
-                        style: const TextStyle(color: AppColors.themeLite),
+                        style: TextStyle(color: AppColors.themeLite),
                         keyboardType: TextInputType.number,
                         onChanged: (e) {
                           (addItems[index] = ExpenseData(
@@ -110,7 +110,7 @@ Widget slotSegment(
                         onTap: () {
                           onAddItem(action: ActionType.delete, index: index);
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.delete,
                           color: AppColors.theme,
                         ),

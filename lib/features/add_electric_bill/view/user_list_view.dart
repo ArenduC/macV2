@@ -104,7 +104,7 @@ class _UserListViewState extends State<UserListView> {
             children: [
               Row(
                 children: [
-                  const Text("Add Border", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
+                  Text("Add Border", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
                   const SizedBox(
                     width: 20,
                   ),
@@ -117,11 +117,11 @@ class _UserListViewState extends State<UserListView> {
                           alignment: Alignment.center,
                           height: 20,
                           width: 20,
-                          decoration: const BoxDecoration(color: AppColors.theme, borderRadius: BorderRadius.all(Radius.circular(5))),
+                          decoration: BoxDecoration(color: AppColors.theme, borderRadius: const BorderRadius.all(Radius.circular(5))),
                         ),
                         Text(
                           "${selectedUser.length}",
-                          style: const TextStyle(color: AppColors.themeWhite, fontWeight: FontWeight.w600),
+                          style: TextStyle(color: AppColors.themeWhite, fontWeight: FontWeight.w600),
                         )
                       ],
                     )
@@ -133,17 +133,17 @@ class _UserListViewState extends State<UserListView> {
                 },
                 child: Row(
                   children: [
-                    const Text("Select All", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
+                    Text("Select All", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
                     const SizedBox(
                       width: 20,
                     ),
                     if (allSelect)
-                      const Icon(
+                      Icon(
                         Icons.check_box_rounded,
                         color: AppColors.theme,
                       )
                     else
-                      const Icon(
+                      Icon(
                         Icons.check_box_outline_blank_rounded,
                         color: AppColors.themeLite,
                         weight: 100,
@@ -169,18 +169,18 @@ class _UserListViewState extends State<UserListView> {
                   backgroundColor: AppColors.themeLite,
                   child: Text(
                     user.name[0].toUpperCase(),
-                    style: const TextStyle(color: AppColors.themeWhite),
+                    style: TextStyle(color: AppColors.themeWhite),
                   ),
                 ),
-                title: Text(user.name, style: const TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600, fontSize: 15)),
+                title: Text(user.name, style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600, fontSize: 15)),
                 subtitle: Text("Bed ID: ${user.userBedId}",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       color: AppColors.theme,
                     )),
                 trailing: isSelected
-                    ? const Icon(Icons.check_box_rounded, color: AppColors.theme)
-                    : const Icon(
+                    ? Icon(Icons.check_box_rounded, color: AppColors.theme)
+                    : Icon(
                         Icons.check_box_outline_blank_rounded,
                         color: AppColors.themeLite,
                       ),

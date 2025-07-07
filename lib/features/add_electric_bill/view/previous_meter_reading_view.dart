@@ -48,15 +48,15 @@ class _PreviousMeterReadingViewState extends State<PreviousMeterReadingView> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(20.0),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Text("Meter Reading", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600)),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                 ],
@@ -81,12 +81,12 @@ class _PreviousMeterReadingViewState extends State<PreviousMeterReadingView> {
                         backgroundColor: AppColors.themeLite,
                         child: Text(
                           user.month[0].toUpperCase(),
-                          style: const TextStyle(color: AppColors.themeWhite),
+                          style: TextStyle(color: AppColors.themeWhite),
                         ),
                       ),
-                      title: Text("${formatCustomDate(user.date)["Month"]}", style: const TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600, fontSize: 15)),
+                      title: Text("${formatCustomDate(user.date)["Month"]}", style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600, fontSize: 15)),
                       subtitle: Text("${formatCustomDate(user.date)["Year"]}",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             color: AppColors.theme,
                           )),
