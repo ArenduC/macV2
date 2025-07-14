@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:maca/features/shift_scheduler/helper/shift_schedule_generator.dart';
+import 'package:maca/features/shift_scheduler/view/shift_schedule_generator_view.dart';
+import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 import 'package:maca/tabs/more/model.dart';
 
@@ -37,6 +40,23 @@ final List<MoreItemsProperty> moreItems = [
     title: 'Expenditure',
     onTap: (context) {
       Navigator.pushNamed(context, '/expenditure');
+    },
+  ),
+  MoreItemsProperty(
+    icon: Icon(
+      Icons.calendar_today_rounded,
+      color: AppColors.theme,
+    ),
+    title: 'Shift Scheduler',
+    onTap: (context) {
+      var data = generateShiftsAccurate(year: 2025, month: 9, numberOfPeople: 8);
+      macaPrint("shiftDetails,$data");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ShiftScheduleGeneratorView(
+                    shiftAssignment: data,
+                  )));
     },
   ),
   MoreItemsProperty(

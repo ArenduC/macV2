@@ -5,6 +5,7 @@ import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/router.dart';
 import 'package:maca/screen/start_up_screen.dart';
 import 'package:maca/store/local_store.dart';
+import 'package:maca/styles/colors/app_colors.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       onGenerateRoute: AppRouter.generateRoute,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.theme),
         useMaterial3: true,
       ),
       navigatorKey: navigatorKey,

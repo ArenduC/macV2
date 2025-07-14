@@ -28,17 +28,19 @@
 import 'dart:ui';
 
 class AppColors {
-  static const bool isDark = true;
+  static const bool isDark = false;
 
   static Color get theme => isDark ? const Color.fromRGBO(10, 12, 36, 1) : const Color.fromRGBO(40, 47, 137, 1);
 
-  static Color get themeLite => isDark ? const Color.fromRGBO(20, 24, 60, 1) : const Color.fromRGBO(129, 133, 188, 1);
+  static Color get backGround => isDark ? const Color.fromARGB(255, 4, 4, 20) : const Color.fromRGBO(255, 255, 255, 1);
+
+  static Color get themeLite => isDark ? const Color.fromRGBO(129, 133, 188, 1) : const Color.fromRGBO(129, 133, 188, 1);
 
   static Color get header1 => isDark ? const Color.fromRGBO(235, 235, 245, 1) : const Color.fromRGBO(0, 0, 0, 1);
 
   static Color get textHint => isDark ? const Color.fromRGBO(140, 140, 150, 1) : const Color.fromRGBO(129, 133, 188, 1);
 
-  static Color get themeWhite => isDark ? const Color.fromRGBO(220, 220, 230, 1) : const Color.fromRGBO(255, 255, 255, 1);
+  static Color get themeWhite => isDark ? const Color.fromARGB(255, 5, 5, 27) : const Color.fromRGBO(255, 255, 255, 1);
 
   static Color get themeGray => isDark ? const Color.fromRGBO(70, 70, 80, 1) : const Color.fromRGBO(211, 211, 211, 1);
 

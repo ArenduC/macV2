@@ -73,7 +73,7 @@ class _MarketingPageState extends State<MarketingPage> {
   Widget build(BuildContext context) {
     return Consumer<WidgetUpdate>(builder: (context, countProvider, _) {
       return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: AppColors.backGround,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.theme,

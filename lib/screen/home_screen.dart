@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
+        backgroundColor: AppColors.backGround,
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),

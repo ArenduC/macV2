@@ -102,7 +102,7 @@ void showBedSelectionModal(
   macaPrint("selectedMeterIdOnSheBedSelectionModal$selectedMeterId");
   showModalBottomSheet(
       context: context,
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: AppColors.backGround,
       isScrollControlled: true, // Allows the modal to take more space
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)), // Optional rounded corners

@@ -91,7 +91,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.themeWhite,
+        backgroundColor: AppColors.backGround,
         appBar: AppBar(
           backgroundColor: AppColors.theme,
           surfaceTintColor: AppColors.theme,
