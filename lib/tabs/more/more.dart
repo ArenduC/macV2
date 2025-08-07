@@ -3,7 +3,7 @@ import 'package:maca/store/local_store.dart';
 import 'package:maca/tabs/more/controller.dart';
 import 'package:maca/tabs/more/model.dart';
 
-import 'package:maca/screen/login_screen.dart';
+import 'package:maca/auth/view/login_screen.dart';
 import 'package:maca/styles/app_style.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 

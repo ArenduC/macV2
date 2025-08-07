@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/view/add_electric_bill_view.dart';
 import 'package:maca/features/expenditure/view/expenditure_add_view.dart';
 import 'package:maca/screen/home_screen.dart';
-import 'package:maca/screen/login_screen.dart';
+import 'package:maca/auth/view/login_screen.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {

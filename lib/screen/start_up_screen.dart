@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:maca/auth/maca_auth.dart';
 import 'package:maca/screen/home_screen.dart';
-import 'package:maca/screen/login_screen.dart';
+import 'package:maca/auth/view/login_screen.dart';
 import 'package:maca/service/app_messaging_service.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 

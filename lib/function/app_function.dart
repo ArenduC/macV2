@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:maca/auth/model/user_bed.dart';
 import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/features/add_electric_bill/view/meter_list_view.dart';
 import 'package:maca/features/add_electric_bill/view/previous_meter_reading_view.dart';
@@ -274,15 +275,15 @@ class AppFunction {
     }
   }
 
-  dynamic createBedStatusList(dynamic userBeds, dynamic allBeds) {
+  dynamic createBedStatusList(List<UserBed> userBeds, dynamic allBeds) {
     // Create a set of active user_bed values for quick lookup
-    final activeBeds = userBeds.map((bed) => bed['user_bed']).toSet();
+    final activeBeds = userBeds.map((bed) => bed.userBed).toSet();
 
     // Map over allBeds and add the is_active key
     return allBeds.map((bed) {
       return {
         ...bed,
-        'is_active': !activeBeds.contains(bed['user_bed']), // True if present in userBeds
+        'is_active': !activeBeds.contains(bed['userBed']), // True if present in userBeds
       };
     }).toList();
   }
