@@ -102,20 +102,32 @@ class AdditionalExpendModule {
   }
 }
 
+class ExtraExpendModule {
+  String input1;
+  String input2;
+  List<ActiveUser> input3;
+
+  ExtraExpendModule({this.input1 = '', this.input2 = '', this.input3 = const []});
+
+  @override
+  String toString() {
+    return 'ExtraExpendModule(input1: $input1, input2: $input2, input3: $input3)';
+  }
+}
+
 class SegmentItemModule {
   bool isMeterActive;
   bool isAddition;
+  bool isExtra;
 
-  SegmentItemModule({this.isAddition = false, this.isMeterActive = false});
+  SegmentItemModule({this.isAddition = false, this.isMeterActive = false, this.isExtra = false});
 
   SegmentItemModule copyWith({
     bool? isMeterActive,
     bool? isAddition,
+    bool? isExtra,
   }) {
-    return SegmentItemModule(
-      isMeterActive: isMeterActive ?? this.isMeterActive,
-      isAddition: isAddition ?? this.isAddition,
-    );
+    return SegmentItemModule(isMeterActive: isMeterActive ?? this.isMeterActive, isAddition: isAddition ?? this.isAddition, isExtra: isExtra ?? this.isExtra);
   }
 
   @override

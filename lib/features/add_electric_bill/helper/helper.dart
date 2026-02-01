@@ -20,7 +20,7 @@ import 'package:share_plus/share_plus.dart';
 
 Future<dynamic> electricBillCreateUpdate(BuildContext context, dynamic data) async {
   var loginData = await getLocalStorageData("loginDetails");
-  var userId = {"p_managerId": loginData[0]["user_id"]};
+  var userId = {"p_managerId": loginData["user_id"]};
   dynamic jsonBody = {...userId, ...data};
   macaPrint("jsonData: $jsonBody");
   dynamic response = await ApiService().apiCallService(endpoint: PostUrl().electricBillCreate, method: ApiType().post, body: jsonBody);
@@ -72,6 +72,7 @@ List<UserElectricBillItem> createElectricBillView({
   final List<MeterReadingInputModel>? meterReading,
   final List<MeterReading>? monthlyMeterReadingList,
   final List<AdditionalExpendModule>? additionalExpendList,
+  final List<ExtraExpendModule>? extraExpendList,
 }) {
   macaPrint(totalElectricUnits);
   macaPrint(totalElectricBill);
@@ -88,6 +89,7 @@ List<UserElectricBillItem> createElectricBillView({
         userList: userList,
         meterReading: meterReading,
         additionalItem: additionalExpendList,
+        extraExpend: extraExpendList,
         monthlyMeterReadingList: monthlyMeterReadingList);
     return UserElectricBillItem(
       userName: element.name,
@@ -108,17 +110,32 @@ dynamic genericElectricAmount({
   List<ActiveUser>? userList,
   List<MeterReadingInputModel>? meterReading,
   List<AdditionalExpendModule>? additionalItem,
+  List<ExtraExpendModule>? extraExpend,
   String? electricBill,
   String? electricUnit,
   dynamic userId,
   List<MeterReading>? monthlyMeterReadingList,
 }) {
+  int getAdditionalItemTotal(List<AdditionalExpendModule>? additionalItem) {
+    int total = 0;
+    if (additionalItem!.isNotEmpty) {
+      for (var ad in additionalItem) {
+        total += int.parse(ad.input2);
+      }
+    } else {
+      total = 0;
+    }
+    return total;
+  }
+
   var getUnit = int.parse(electricBill!) / int.parse(electricUnit!);
-  var genericChargePerHead = meterReading!.isEmpty ? (int.parse(electricBill) / userList!.length) : 0;
+  var genericChargePerHead = meterReading!.isEmpty ? ((int.parse(electricBill) - getAdditionalItemTotal(additionalItem)) / userList!.length) : 0;
   var eachCharge = 0.0;
   var totalMeterUnit = 0;
   var meterUnit = 0;
   var jsonObject = {};
+  var additionalItemTotal = 0;
+
   List<MeterReading> selectedMeterDetails = [];
   if (userList!.isNotEmpty) {
     if (meterReading.isNotEmpty) {
@@ -126,8 +143,8 @@ dynamic genericElectricAmount({
         selectedMeterDetails = monthlyMeterReadingList!.where((m) => m.meterId == int.parse(meter.input1)).toList();
         totalMeterUnit += selectedMeterDetails.isNotEmpty ? int.parse(meter.input2) - selectedMeterDetails[0].readings.reversed.toList()[0].reading : int.parse(meter.input2);
       }
-      genericChargePerHead = (int.parse(electricBill) - (totalMeterUnit * getUnit)) / userList.length;
-
+      genericChargePerHead = ((int.parse(electricBill)) - (totalMeterUnit * getUnit)) / userList.length;
+      macaPrint("additionalItemTotal $additionalItemTotal");
       bool foundInMeter = false;
 
       for (var element in meterReading) {
@@ -176,11 +193,22 @@ dynamic genericElectricAmount({
     if (additionalItem!.isNotEmpty) {
       for (var ad in additionalItem) {
         var itemTotal = int.parse(ad.input2);
-
+        additionalItemTotal += itemTotal;
         if (ad.input3.any((adE) => adE.id == userId)) {
           jsonObject = {
             ...jsonObject,
             "additionalCharge": itemTotal / ad.input3.length,
+          };
+        }
+      }
+    }
+    if (extraExpend!.isNotEmpty) {
+      for (var ad in extraExpend) {
+        var itemTotal = int.parse(ad.input2);
+        if (ad.input3.any((adE) => adE.id == userId)) {
+          jsonObject = {
+            ...jsonObject,
+            "extraExpend": itemTotal / ad.input3.length,
           };
         }
       }

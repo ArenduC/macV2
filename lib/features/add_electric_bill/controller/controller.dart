@@ -22,4 +22,13 @@ List<RowItemModel> rowItems = [
       macaPrint("Additional Item");
     },
   ),
+  RowItemModel(
+    icon: Icons.add_chart_rounded,
+    label: "Extra",
+    isActive: false,
+    onTap: () {
+      segmentNotifier.value = segmentNotifier.value.copyWith(isExtra: !segmentNotifier.value.isExtra);
+      macaPrint("Extra Item");
+    },
+  ),
 ];

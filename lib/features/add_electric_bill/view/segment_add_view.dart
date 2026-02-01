@@ -15,9 +15,9 @@ class _SegmentAddViewState extends State<SegmentAddView> {
   SegmentItemModule segmentModule = SegmentItemModule(
     isMeterActive: false,
     isAddition: false,
+    isExtra: false,
   );
 
-  segmentViewUpdate() {}
   @override
   Widget build(BuildContext context) {
     return Padding(

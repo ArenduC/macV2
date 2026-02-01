@@ -11,6 +11,7 @@ class PostUrl {
   String electricBillCreate = "${Connection().prodUrl}v1/electric_bill_create";
   String addMeterReading = "${Connection().prodUrl}v1/add_meter_reading";
   String insertMealAbsentDetail = "${Connection().prodUrl}v1/insert_meal_absent_detail";
+  String insertMarketingShifts = "${Connection().prodUrl}v1/insert_marketing_shift";
 }
 
 class GetUrl {

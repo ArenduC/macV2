@@ -45,3 +45,46 @@ class ShiftAssignment {
     };
   }
 }
+
+extension ShiftAssignmentApiMapper on ShiftAssignment {
+  Map<String, dynamic> toMarketingInsertJson({
+    required String createdId,
+  }) {
+    return {
+      "startDate": startDate.toIso8601String(),
+      "endDate": endDate.toIso8601String(),
+      "startShift": startShift,
+      "endShift": endShift,
+      "createdId": createdId,
+    };
+  }
+}
+
+Map<String, dynamic> buildMarketingShiftRequest(
+  List<ShiftAssignment> shifts,
+  String createdId,
+) {
+  return {
+    "marketingShiftData": shifts.map((e) => e.toMarketingInsertJson(createdId: createdId)).toList(),
+  };
+}
+
+class ApiResponse<T> {
+  final bool success;
+  final String message;
+  final T? data;
+
+  ApiResponse({
+    required this.success,
+    required this.message,
+    this.data,
+  });
+
+  factory ApiResponse.fromJson(Map<String, dynamic> json, T Function(dynamic) fromData) {
+    return ApiResponse(
+      success: json["success"] ?? false,
+      message: json["message"] ?? "",
+      data: json["data"] != null ? fromData(json["data"]) : null,
+    );
+  }
+}

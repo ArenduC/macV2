@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:maca/common/loading_component.dart';
+import 'package:maca/features/shift_scheduler/helper/shift_schedule_generator.dart';
+import 'package:maca/features/shift_scheduler/model/shift_schedule.dart';
+import 'package:maca/features/shift_scheduler/view/marketing_status_view.dart';
+import 'package:maca/features/shift_scheduler/view/shift_schedule_action_button.dart';
 import 'package:maca/page/marketing_page.dart';
 import 'package:maca/styles/colors/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class ShiftScheduleGeneratorView extends StatefulWidget {
   final dynamic shiftAssignment;
@@ -12,6 +17,32 @@ class ShiftScheduleGeneratorView extends StatefulWidget {
 }
 
 class _ShiftScheduleGeneratorViewState extends State<ShiftScheduleGeneratorView> {
+  bool refresh = false;
+  List<ShiftAssignment> shiftAssignments = [];
+  List<ShiftAssignment> rawShifts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    rawShifts = generateShiftsAccurate(year: 2025, month: 9, numberOfPeople: 8);
+  }
+
+  Future<void> _onRefresh() async {
+    setState(() {
+      refresh = true;
+
+      rawShifts = generateShiftsAccurate(year: 2025, month: 9, numberOfPeople: 8);
+    });
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (!mounted) return;
+
+    setState(() {
+      refresh = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,23 +72,38 @@ class _ShiftScheduleGeneratorViewState extends State<ShiftScheduleGeneratorView>
       ),
       body: Padding(
         padding: const EdgeInsets.all(0.0),
-        child: widget.shiftAssignment.isEmpty
+        child: rawShifts.isEmpty || refresh
             ? const LoadingComponent()
             : Column(children: [
                 Expanded(
-                  child: ListView.separated(
-                    itemCount: widget.shiftAssignment.length,
-                    itemBuilder: (context, index) {
-                      final user = widget.shiftAssignment[index];
-                      return Container(
+                  child: RefreshIndicator(
+                    onRefresh: () => _onRefresh(),
+                    child: ListView.separated(
+                      itemCount: rawShifts.length,
+                      itemBuilder: (context, index) {
+                        final user = rawShifts[index];
+                        return Container(
                           // Align text to the left
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-                          child: marketingStatusView(user));
-                    },
-                    separatorBuilder: (context, index) => const SizedBox(
-                      height: 4,
+                          child: MarketingStatusView(
+                            key: UniqueKey(),
+                            data: user,
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 4,
+                      ),
                     ),
                   ),
+                ),
+                ShiftScheduleActionButton(
+                  onPressed: _onRefresh,
+                  label: "Regenerate",
+                ),
+                ShiftScheduleActionButton(
+                  onPressed: () => actionButtonStateUpdate(rawShifts),
+                  label: "Publish",
                 ),
               ]),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/helper/helper.dart';
 import 'package:maca/features/add_electric_bill/model/model.dart';
 import 'package:maca/features/add_electric_bill/view/additional_expend_view.dart';
+import 'package:maca/features/add_electric_bill/view/extra_expend_view.dart';
 import 'package:maca/features/add_electric_bill/view/meter_reading_view.dart';
 import 'package:maca/features/add_electric_bill/pdf/repaint_widget.dart';
 import 'package:maca/function/app_function.dart';
@@ -29,6 +30,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
   List<ActiveUser> selectedUserList = [];
   List<MeterReadingInputModel> meterReadingList = [];
   List<AdditionalExpendModule> additionalExpandList = [];
+  List<ExtraExpendModule> extraExpendList = [];
   List<MeterReading> monthlyMeterReadingList = [];
 
   dynamic expenditureDetails = [];
@@ -227,6 +229,18 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                         ),
                         const SizedBox(height: 20),
                       ],
+                      if (value.isExtra) ...[
+                        ExtraExpendView(
+                          onSubmit: (data) {
+                            macaPrint("ExtraExpendView $data");
+                            handleGetActiveUserList();
+                            setState(() {
+                              extraExpendList = data;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ],
                   );
                 }),
@@ -253,6 +267,7 @@ class _AddElectricBillViewState extends State<AddElectricBillView> {
                                 userList: activeUserList,
                                 meterReading: meterReadingList,
                                 additionalExpendList: additionalExpandList,
+                                extraExpendList: extraExpendList,
                                 monthlyMeterReadingList: monthlyMeterReadingList);
                             Navigator.push(
                               context,

@@ -47,7 +47,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   //For fetching local stor data
   Future getDataFromLocalStorage() async {
     loginData = await getLocalStorageData("loginDetails");
-    individualMarketStatusUpdate(loginData[0]["user_id"]);
+    individualMarketStatusUpdate(loginData["user_id"]);
     macaPrint(loginData);
     macaPrint(marketingStatus);
   }

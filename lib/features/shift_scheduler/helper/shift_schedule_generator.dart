@@ -1,12 +1,18 @@
 import 'dart:math';
 
-List<Map<String, dynamic>> generateShiftsAccurate({
+import 'package:flutter/material.dart';
+import 'package:maca/features/expenditure/service/individual_marketing.dart';
+import 'package:maca/features/shift_scheduler/model/shift_schedule.dart';
+import 'package:maca/features/shift_scheduler/service/insert_marketing_shift.dart';
+import 'package:maca/function/app_function.dart';
+
+List<ShiftAssignment> generateShiftsAccurate({
   required int month,
   required int year,
   required int numberOfPeople,
 }) {
   final rand = Random();
-  final result = <Map<String, dynamic>>[];
+  final result = <ShiftAssignment>[];
   final totalDays = DateTime(year, month + 1, 0).day;
 
   final baseDays = totalDays ~/ numberOfPeople;
@@ -41,16 +47,18 @@ List<Map<String, dynamic>> generateShiftsAccurate({
       endShift = rand.nextBool() ? startShift : 1 - startShift;
     }
 
-    result.add({
-      "user_id": "",
-      "marketing_user": "Select your shift",
-      "startDate": DateTime(year, month, startDay).toIso8601String(),
-      "endDate": DateTime(year, month, endDay).toIso8601String(),
-      "startShift": startShift,
-      "endShift": endShift,
-      "status": 0,
-      "day": endDay - startDay + 1
-    });
+    result.add(
+      ShiftAssignment(
+        userId: '',
+        marketingUser: 'Select your shift',
+        startDate: DateTime(year, month, startDay),
+        endDate: DateTime(year, month, endDay),
+        startShift: startShift,
+        endShift: endShift,
+        status: 0,
+        day: endDay - startDay + 1,
+      ),
+    );
 
     // If we've reached the last day of the month, break
     if (endDay >= totalDays) break;
@@ -61,4 +69,18 @@ List<Map<String, dynamic>> generateShiftsAccurate({
   }
 
   return result;
+}
+
+Future<void> actionButtonStateUpdate(
+  List<ShiftAssignment> shifts,
+) async {
+  await insertMarketingShifts(shifts, "admin_001");
+}
+
+class RefreshHelper {
+  static Future<void> call(Future<void> Function()? onRefresh) async {
+    if (onRefresh != null) {
+      await onRefresh();
+    }
+  }
 }
