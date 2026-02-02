@@ -4,7 +4,6 @@ import 'package:maca/features/expenditure/model/border_item.dart';
 import 'package:maca/features/expenditure/notifiers/added_border_item_notifier.dart';
 import 'package:maca/features/expenditure/service/individual_marketing.dart';
 import 'package:maca/features/marketing_details/marketing_details_model.dart';
-import 'package:maca/features/marketing_details/view/individual_details.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/store/local_store.dart';
 import 'package:maca/styles/app_style.dart';

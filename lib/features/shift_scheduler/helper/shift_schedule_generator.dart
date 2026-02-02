@@ -1,10 +1,7 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'package:maca/features/expenditure/service/individual_marketing.dart';
 import 'package:maca/features/shift_scheduler/model/shift_schedule.dart';
 import 'package:maca/features/shift_scheduler/service/insert_marketing_shift.dart';
-import 'package:maca/function/app_function.dart';
 
 List<ShiftAssignment> generateShiftsAccurate({
   required int month,

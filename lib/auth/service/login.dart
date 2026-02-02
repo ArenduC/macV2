@@ -30,7 +30,7 @@ Future<void> handleLoginRequest(BuildContext context, String username, String pa
     LocalStore().setStore(ListOfStoreKey.loginDetails, userData.toJson());
     LocalStore().setStore(ListOfStoreKey.loginStatus, true);
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),
     );

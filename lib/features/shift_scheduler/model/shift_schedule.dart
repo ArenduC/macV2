@@ -88,3 +88,23 @@ class ApiResponse<T> {
     );
   }
 }
+
+class MarketingShiftScheduleValue {
+  int month;
+  int numberOfBorder;
+  int year;
+
+  MarketingShiftScheduleValue({this.month = 1, this.numberOfBorder = 8, this.year = 2026});
+
+  MarketingShiftScheduleValue copyWith({
+    int? month,
+    int? numberOfBorder,
+    int? year,
+  }) {
+    return MarketingShiftScheduleValue(
+      month: month ?? this.month,
+      numberOfBorder: numberOfBorder ?? this.numberOfBorder,
+      year: year ?? this.year,
+    );
+  }
+}

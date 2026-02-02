@@ -3,10 +3,10 @@ import 'package:maca/common/loading_component.dart';
 import 'package:maca/features/shift_scheduler/helper/shift_schedule_generator.dart';
 import 'package:maca/features/shift_scheduler/model/shift_schedule.dart';
 import 'package:maca/features/shift_scheduler/view/marketing_status_view.dart';
+import 'package:maca/features/shift_scheduler/view/select_month_view.dart';
 import 'package:maca/features/shift_scheduler/view/shift_schedule_action_button.dart';
-import 'package:maca/page/marketing_page.dart';
+import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/colors/app_colors.dart';
-import 'package:provider/provider.dart';
 
 class ShiftScheduleGeneratorView extends StatefulWidget {
   final dynamic shiftAssignment;
@@ -20,18 +20,17 @@ class _ShiftScheduleGeneratorViewState extends State<ShiftScheduleGeneratorView>
   bool refresh = false;
   List<ShiftAssignment> shiftAssignments = [];
   List<ShiftAssignment> rawShifts = [];
+  int selectedYear = DateTime.now().year;
 
   @override
   void initState() {
     super.initState();
-    rawShifts = generateShiftsAccurate(year: 2025, month: 9, numberOfPeople: 8);
+    rawShifts = generateShiftsAccurate(year: DateTime.now().year, month: DateTime.now().month, numberOfPeople: 1);
   }
 
   Future<void> _onRefresh() async {
     setState(() {
       refresh = true;
-
-      rawShifts = generateShiftsAccurate(year: 2025, month: 9, numberOfPeople: 8);
     });
 
     await Future.delayed(const Duration(seconds: 1));
@@ -97,9 +96,14 @@ class _ShiftScheduleGeneratorViewState extends State<ShiftScheduleGeneratorView>
                     ),
                   ),
                 ),
-                ShiftScheduleActionButton(
-                  onPressed: _onRefresh,
-                  label: "Regenerate",
+                SelectMonthView(
+                  onPressed: (select) {
+                    setState(() {
+                      macaPrint(select.month, select.numberOfBorder);
+                      selectedYear = select.year;
+                      rawShifts = generateShiftsAccurate(year: select.year, month: select.month, numberOfPeople: select.numberOfBorder);
+                    });
+                  },
                 ),
                 ShiftScheduleActionButton(
                   onPressed: () => actionButtonStateUpdate(rawShifts),
