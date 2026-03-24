@@ -4,7 +4,6 @@ import 'package:maca/features/shift_scheduler/helper/shift_schedule_generator.da
 import 'package:maca/features/shift_scheduler/model/shift_schedule.dart';
 import 'package:maca/features/shift_scheduler/view/marketing_status_view.dart';
 import 'package:maca/features/shift_scheduler/view/select_month_view.dart';
-import 'package:maca/features/shift_scheduler/view/shift_schedule_action_button.dart';
 import 'package:maca/function/app_function.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
@@ -104,10 +103,6 @@ class _ShiftScheduleGeneratorViewState extends State<ShiftScheduleGeneratorView>
                       rawShifts = generateShiftsAccurate(year: select.year, month: select.month, numberOfPeople: select.numberOfBorder);
                     });
                   },
-                ),
-                ShiftScheduleActionButton(
-                  onPressed: () => actionButtonStateUpdate(rawShifts),
-                  label: "Publish",
                 ),
               ]),
       ),

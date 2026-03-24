@@ -20,7 +20,9 @@ final List<MoreItemsProperty> moreItems = [
       color: AppColors.theme,
     ),
     title: 'Profile',
-    onTap: (context) {},
+    onTap: (context) {
+      Navigator.pushNamed(context, '/admin');
+    },
   ),
   MoreItemsProperty(
     icon: Icon(

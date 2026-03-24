@@ -3,6 +3,12 @@ import 'package:maca/styles/colors/app_colors.dart';
 
 class AppTextStyles {
   // Define your text styles here
+
+  static TextStyle loginLarge = TextStyle(
+    fontSize: 32.0,
+    fontWeight: FontWeight.bold,
+    color: AppColors.themeWhite,
+  );
   static TextStyle headline1 = TextStyle(
     fontSize: 32.0,
     fontWeight: FontWeight.bold,
@@ -112,10 +118,12 @@ class AppInputStyles {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
         borderSide: BorderSide(
-          color: AppColors.header1,
+          color: AppColors.themeWhite,
           width: 2.0,
         ),
       ),
+
+      focusColor: AppColors.themeWhite,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
         borderSide: const BorderSide(
@@ -145,6 +153,7 @@ class AppFormInputStyles {
         fontSize: 13.0,
       ),
       prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: prefixIconColor) : null, // Optional prefix icon
+
       suffixIcon: suffixIcon != null
           ? GestureDetector(
               onTap: onSuffixIconTap,

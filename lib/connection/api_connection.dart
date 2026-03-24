@@ -24,4 +24,5 @@ class GetUrl {
   String activeMeterList = "${Connection().prodUrl}v1/active_meter_list";
   String getMonthlyMeterReadings = "${Connection().prodUrl}v1/get_monthly_meter_readings";
   String getCurrentMonthAbsentData = "${Connection().prodUrl}v1/get_current_month_absent_data";
+  String getAllUserDetails = "${Connection().prodUrl}v1/get_all_user_details";
 }

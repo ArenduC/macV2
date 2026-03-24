@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maca/styles/app_style.dart';
 
 class ShiftScheduleActionButton extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -13,6 +14,10 @@ class ShiftScheduleActionButton extends StatefulWidget {
 class _ShiftScheduleActionButtonState extends State<ShiftScheduleActionButton> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(onPressed: widget.disabled ? null : widget.onPressed, child: Text(widget.label));
+    return ElevatedButton(
+      onPressed: widget.disabled ? null : widget.onPressed,
+      style: AppButtonStyles.elevatedButtonStyle(),
+      child: Text(widget.label),
+    );
   }
 }

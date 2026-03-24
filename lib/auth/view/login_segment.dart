@@ -21,7 +21,7 @@ Widget loginSegment(
           children: [
             Text(
               "Login",
-              style: AppTextStyles.headline1,
+              style: AppTextStyles.loginLarge,
             )
           ],
         ),
@@ -34,7 +34,7 @@ Widget loginSegment(
             hintText: 'Enter your email',
             prefixIcon: Icons.person,
           ),
-          style: TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.themeWhite), // Text style
         ),
         const SizedBox(
           height: 16,
@@ -46,7 +46,7 @@ Widget loginSegment(
             hintText: 'Enter your password',
             prefixIcon: Icons.password,
           ),
-          style: TextStyle(color: AppColors.header1), // Text style
+          style: TextStyle(color: AppColors.themeWhite), // Text style
         ),
         const SizedBox(
           height: 16,

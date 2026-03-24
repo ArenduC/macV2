@@ -190,6 +190,8 @@ formatCustomDate(dynamic dateTime) {
   };
 }
 
+String shiftType(int type) => type == 0 ? "Morning" : "Night";
+
 String getDaySuffix(int day) {
   if (day >= 11 && day <= 13) {
     return 'th';

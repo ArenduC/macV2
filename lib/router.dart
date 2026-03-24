@@ -1,6 +1,7 @@
 // lib/router/router.dart
 import 'package:flutter/material.dart';
 import 'package:maca/features/add_electric_bill/view/add_electric_bill_view.dart';
+import 'package:maca/features/admin/presentation/view/admin_root_screen.dart';
 import 'package:maca/features/expenditure/view/expenditure_add_view.dart';
 import 'package:maca/screen/home_screen.dart';
 import 'package:maca/auth/view/login_screen.dart';
@@ -16,6 +17,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const ExpenditureAddView());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case '/admin':
+        return MaterialPageRoute(builder: (_) => const AdminRootScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

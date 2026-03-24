@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:maca/core/di/service_locator.dart';
 import 'package:maca/provider/notification_provider.dart';
 import 'package:maca/router.dart';
 import 'package:maca/screen/start_up_screen.dart';
@@ -13,7 +14,8 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<Scaffol
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensures proper binding before initialization.
+  WidgetsFlutterBinding.ensureInitialized();
+  serviceLocator(); // Ensures proper binding before initialization.
   await Firebase.initializeApp();
   dynamic fcmToken = await FirebaseMessaging.instance.getToken();
   LocalStore().setStore(ListOfStoreKey.fcmToken, fcmToken.toString());
