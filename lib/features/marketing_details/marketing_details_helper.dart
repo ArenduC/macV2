@@ -49,8 +49,8 @@ String? totalAmountCounter({List<IndividualMarketingDetails>? data}) {
   return data?.fold(0.0, (sum, item) => sum + (item.totalAmount).toDouble()).toString();
 }
 
-Future<List<MonthlyData>> getMonthlyIndividualMarketingList() async {
-  dynamic response = await ApiService().apiCallService(endpoint: GetUrl().marketingDetails, method: ApiType().get);
+Future<List<MonthlyData>> getMonthlyIndividualMarketingList(String year) async {
+  dynamic response = await ApiService().apiCallService(endpoint: PostUrl().marketingDetails, method: ApiType().post, body: {"selectedYear": year});
   final responseData = AppFunction().macaApiResponsePrintAndGet(data: response)["data"] as List<dynamic>;
   final meterReadingList = responseData.reversed.map((e) => MonthlyData.fromJson(e)).toList();
   return meterReadingList;

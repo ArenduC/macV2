@@ -134,6 +134,7 @@ class ExpenditureTiles extends StatefulWidget {
 class _ExpenditureTilesState extends State<ExpenditureTiles> {
   List<MonthlyData> individualList = [];
   dynamic expenditure = [];
+  String selectedYear = (DateTime.now().year).toString();
   @override
   void initState() {
     initialization();
@@ -149,7 +150,7 @@ class _ExpenditureTilesState extends State<ExpenditureTiles> {
   }
 
   setIndividualList() async {
-    var data = await getMonthlyIndividualMarketingList();
+    var data = await getMonthlyIndividualMarketingList(selectedYear);
     setState(() {
       individualList = data;
     });

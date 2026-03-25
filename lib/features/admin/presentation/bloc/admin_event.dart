@@ -21,8 +21,9 @@ class UserStatusUpdate extends AdminEvent {
   final int newType;
   final String newMStatus;
   final int? adminUserId;
+  final BuildContext? context;
 
-  UserStatusUpdate(this.targetUserId, this.newStatus, this.newType, this.newMStatus, {this.adminUserId});
+  UserStatusUpdate(this.targetUserId, this.newStatus, this.newType, this.newMStatus, {this.adminUserId, this.context});
 }
 
 class UserRoleUpdate extends AdminEvent {}

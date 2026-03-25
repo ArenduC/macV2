@@ -19,6 +19,7 @@ class MarketingDetailsView extends StatefulWidget {
 
 class _MarketingDetailsViewState extends State<MarketingDetailsView> {
   List<MonthData>? marketingDetails;
+  String yearController = (DateTime.now().year).toString();
   @override
   void initState() {
     _fetchData();
@@ -26,10 +27,7 @@ class _MarketingDetailsViewState extends State<MarketingDetailsView> {
   }
 
   Future<void> _fetchData() async {
-    dynamic response = await ApiService().apiCallService(
-      endpoint: GetUrl().marketingDetails,
-      method: ApiType().get,
-    );
+    dynamic response = await ApiService().apiCallService(endpoint: PostUrl().marketingDetails, method: ApiType().post, body: {"selectedYear": yearController});
     setState(() {
       marketingDetails = convertAllMarketingDetailsToIndividualModels(inputData: AppFunction().macaApiResponsePrintAndGet(data: response, extractData: "data"));
     });
@@ -42,22 +40,74 @@ class _MarketingDetailsViewState extends State<MarketingDetailsView> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(
-                    Icons.arrow_back_ios_rounded,
-                    color: AppColors.theme,
-                  )),
-              const SizedBox(
-                width: 5,
+              Row(
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: AppColors.theme,
+                      )),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Monthly marketing",
+                    style: TextStyle(color: AppColors.theme, fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ],
               ),
-              Text(
-                "Monthly marketing",
-                style: TextStyle(color: AppColors.theme, fontSize: 20, fontWeight: FontWeight.w600),
-              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                decoration: BoxDecoration(color: AppColors.themeWhite, borderRadius: BorderRadius.circular(20), boxShadow: [
+                  BoxShadow(
+                    color: AppColors.theme.withOpacity(.1),
+                    blurRadius: 20,
+                    spreadRadius: 1,
+                    offset: const Offset(0, 5),
+                  ),
+                ]),
+                child: Row(
+                  children: [
+                    Text(
+                      yearController,
+                      style: TextStyle(fontSize: 12, color: AppColors.theme),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+
+                          // Optional: This limits the picker to a more compact month/year view in some versions
+                          initialDatePickerMode: DatePickerMode.year,
+                        );
+
+                        if (pickedDate != null) {
+                          setState(() {
+                            yearController = pickedDate.year.toString();
+                          });
+                          _fetchData();
+                        }
+                      },
+                      child: Icon(
+                        Icons.calendar_month,
+                        size: 20,
+                        color: AppColors.theme,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
           backgroundColor: AppColors.themeWhite,
@@ -76,6 +126,7 @@ class _MarketingDetailsViewState extends State<MarketingDetailsView> {
                           : MarketingListWidget(
                               marketingDetails: monthData,
                               monthData: monthData.month,
+                              selectedYear: yearController,
                             ),
                     );
                   },

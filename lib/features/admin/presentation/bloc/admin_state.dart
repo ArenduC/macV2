@@ -11,4 +11,10 @@ final class AdminLoaded extends AdminState {
   AdminLoaded(this.allUserDetails);
 }
 
+final class UpdateUserSuccess extends AdminState {
+  final UpdateUserDetailsResponse updateUserDetailsResponse;
+
+  UpdateUserSuccess(this.updateUserDetailsResponse);
+}
+
 final class AdminFailed extends AdminState {}

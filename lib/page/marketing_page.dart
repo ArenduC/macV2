@@ -45,7 +45,7 @@ class _MarketingPageState extends State<MarketingPage> {
   //for fetching local stor data
   Future getDataFromLocalStorage() async {
     loginData = await getLocalStorageData("loginDetails");
-    macaPrint(loginData);
+    macaPrint("marketing card user details $loginData");
   }
 
   // this method for getting date from user input
@@ -57,7 +57,7 @@ class _MarketingPageState extends State<MarketingPage> {
       marketingList = AppFunction().macaApiResponsePrintAndGet(data: response)["data"];
     });
     for (var data in marketingList) {
-      if (data["user_id"] == loginData[0]["user_id"]) {
+      if (data["user_id"] == loginData["user_id"]) {
         setState(() {
           userMarketingDetails = data;
         });

@@ -74,7 +74,7 @@ class _ExpendAddPageState extends State<ExpendAddPage> {
     }
 
     dynamic jsonBody = {
-      "user_id": loginData[0]["user_id"],
+      "user_id": loginData["user_id"],
       "items": jsonList,
     };
 

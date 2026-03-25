@@ -10,7 +10,7 @@ class AdminRootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AdminBloc(getIt()),
+      create: (_) => AdminBloc(getIt(), getIt()),
       child: const AdminScreen(),
     );
   }

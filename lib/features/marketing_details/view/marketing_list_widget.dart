@@ -8,7 +8,8 @@ import 'package:maca/styles/colors/app_colors.dart';
 class MarketingListWidget extends StatefulWidget {
   final dynamic marketingDetails;
   final dynamic monthData;
-  const MarketingListWidget({super.key, required this.marketingDetails, required this.monthData});
+  final String selectedYear;
+  const MarketingListWidget({super.key, required this.marketingDetails, required this.monthData, required this.selectedYear});
 
   @override
   State<MarketingListWidget> createState() => _MarketingListWidgetState();
@@ -18,12 +19,12 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
   List<MonthlyData> individualList = [];
   @override
   void initState() {
-    setIndividualList();
+    setIndividualList(widget.selectedYear);
     super.initState();
   }
 
-  setIndividualList() async {
-    var data = await getMonthlyIndividualMarketingList();
+  setIndividualList(String selectedYearData) async {
+    var data = await getMonthlyIndividualMarketingList(selectedYearData);
     setState(() {
       individualList = data;
     });
@@ -67,6 +68,7 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
                     // List<ItemData> userdataList = individualList.  .userData.map((item)=>{
                     //   item.userId == 14
                     // })
+                    setIndividualList(widget.selectedYear);
 
                     MonthlyData? matchedMonth = individualList.where((monthData) => monthData.month == widget.monthData).cast<MonthlyData?>().firstOrNull;
                     List<ItemData>? individualMarketing = [];

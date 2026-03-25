@@ -92,7 +92,7 @@ class _MarketingAddPageState extends State<MarketingAddPage> {
   // This is for updating marketing status individually
   Future<dynamic> marketingStatusUpdate() async {
     dynamic jsonBody = {
-      "borderId": loginData[0]["user_id"],
+      "borderId": loginData["user_id"],
       "startDate": startDateController.text,
       "endDate": endDateController.text,
       "startShift": booleanConverter(startShift),
