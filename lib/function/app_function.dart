@@ -46,17 +46,16 @@ getMarketStatus(dynamic data) {
 }
 
 // This is for showing modal based on screen
-getModalItem(
-  dynamic data, {
-  BuildContext? context,
-  int? selectedMeterId,
-  List<ActiveUser>? activeUserList,
-  List<ActiveMeter>? activeMeterList,
-  List<ItemData>? individualMarketing,
-  List<MeterReadingInputModel>? meterReadingDetails,
-  Function(List<ActiveUser>)? onUserSelected,
-  Function(List<ActiveMeter>)? onMeterSelected,
-}) {
+getModalItem(dynamic data,
+    {BuildContext? context,
+    int? selectedMeterId,
+    List<ActiveUser>? activeUserList,
+    List<ActiveMeter>? activeMeterList,
+    List<ItemData>? individualMarketing,
+    List<MeterReadingInputModel>? meterReadingDetails,
+    Function(List<ActiveUser>)? onUserSelected,
+    Function(List<ActiveMeter>)? onMeterSelected,
+    String? individualName}) {
   macaPrint("itemIndex$data");
   switch (data) {
     case 0:
@@ -79,7 +78,7 @@ getModalItem(
         selectedMeterId: selectedMeterId,
       );
     case 6:
-      return IndividualDetails(individualMarketing: individualMarketing);
+      return IndividualDetails(individualMarketing: individualMarketing, individualName: individualName);
     case 7:
       return AddMealOff(context: context);
     case 3:
@@ -99,6 +98,7 @@ void showBedSelectionModal(
   List<ItemData>? individualMarketing,
   Function(List<ActiveUser>)? onUserSelected,
   Function(List<ActiveMeter>)? onMeterSelected,
+  String? individualName,
 }) {
   macaPrint("selectedMeterIdOnSheBedSelectionModal$selectedMeterId");
   showModalBottomSheet(
@@ -131,7 +131,8 @@ void showBedSelectionModal(
                   meterReadingDetails: meterReadingDetails,
                   onUserSelected: onUserSelected,
                   onMeterSelected: onMeterSelected,
-                  activeMeterList: activeMeterList),
+                  activeMeterList: activeMeterList,
+                  individualName: individualName),
             ),
           ),
         );

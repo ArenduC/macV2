@@ -37,6 +37,7 @@ Future<dynamic> addMeterReading(BuildContext context, dynamic data) async {
 Future<List<ActiveUser>> getActiveUserList() async {
   dynamic response = await ApiService().apiCallService(endpoint: GetUrl().activeUserList, method: ApiType().get);
   final responseData = AppFunction().macaApiResponsePrintAndGet(data: response)["data"] as List<dynamic>;
+  print("ActiveUserList $responseData");
   final bills = responseData.reversed.map((e) => ActiveUser.fromJson(e)).toList();
   LocalStore().setStore(ListOfStoreKey.activeBorderList, bills);
   return bills;

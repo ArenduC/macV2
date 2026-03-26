@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:maca/features/expenditure/service/individual_marketing.dart';
 import 'package:maca/features/marketing_details/marketing_details_model.dart';
 import 'package:maca/styles/colors/app_colors.dart';
 
 class IndividualDetails extends StatefulWidget {
   final List<ItemData>? individualMarketing;
-  const IndividualDetails({super.key, this.individualMarketing});
+  final String? individualName;
+  const IndividualDetails({super.key, this.individualMarketing, this.individualName});
 
   @override
   State<IndividualDetails> createState() => _IndividualDetailsState();
@@ -40,6 +42,10 @@ class _IndividualDetailsState extends State<IndividualDetails> {
                       const SizedBox(width: 20),
                     ],
                   ),
+                  Text(
+                    (widget.individualName).toString(),
+                    style: TextStyle(color: AppColors.theme, fontWeight: FontWeight.w600),
+                  ),
                 ],
               ),
             ),
@@ -50,7 +56,7 @@ class _IndividualDetailsState extends State<IndividualDetails> {
                 children: [
                   Expanded(
                       child: Text(
-                    "Item",
+                    "Item ($itemCount)",
                     style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.theme),
                   )),
                   Expanded(child: Text("₹Item Price", style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.theme))),

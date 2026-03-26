@@ -81,7 +81,7 @@ class _MarketingListWidgetState extends State<MarketingListWidget> {
                     }
 
                     macaPrint("individualData$individualMarketing");
-                    showBedSelectionModal(context, 6, individualMarketing: individualMarketing);
+                    showBedSelectionModal(context, 6, individualMarketing: individualMarketing, individualName: userData.user);
                   },
                   child: Container(
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
